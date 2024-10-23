@@ -1,0 +1,17 @@
+.error {
+    border: 1px solid red;
+}
+
+.success {
+    border: 1px solid green;
+}
+
+.error-div {
+    background-color: white;
+    padding: .2em;
+}
+
+.error-message {
+    font-size: .7em;
+    color: red;
+}

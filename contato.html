@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <title>SyncLab - Contato</title>
+    <link rel="stylesheet" href="styles/style.css" type="text/css"/>
+    <link rel="stylesheet" href="styles/form.css" type="text/css"/>
+</head>
+<body class="body-fix">
+    <nav class="navbar container">
+        <img alt="logo do SyncLab" src="images/synclab img.webp" class="navlogo"/>
+        <ul class="navbuttons">
+            <li class="navlink"><a href="/index.html">home</a></li>
+            <li class="navlink ativo"><a href="/contato.html">contato</a></li>
+            <li class="navlink"><a href="/sobre.html">sobre</a></li>
+            <li><a href="/login.html"><button class="navlink botao">conectar-se</button></a></li>
+        </ul>
+    </nav>
+    <section class="contato container">
+        <h1 class="titulo">Entre em contato</h1>
+        <p>
+            Entre em contato conosco para que possamos 
+            realizar um orçamento a fim de implementar o sistema na sua instituição!
+        </p>
+        <br>
+        <div class="form-section">
+            <form class="form" id="contato-form">
+                <div class="form-group">
+                    <label class="label-box">Nome:</label>
+                    <input class="input-box" id="nome" type="text" placeholder="Digite o nome pessoa física ou jurídica"/> 
+                </div>
+                <div class="form-group">
+                    <label class="label-box">Assunto:</label>
+                    <select class="input-box" id="assunto">
+                        <option value="0">Selecione o assunto</option>
+                        <option value="Orçamento">Orçamento</option>
+                        <option value="SAC">SAC</option>
+                        <option value="Marketing">Marketing</option>
+                        <option value="Outro">Outro</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="label-box">Comentário:</label>
+                    <textarea class="input-box" id="comentario" style="resize: none;" maxlength="1000" rows="8" cols="50" type="text-area" placeholder="Digite um texto breve sobre o assunto."></textarea> 
+                </div>
+                <button class="login-btn" type="submit">Enviar</button>                
+            </form>
+    </section>
+
+    <footer class="rodape">
+        <div class="container sub-rodape">
+            <h2 class="titulo-rodape">
+                SyncLab
+            </h2>
+    
+            <div>
+                <p class="subtitulo-rodape">Veja também: </p>
+                <ul class="links-rodape">
+                    <li class="footlink"><a href="index.html">home</a></li>
+                    <li class="footlink"><a href="contato.html">contato</a></li>
+                    <li class="footlink"><a href="sobre.html">sobre</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module" text="javascript" src="./js/Controllers/Contato.js"></script>
+
+</body>
+</html>
