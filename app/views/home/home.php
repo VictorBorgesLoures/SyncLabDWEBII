@@ -1,5 +1,5 @@
 <?php $this->layout('master', ['title' => 'SyncLab']);
-\cefet\Adequa\classes\Session::set('active', 'home');
+\cefet\SyncLab\classes\Session::set('active', 'home');
 ?>
 
 <section class="home container">

@@ -1,7 +1,7 @@
 <?php
 
-namespace cefet\Adequa\controllers;
-use cefet\Adequa\classes\Enviromment;
+namespace cefet\SyncLab\controllers;
+use cefet\SyncLab\classes\Enviromment;
 
 class HomeController extends Controller {
 

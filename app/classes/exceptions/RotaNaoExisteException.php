@@ -1,6 +1,6 @@
 <?php
 
-namespace cefet\Adequa\classes\exceptions;
+namespace cefet\SyncLab\classes\exceptions;
 
 use Exception;
 

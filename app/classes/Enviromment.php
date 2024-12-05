@@ -1,6 +1,6 @@
 <?php
 
-namespace cefet\Adequa\classes;
+namespace cefet\SyncLab\classes;
 
 use Exception;
 use Monolog\Handler\StreamHandler;

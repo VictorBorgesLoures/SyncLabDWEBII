@@ -1,6 +1,6 @@
 <?php
 
-namespace cefet\Adequa\controllers;
+namespace cefet\SyncLab\controllers;
 use League\Plates\Engine;
 abstract class Controller
 {

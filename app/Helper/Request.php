@@ -1,5 +1,5 @@
 <?php
-namespace cefet\Adequa\Helper;
+namespace cefet\SyncLab\Helper;
 
 class Request
 {

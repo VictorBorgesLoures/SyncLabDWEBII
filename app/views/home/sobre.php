@@ -1,5 +1,5 @@
 <?php $this->layout('master', ['title' => 'SyncLab - Sobre']);
-\cefet\Adequa\classes\Session::set('active', 'sobre');
+\cefet\SyncLab\classes\Session::set('active', 'sobre');
 ?>
 
 <section class="sobremais container">

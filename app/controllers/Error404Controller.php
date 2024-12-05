@@ -1,6 +1,6 @@
 <?php
 
-namespace cefet\Adequa\controllers;
+namespace cefet\SyncLab\controllers;
 
 class Error404Controller extends Controller
 {

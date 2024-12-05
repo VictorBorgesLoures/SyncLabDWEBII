@@ -1,5 +1,5 @@
 <?php $this->layout('master', ['title' => 'SyncLab - Contato']);
-\cefet\Adequa\classes\Session::set('active', 'contato');
+\cefet\SyncLab\classes\Session::set('active', 'contato');
 ?>
 
 <section class="contato container">

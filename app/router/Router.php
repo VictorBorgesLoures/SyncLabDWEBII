@@ -1,24 +1,22 @@
 <?php
 
-namespace cefet\Adequa\router;
+namespace cefet\SyncLab\router;
 
-use cefet\Adequa\classes\exceptions\RotaNaoExisteException;
-use cefet\Adequa\classes\Session;
-use cefet\Adequa\controllers\AdmController;
-use cefet\Adequa\controllers\ArtigoLGPDController;
-use cefet\Adequa\controllers\DashboardController;
-use cefet\Adequa\controllers\ErrorSystemController;
-use cefet\Adequa\controllers\MailController;
-use cefet\Adequa\controllers\TermosAdequaController;
-use cefet\Adequa\controllers\UserController;
-use cefet\Adequa\Helper\Request;
-use cefet\Adequa\Helper\Uri;
+use cefet\SyncLab\classes\exceptions\RotaNaoExisteException;
+use cefet\SyncLab\classes\Session;
+
+use cefet\SyncLab\controllers\ErrorSystemController;
+use cefet\SyncLab\controllers\HomeController;
+
+
+use cefet\SyncLab\Helper\Request;
+use cefet\SyncLab\Helper\Uri;
 use Exception;
 use Throwable;
 
 class Router
 {
-    public const CONTROLLER_NAMESPACE = 'cefet\\Adequa\\controllers';
+    public const CONTROLLER_NAMESPACE = 'cefet\\SyncLab\\controllers';
 
     /**
      * @throws Throwable

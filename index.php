@@ -2,12 +2,12 @@
 
 session_start();
 
-use cefet\Adequa\classes\Enviromment;
-use cefet\Adequa\router\Router;
+use cefet\SyncLab\classes\Enviromment;
+use cefet\SyncLab\router\Router;
 
 require __DIR__ . '/public/bootstrap/ini.php';
 
 Router::execute();
 
 
-\cefet\Adequa\classes\Session::removeFlash();
+\cefet\SyncLab\classes\Session::removeFlash();

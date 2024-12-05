@@ -1,6 +1,6 @@
 <?php
 
-use cefet\Adequa\classes\Enviromment;
+use cefet\SyncLab\classes\Enviromment;
 
 require __DIR__ . "/../../vendor/autoload.php";
 
