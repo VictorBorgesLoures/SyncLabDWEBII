@@ -44,9 +44,9 @@
             <div>
                 <p class="subtitulo-rodape">Veja também: </p>
                 <ul class="links-rodape">
-                    <li class="footlink"><a href="index.html">home</a></li>
-                    <li class="footlink"><a href="contato.html">contato</a></li>
-                    <li class="footlink"><a href="sobre.html">sobre</a></li>
+                    <li class="footlink"><a href="home.html">home</a></li>
+                    <li class="footlink"><a href="contato.php">contato</a></li>
+                    <li class="footlink"><a href="sobre.php">sobre</a></li>
                 </ul>
             </div>
         </div>

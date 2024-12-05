@@ -37,7 +37,7 @@ window.onload = () => {
         ],
         onSubmit: (e, cb) => {
             e.preventDefault();
-            window.location.href = '/contato.html'
+            window.location.href = '/contato.php'
         }
     }
 
