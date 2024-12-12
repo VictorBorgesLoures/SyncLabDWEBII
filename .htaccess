@@ -20,14 +20,6 @@ RewriteRule ^(.*)$ index.php [QSA,L]
     Require all granted
 </Files>
 
-# Configurações de cache
-<FilesMatch "\.(html|htm|js|css)$">
-    Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
-    Header set Pragma "no-cache"
-    Header set Expires "0"
-</FilesMatch>
-
-SetEnv GOOGLE_APPLICATION_CREDENTIALS "service-account-file.json"
 
 
 
