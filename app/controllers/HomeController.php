@@ -19,4 +19,9 @@ class HomeController extends Controller {
     {
         $this->view("home/contato");
     }
+
+    public function viewSaibaMais(): void
+    {
+        $this->view("home/saibamais");
+    }
 }

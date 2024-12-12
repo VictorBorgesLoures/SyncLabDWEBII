@@ -40,7 +40,7 @@ class Enviromment{
             $whoops->pushHandler(new PrettyPageHandler);
         } else {
             // Cria o logger Monolog
-            $logFile = __DIR__ . '/../logs/error.log'; // Defina o caminho do arquivo de log
+            $logFile = __DIR__ . '/../logs/error.log';
             $logger = new Logger('error_logger');
             $logger->pushHandler(new StreamHandler($logFile, Logger::ERROR));
 
@@ -49,13 +49,10 @@ class Enviromment{
             $plainTextHandler->setLogger($logger); // Usa o Monolog como logger
             $whoops->pushHandler($plainTextHandler);
 
-            // Manipulador customizado para exibir página de erro em produção
+
             $whoops->pushHandler(function($exception, $inspector, $run) use ($logger) {
-                // Primeiro, registre o erro no logger manualmente (garantindo que ele seja salvo)
                 $logger->error($exception->getMessage(), ['exception' => $exception]);
-                // Em seguida, redirecione para a página de erro
-                var_dump($exception);die;
-                redirect('/error');
+                //redirect('/error');
             });
         }
 

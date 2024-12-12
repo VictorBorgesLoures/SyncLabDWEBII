@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #13203D;
+            background-color: #8c52ff;
             color: #D9D9D9;
             display: flex;
             justify-content: center;
@@ -54,17 +54,16 @@
 </head>
 <body>
 <div class="error-container">
-
-
-    <?php if (\cefet\Adequa\classes\Session::has('__flash')) : ?>
+    <h1>Ops! Algo deu errado.</h1>
+    <p>No momento, estamos enfrentando problemas técnicos ou realizando uma manutenção programada.</p>
+    <p>Por favor, tente novamente mais tarde. Se o problema persistir, entre em contato conosco.</p>
+    <?php if (\cefet\SyncLab\classes\Session::has('__flash')) : ?>
         <div class="error-message">
             <p><strong>Detalhes do erro:</strong></p>
-            <p><?php echo \cefet\Adequa\classes\Session::messageFlash(); ?></p>
+            <p><?php echo \cefet\SyncLab\classes\Session::messageFlash(); ?></p>
         </div>
     <?php endif; ?>
-    <img src="public/assets/images/unDraw/undraw_page_not_found_re_e9o6.svg" alt="Not Found Image" style="max-width: 50%; height: auto; margin-bottom: 50px;"> <br>
-    <h2>A Página que você tentou acessar não existe ou está indisponível.</h2>
-    <a href="/sistema">Voltar para a página inicial</a>
+    <a href="/">Voltar para a página inicial</a>
     <div class="contact-info">
         <p>Para mais assistência, envie um email para: <a href="mailto:contato@adequa.com.br">contato@adequa.com.br</a></p>
     </div>

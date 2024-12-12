@@ -2,12 +2,10 @@ Options -Indexes
 
 RewriteEngine On
 
-
-# Reescreve URLs para index.php apenas se não for um arquivo ou diretório existente
+# Reescreve URLs para dashboard.php apenas se não for um arquivo ou diretório existente
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php [QSA,L]
-
 
 
 # Nega acesso a todos os outros arquivos PHP
@@ -17,7 +15,7 @@ RewriteRule ^(.*)$ index.php [QSA,L]
 
 </FilesMatch>
 
-# Permite acesso ao index.php
+# Permite acesso ao dashboard.php
 <Files "index.php">
     Require all granted
 </Files>

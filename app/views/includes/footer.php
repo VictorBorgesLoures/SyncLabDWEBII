@@ -7,7 +7,7 @@
         <div>
             <p class="subtitulo-rodape">Veja também: </p>
             <ul class="links-rodape">
-                <li class="footlink"><a href="/home">home</a></li>
+                <li class="footlink"><a href="/">home</a></li>
                 <li class="footlink"><a href="/contato">contato</a></li>
                 <li class="footlink"><a href="/sobre">sobre</a></li>
             </ul>

@@ -3,16 +3,14 @@
 namespace cefet\SyncLab\router;
 
 use cefet\SyncLab\classes\exceptions\RotaNaoExisteException;
-use cefet\SyncLab\classes\Session;
-
-use cefet\SyncLab\controllers\ErrorSystemController;
-use cefet\SyncLab\controllers\HomeController;
-
-
 use cefet\SyncLab\Helper\Request;
 use cefet\SyncLab\Helper\Uri;
 use Exception;
+use FilesystemIterator;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 use Throwable;
+
 
 class Router
 {
@@ -23,20 +21,42 @@ class Router
      */
     public static function load(string $controller, string $method, array $params = [])
     {
-        // verificar se o controller existe
-        $controllerNamespace = self::CONTROLLER_NAMESPACE . '\\' . $controller;
-        if (!class_exists($controllerNamespace)) {
+        $controllerClass = self::findController($controller);
+        if (!$controllerClass) {
             throw new Exception("O Controller {$controller} não existe");
         }
 
-        $controllerInstance = new $controllerNamespace;
+        $controllerInstance = new $controllerClass;
 
         if (!method_exists($controllerInstance, $method)) {
             throw new Exception("O método {$method} não existe no Controller {$controller}");
         }
 
-        //$controllerInstance->$method((object)$_REQUEST);
         call_user_func([$controllerInstance, $method], $params);
+    }
+
+    /**
+     * Procura recursivamente por um controlador no namespace e retorna a classe se encontrada.
+     */
+    private static function findController(string $controller): ?string
+    {
+        $baseDir = ROOT_PATH . '/app/controllers';
+        $controllerFile = "{$controller}.php";
+        $controllerNamespace = self::CONTROLLER_NAMESPACE;
+
+        $iterator = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($baseDir, FilesystemIterator::SKIP_DOTS)
+        );
+
+        foreach ($iterator as $file) {
+            if ($file->getFilename() === $controllerFile) {
+                // Substituir o caminho por namespaces
+                $relativePath = str_replace([$baseDir, '/', '.php'], ['', '\\', ''], $file->getPathname());
+                return $controllerNamespace . $relativePath;
+            }
+        }
+
+        return null; // Retorna null se o controlador não for encontrado
     }
 
     public static function routes(): array
@@ -56,13 +76,12 @@ class Router
 
         $uri = rtrim($uri, '/');
 
-        if (!isset($routes[$request])) {
-            throw new Exception('A rota não existe');
-        }
 
         $matchedRoute = self::matchRoute($uri, $routes[$request]);
-        if (!$matchedRoute) {
+        if (!$matchedRoute && getenv('ENV') == 'production') {
             throw new RotaNaoExisteException('A rota não existe');
+        }else if (!$matchedRoute) {
+            throw new Exception("A rota não existe ($uri)");
         }
 
         /*
