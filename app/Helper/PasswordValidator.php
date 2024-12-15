@@ -1,6 +1,6 @@
 <?php
 
-namespace cefet\SyncLab\classes;
+namespace cefet\SyncLab\Helper;
 class PasswordValidator
 {
     public static function validate($password): true|string
