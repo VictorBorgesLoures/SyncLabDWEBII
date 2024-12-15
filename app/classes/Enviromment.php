@@ -31,6 +31,9 @@ class Enviromment{
         }
     }
 
+    /** Configura o Whoops para exibir ou logar os erros
+     * @return void
+     */
     public static function whoops(): void
     {
         $whoops = new Run;
@@ -60,8 +63,11 @@ class Enviromment{
         $whoops->register();
     }
 
-
-    public static function modifyPhpIni(){
+    /** Modifica as configurações do PHP
+     * @return void
+     */
+    public static function modifyPhpIni(): void
+    {
         ini_set('log_errors', 1); // Logar erros
         ini_set('display_errors', 0);
         ini_set('display_startup_errors', 1);
@@ -72,7 +78,11 @@ class Enviromment{
 
     }
 
-    public static function getDomUri(){
+    /** Retorna o valor da variável de ambiente especificada
+     * @return false|array|string Valor da variável de ambiente ou false se não existir
+     */
+    public static function getDomUri(): false|array|string
+    {
         return getenv('DOM_URI');
     }
 

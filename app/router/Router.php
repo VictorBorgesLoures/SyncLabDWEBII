@@ -16,10 +16,13 @@ class Router
 {
     public const CONTROLLER_NAMESPACE = 'cefet\\SyncLab\\controllers';
 
-    /**
+    /** Carrega um controlador e executa um método com os parâmetros fornecidos.
+     * @param string $controller Nome do controlador
+     * @param string $method Nome do método
+     * @param array $params Parâmetros para o método
      * @throws Throwable
      */
-    public static function load(string $controller, string $method, array $params = [])
+    public static function load(string $controller, string $method, array $params = []): void
     {
         $controllerClass = self::findController($controller);
         if (!$controllerClass) {
@@ -35,8 +38,9 @@ class Router
         call_user_func([$controllerInstance, $method], $params);
     }
 
-    /**
-     * Procura recursivamente por um controlador no namespace e retorna a classe se encontrada.
+    /** Procura recursivamente por um controlador no namespace e retorna a classe se encontrada.
+     * @param string $controller Nome do controlador
+     * @return string|null Nome da classe do controlador ou null se não encontrado
      */
     private static function findController(string $controller): ?string
     {
@@ -59,16 +63,20 @@ class Router
         return null; // Retorna null se o controlador não for encontrado
     }
 
+    /** Retorna as rotas definidas no arquivo routes.php
+     * @return array
+     */
     public static function routes(): array
     {
         return require_once 'routes.php';
     }
 
 
-    /**
+    /** Executa a rota correspondente à URI atual
+     * @throws RotaNaoExisteException
      * @throws Exception
      */
-    public static function execute()
+    public static function execute(): void
     {
         $routes = self::routes();
         $request = Request::get();
@@ -98,7 +106,12 @@ class Router
     }
 
 
-    private static function matchRoute(string $uri, array $routes)
+    /** Verifica se a URI corresponde a uma rota definida
+     * @param string $uri URI a ser verificada
+     * @param array $routes Rotas definidas
+     * @return array|bool Array com o callback e os parâmetros da rota ou false se não houver correspondência
+     */
+    private static function matchRoute(string $uri, array $routes): bool|array
     {
         foreach ($routes as $route => $callback) {
             $route = rtrim($route, '/');

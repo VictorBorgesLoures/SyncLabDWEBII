@@ -41,13 +41,13 @@ class Session
     public static function returnFlash(){
         if(isset($_SESSION['__flash']['error'])){
             $message = $_SESSION['__flash']['error'];
-            self::removeFlash();  // Remova a mensagem flash logo após exibi-la
+            self::removeFlash();
             return ['index' => 'error',
                     'message' => $message];
         }
         else if(isset($_SESSION['__flash']['message'])){
             $message = $_SESSION['__flash']['message'];
-            self::removeFlash();  // Remova a mensagem flash logo após exibi-la
+            self::removeFlash();
             return ['index' => 'message',
                 'message' => $message];
         }
