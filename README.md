@@ -5,14 +5,30 @@
 https://www.figma.com/file/wwvQGpBu37nUcRAPB96Ib6/Synclab?type=design&node-id=0%3A1&mode=design&t=Y2zsWdEG8IgnfoJR-1
 ```
 
-## Implementações Realizadas / Progresso do Projeto
+## Cronograma do Projeto / Checklist
+#### 1º Sprint - 06/01/2025 - 09/01/2025
+- [ ] Organização da aplicação
+- [ ] Tela de Registro
+- [ ] Tela de Matrícula
+- [ ] Implementação de Sessão
 
-- ** **
-- ** **
-- ** **
-- ** **
-- ** **
-- ** **
+#### 2º Sprint - 27/01/2025 - 30/01/2025
+- Admin
+  - [ ] Aceitar solicitação de criação de matrícula
+  - [ ] Aceitar solicitação de projeto
+- Docente
+  - [ ] Criar solicitação de um novo projeto
+  - [ ] Adicionar atividade ao projeto
+  - [ ] Gerenciar projeto e atividades
+  - [ ] Aceitar solicitação de atividade
+
+#### 3º Sprint - 10/02/2025 - 13/02/2025
+- Discente
+  - [ ] Visualizar projeto e atividades
+  - [ ] Solicitar criação de atividade
+  
+- [ ] Dashboard com dados da aplicação
+- [ ] Dashboard com gráfico: projetos ativos, atividades
 
 
 ## Tecnologias Utilizadas
