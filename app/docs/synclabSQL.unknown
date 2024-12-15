@@ -1,0 +1,147 @@
+/* L�gico_1: */
+
+CREATE TABLE Usuario (
+    idUsuario INT PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    username VARCHAR(100) NOT NULL UNIQUE,
+    senha VARCHAR(255) NOT NULL,
+    dataNasc DATE NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    cpf_ VARCHAR(11) NOT NULL UNIQUE,
+    complemento_ VARCHAR(255) NOT NULL,
+    numero_ INT NOT NULL,
+    fk_Endereco_idEnd INT
+);
+
+CREATE TABLE Endereco (
+    idEnd INT PRIMARY KEY,
+    ruaEnd VARCHAR(255) NOT NULL,
+    cepEnd VARCHAR(255) NOT NULL UNIQUE
+);
+
+CREATE TABLE Laboratorio (
+    idLab INT PRIMARY KEY,
+    statusLab ENUM( "Ativo", "Desativado"),
+    nomeLab VARCHAR(255)  NOT NULL
+);
+
+CREATE TABLE Requisicao (
+    idReq INT PRIMARY KEY,
+    statusReq ENUM ("Aceito", "Recusado", "Em análise") DEFAULT "Em análise",
+    tituloReq VARCHAR(255) NOT NULL,
+    descricaoReq VARCHAR(1000) NOT NULL,
+    fk_Laboratorio_idLab INT,
+    fk_Projeto_idProj INT,
+    fk_Matricula_idMat INT,
+    dataCriacaoReq TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+
+CREATE TABLE Projeto (
+    idProj INT PRIMARY KEY,
+    nomeProj VARCHAR(255) NOT NULL,
+    descricaoProj VARCHAR(1000) NOT NULL,
+    statusProj ENUM ("Ativo","Em análise","Rejeitado", "Desativado") DEFAULT "Em análise",
+    fk_Matricula_idMat INT,
+    fk_Matricula_idMat_ INT,
+    dataCriacaoProj TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+
+CREATE TABLE Matricula (
+    matriculaMat INT,
+    tipoMat TINYINT NOT NULL,
+    statusMat ENUM ("Ativo","Em análise","Rejeitado", "Desativado") DEFAULT "Em análise",
+    idMat INT PRIMARY KEY,
+    fk_Usuario_idUsuario INT,
+    dataCriacaoMat TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+
+CREATE TABLE Atividade (
+    idAtv INT PRIMARY KEY,
+    statusAtv ENUM ("Finalizada", "Em análise", "Em andamento", "Cancelada") DEFAULT "Em análise",
+    dataIniAtv TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    dataFimAtv TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    tituloAtv VARCHAR(255) NOT NULL,
+    descricaoAtv VARCHAR(1000) NOT NULL,
+    fk_Projeto_idProj INT
+);
+
+CREATE TABLE Integra (
+    fk_Matricula_idMat INT,
+    fk_Projeto_idProj INT
+);
+
+CREATE TABLE Participa (
+    fk_Matricula_idMat INT,
+    fk_Atividade_idAtv INT
+);
+
+CREATE TABLE Reserva (
+    fk_Laboratorio_idLab INT,
+    fk_Matricula_idMat INT,
+    dataReservaLab TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+ 
+ALTER TABLE Usuario ADD CONSTRAINT FK_Usuario_2
+    FOREIGN KEY (fk_Endereco_idEnd)
+    REFERENCES Endereco (idEnd)
+    ON DELETE CASCADE;
+ 
+ALTER TABLE Requisicao ADD CONSTRAINT FK_Requisicao_2
+    FOREIGN KEY (fk_Laboratorio_idLab)
+    REFERENCES Laboratorio (idLab)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE Requisicao ADD CONSTRAINT FK_Requisicao_3
+    FOREIGN KEY (fk_Projeto_idProj)
+    REFERENCES Projeto (idProj)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE Requisicao ADD CONSTRAINT FK_Requisicao_4
+    FOREIGN KEY (fk_Matricula_idMat)
+    REFERENCES Matricula (idMat)
+    ON DELETE CASCADE;
+ 
+ALTER TABLE Projeto ADD CONSTRAINT FK_Projeto_2
+    FOREIGN KEY (fk_Matricula_idMat, fk_Matricula_idMat_)
+    REFERENCES Matricula (idMat, idMat)
+    ON DELETE CASCADE;
+ 
+ALTER TABLE Matricula ADD CONSTRAINT FK_Matricula_2
+    FOREIGN KEY (fk_Usuario_idUsuario)
+    REFERENCES Usuario (idUsuario)
+    ON DELETE CASCADE;
+ 
+ALTER TABLE Atividade ADD CONSTRAINT FK_Atividade_2
+    FOREIGN KEY (fk_Projeto_idProj)
+    REFERENCES Projeto (idProj)
+    ON DELETE CASCADE;
+ 
+ALTER TABLE Integra ADD CONSTRAINT FK_Integra_1
+    FOREIGN KEY (fk_Matricula_idMat)
+    REFERENCES Matricula (idMat)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE Integra ADD CONSTRAINT FK_Integra_2
+    FOREIGN KEY (fk_Projeto_idProj)
+    REFERENCES Projeto (idProj)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE Participa ADD CONSTRAINT FK_Participa_1
+    FOREIGN KEY (fk_Matricula_idMat)
+    REFERENCES Matricula (idMat)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE Participa ADD CONSTRAINT FK_Participa_2
+    FOREIGN KEY (fk_Atividade_idAtv)
+    REFERENCES Atividade (idAtv)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE Reserva ADD CONSTRAINT FK_Reserva_1
+    FOREIGN KEY (fk_Laboratorio_idLab)
+    REFERENCES Laboratorio (idLab)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE Reserva ADD CONSTRAINT FK_Reserva_2
+    FOREIGN KEY (fk_Matricula_idMat)
+    REFERENCES Matricula (idMat)
+    ON DELETE SET NULL;
