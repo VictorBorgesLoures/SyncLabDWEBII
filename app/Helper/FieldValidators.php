@@ -14,12 +14,12 @@ class FieldValidators {
                 "message" => "Formato de email inválido"
             ],
 
-            "rua" => [
+            "address" => [
                 "regex" => '/^[\p{L}\p{N}\s]*/',
                 "message" => "Formato de rua inválido"
             ],
 
-            "numero" => [
+            "number" => [
                 "regex" => '/^\d{1,11}$/',
                 "message" => "Deve possuir entre 1 e 11 dígitos"
             ],
@@ -29,7 +29,7 @@ class FieldValidators {
                 "message" => "Formato inválido"
             ],
 
-            "complemento" => [
+            "complement" => [
                 "regex" => '/^[\w\s.,/()[\]-]{1,255}$/',
                 "message" => "Formato inválido"
             ],
@@ -45,6 +45,11 @@ class FieldValidators {
             ],
 
             "password" => [
+                "regex" => '/[\d\w]{8,40}/',
+                "message" => "Deve possuir entre 8 e 40 caracteres, apenas números e letras"
+            ],
+
+            "confirm-password" => [
                 "regex" => '/[\d\w]{8,40}/',
                 "message" => "Deve possuir entre 8 e 40 caracteres, apenas números e letras"
             ],

@@ -4,19 +4,13 @@
     --cor-texto-secundaria:#828282;
     --cor-texto-principal: #000;
 }
-.body-fix{
-    overflow-x: hidden;
-    width: 100%;
-    height: auto;
+body{
     background-color: rgb(255, 255, 255);
     font-family: "Inter", sans-serif;
     font-optical-sizing: auto;
     font-weight: 400;
     font-style: normal;
-    box-sizing: border-box;
-    position: relative;
-    margin: 0px;
-    min-height: 100vh;
+    /*min-height: 100vh;*/
 }
 .navbar{
     display: flex;
@@ -56,6 +50,7 @@
 }
 
 .navlink a{
+    color: var(--cor-principal);
     text-decoration: none;
 }
 
@@ -181,10 +176,6 @@
 .rodape{
     background-color: var(--cor-principal);
     color: var(--cor-secundaria);
-    position: absolute;
-    bottom: -15em;
-    left: 0;
-    width: 100%;
 }
 
 .sub-rodape{
@@ -221,17 +212,15 @@
 }
 
 .form {
-    width: 50%;
-    position: relative;
-    margin: auto;
+    flex-wrap: wrap;
 }
 
 .form-group {
     display: flex;
     flex-direction: column;
-    align-items: left;
+    align-items: flex-start;
     width: 100%;
-    margin: 10px 0px;
+    margin: 10px 0;
 }
 
 .input-box {
@@ -250,7 +239,6 @@
 }
 
 .login-btn {
-    position: absolute;
     right: 0;
     bottom: -3em;
     font-size: 1.1em;
@@ -258,7 +246,17 @@
     background-color: var(--cor-principal);
     border-radius: 5px;
     border-color: var(--cor-principal);
-    padding: 10px;
+    padding: 10px 20px;;
+    border: none;
+}
+
+.login-btn {
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.login-btn:hover {
+    background-color: #6a1bbd;
 }
 
 .subtitulo{
@@ -269,6 +267,45 @@
     text-align: left;
 }
 
+
+.label-box {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--cor-principal);
+
+}
+
+.input-box {
+    width: 100%;
+    padding: 8px 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+
+
+
+.right-column{
+    margin-top: 5rem;
+}
+#login-form{max-width: 500px;}
+
+#login-form{
+    margin: 0 auto;
+    padding: 20px;
+
+}
+
+h1{
+    color: #8a2be2;
+    font-size: 3rem;
+}
+
+
 @media (max-width: 1000px) {
     .navbuttons{
         width: 50%;
@@ -278,7 +315,7 @@
 @media (max-width: 800px) {
     .caixa-comentario{
         width: 60%;
-        margin: 10px 0px;
+        margin: 10px 0;
     }
     .caixa-comentarios{
         flex-direction: column;

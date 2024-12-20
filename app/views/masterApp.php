@@ -16,14 +16,14 @@
     <link rel="stylesheet" href="/public/assets/styles/styles.css" type="text/css">
 </head>
 
-<body class="body-fix">
+<body class="d-flex flex-column min-vh-100">
+
 <?= $this->insert('includes/headerApp') ?>
 
 <?= $this->insert('includes/aside') ?>
-
-<?= $this->section('content') ?>
-
-<?= $this->insert('includes/footer') ?>
+<main class="flex-grow-1">
+    <?= $this->section('content') ?>
+</main>
 
 <script src="/public/assets/js/scripts/sideBar.js"></script>
 </body>

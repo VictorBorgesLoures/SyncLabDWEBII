@@ -68,7 +68,7 @@ class Session
 
     public static function messageFlash(): ?string
     {
-        $message = \cefet\Adequa\classes\Session::returnFlash();
+        $message = \cefet\SyncLab\classes\Session::returnFlash();
 
         // Verificar o índice e aplicar o estilo adequado
         if ($message !== null) {

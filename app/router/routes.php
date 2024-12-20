@@ -9,6 +9,7 @@ return [
         getenv("DOM_URI") . 'saiba-mais' => fn() => self::load('HomeController', 'viewSaibaMais'),
         getenv("DOM_URI") . 'login' => fn() => self::load('LoginController', 'viewLogin'),
         getenv("DOM_URI") . 'dashboard' => fn() => self::load('DashboardController', 'viewDashboard'),
+        getenv("DOM_URI") . 'registrar' => fn() => self::load('RegistrarController', 'viewRegistrar'),
 
         //errors
         getenv("DOM_URI") . 'error' => fn() => self::load('ErrorSystemController', 'index'),
@@ -27,9 +28,14 @@ return [
         getenv("DOM_URI") . 'laboratorios' => fn() => self::load('LaboratoriosController', 'viewLaboratorios'),
         getenv("DOM_URI") . 'laboratorio/{id}' => fn($id) => self::load('LaboratoriosController', 'monitorar', $id),
 
+        //user
+        getenv("DOM_URI") . 'logout' => fn() => self::load('UserController', 'logout'),
     ],
 
     'post' => [
+        getenv("DOM_URI") . 'login' => fn() => self::load('LoginController', 'ProcessaLogin'),
+        getenv("DOM_URI") . 'registrar' => fn() => self::load('RegistrarController', 'processarRegistro'),
+
 
     ],
 

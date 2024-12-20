@@ -1,6 +1,6 @@
 <?php $this->layout('masterApp', ['title' => 'Dashboard']);
 \cefet\SyncLab\classes\Session::set('active', 'dashboard');
-
+var_dump($_SESSION);
 /**
  * @var int $totalProjetos Quantidade de projetos que o usuário está vinculado.
  * @var int $totalAtividades Quantidade de atividades em aberto.

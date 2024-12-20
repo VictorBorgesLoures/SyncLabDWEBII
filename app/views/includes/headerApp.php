@@ -8,8 +8,8 @@ use cefet\SyncLab\classes\Session;
             <img alt="logo do SyncLab" src="/public/assets/images/logo-ampulheta.png" class="navlogo ampulheta" />
         </div>
         <ul class="navbuttons">
-            <li class="dash-nav-option"><?= Session::get('user') !== null ? Session::get('user') : 'UNDEFINED'?> </li>
-            <li><a href="/login"><button class="navlink dash-nav-option botao">Sair</button></a></li>
+            <li class="dash-nav-option"><?= Session::get('user_name') !== null ? Session::get('user_name') : 'UNDEFINED'?> </li>
+            <li><a href="/logout"><button class="navlink dash-nav-option botao">Sair</button></a></li>
         </ul>
     </nav>
 </header>

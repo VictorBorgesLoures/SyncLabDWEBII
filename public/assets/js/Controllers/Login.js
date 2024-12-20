@@ -10,26 +10,50 @@ window.onload = () => {
             {
                 id: 'username',
                 validators: [
-                    new ValidatorRegex(/^\w+$/, "Deve possuir apenas letras minúsculas e maiúsculas sem acento!"),
-                    new ValidatorStrMinLen(3, "Deve possuir ao menos 3 caracteres"),
                     new ValidatorRequired('Este campo é obrigatório')
                 ]
             },
             {
                 id: 'password',
                 validators: [
-                    new ValidatorRegex(/^\w+$/, "Deve possuir apenas letras minúsculas e maiúsculas sem acento!"),
-                    new ValidatorStrMinLen(6, "Deve possuir ao menos 6 caracteres"),
                     new ValidatorRequired('Este campo é obrigatório')
                 ]
             }
         ],
-        onSubmit: e => {
+        onSubmit: async e => {
             e.preventDefault();
-            window.location.href = '/dashboard'
+
+            const formId = formData.id;
+            const form = document.getElementById(formId);
+            const elements = form.elements;
+            const formValues = {};
+
+            for (let element of elements) {
+                if (element.name) {
+                    formValues[element.name] = element.value;
+                }
+            }
+
+
+            const response = await fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formValues)
+            });
+
+            const data = await response.json();
+            if (data.success) {
+                window.location.href = data.redirect;
+            } else {
+                window.location.href = data.redirect;
+            }
         }
+
+
     }
 
-    let form = new Form(formData);
+    let formRegister = new Form(formData);
 
 }
