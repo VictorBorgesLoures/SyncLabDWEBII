@@ -3,6 +3,7 @@
 namespace cefet\SyncLab\classes;
 
 use PDO;
+use PDOException;
 
 class User
 {
@@ -13,6 +14,12 @@ class User
         $this->conn = BdConnection::getInstance()->getConnection();
     }
 
+    /** Realize the login of the user
+     * @param string $username
+     * @param string $senha
+     * @return array|null
+     * @throws PDOException
+     */
     public function login(string $username, string $senha): ?array
     {
         try {
@@ -36,6 +43,10 @@ class User
         }
     }
 
+    /** Get the name of the user
+     * @param string $username
+     * @return string
+     */
     public function getNomeUser(string $username): string
     {
         $sql = "SELECT nome FROM usuario WHERE username = :username";
@@ -45,7 +56,11 @@ class User
         return $stmt->fetchColumn();
     }
 
-    public function verificarEmailExistente(string $email): bool
+    /** verify if the email is already registered
+     * @param string $email
+     * @return bool
+     */
+    public function verifyEmailExists(string $email): bool
     {
         $sql = "SELECT * FROM usuario WHERE email = :email";
         $stmt = $this->conn->prepare($sql);
@@ -54,7 +69,19 @@ class User
         return $stmt->rowCount() > 0;
     }
 
-    public function registrar(string $name, string $username, string $password, string $email, string $cpf, string $birthdate, string $complemento, int $numero, int $fk_end): false|string
+    /** Register a new user
+     * @param string $name
+     * @param string $username
+     * @param string $password
+     * @param string $email
+     * @param string $cpf
+     * @param string $birthdate
+     * @param string $complemento
+     * @param int $numero
+     * @param int $fk_end
+     * @return false|string
+     */
+    public function insertUser(string $name, string $username, string $password, string $email, string $cpf, string $birthdate, string $complemento, int $numero, int $fk_end): false|string
     {
         $hash_senha = password_hash($password, PASSWORD_DEFAULT);
 

@@ -33,8 +33,8 @@ return [
     ],
 
     'post' => [
-        getenv("DOM_URI") . 'login' => fn() => self::load('LoginController', 'ProcessaLogin'),
-        getenv("DOM_URI") . 'registrar' => fn() => self::load('RegistrarController', 'processarRegistro'),
+        getenv("DOM_URI") . 'login' => fn() => self::load('LoginController', 'ProcessLogin'),
+        getenv("DOM_URI") . 'registrar' => fn() => self::load('RegistrarController', 'processRegistration'),
 
 
     ],
