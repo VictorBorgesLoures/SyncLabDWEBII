@@ -36,6 +36,8 @@ return [
 
     'post' => [
         getenv("DOM_URI") . 'login' => fn() => self::load('LoginController', 'ProcessLogin'),
+        getenv("DOM_URI") . 'matricula' => fn() => self::load('MatriculaController', 'SelecionarMatricula'),
+        getenv("DOM_URI") . 'matricula/requisitar' => fn() => self::load('RequisitarController', 'RequisitarMatricula'),
         getenv("DOM_URI") . 'registrar' => fn() => self::load('RegistrarController', 'processRegistration'),
 
 
