@@ -47,6 +47,7 @@ class RegistrarController extends Controller
         $address = htmlspecialchars($data['address'], ENT_QUOTES, 'UTF-8');
         $cep = htmlspecialchars($data['cep'], ENT_QUOTES, 'UTF-8');
 
+
         if ($password !== $confirm_password) {
             Session::flash('error', "As senhas para registro não conferem! Tente novamente.");
             BdConnection::getInstance()->closeConnection();
