@@ -20,12 +20,18 @@ class RegistrarController extends Controller
         $this->endereco = new Endereco();
     }
 
+    /** View the registration page
+     * @return void
+     */
     public function viewRegistrar()
     {
         $this->view('user/registrar');
     }
 
-    public function processarRegistro(){
+    /** Process the registration of a user
+     * @return void echo json
+     */
+    public function processRegistration(){
         header('Content-Type: application/json');
         $data = json_decode(file_get_contents('php://input'), true);
 
@@ -36,8 +42,8 @@ class RegistrarController extends Controller
         $birthdate = htmlspecialchars($data['data'], ENT_QUOTES, 'UTF-8');
         $email = filter_var($data['email'], FILTER_SANITIZE_EMAIL);
         $cpf = htmlspecialchars($data['cpf'], ENT_QUOTES, 'UTF-8');
-        $complemento = htmlspecialchars($data['complement'], ENT_QUOTES, 'UTF-8');
-        $numero = htmlspecialchars($data['number'], ENT_QUOTES, 'UTF-8');
+        $complement = htmlspecialchars($data['complement'], ENT_QUOTES, 'UTF-8');
+        $number = htmlspecialchars($data['number'], ENT_QUOTES, 'UTF-8');
         $address = htmlspecialchars($data['address'], ENT_QUOTES, 'UTF-8');
         $cep = htmlspecialchars($data['cep'], ENT_QUOTES, 'UTF-8');
 
@@ -49,7 +55,7 @@ class RegistrarController extends Controller
         }
 
 
-        if ($this->user->verificarEmailExistente($email)) {
+        if ($this->user->verifyEmailExists($email)) {
             Session::flash('error', "Email já registrado.");
             BdConnection::getInstance()->closeConnection();
             echo json_encode(['success' => false, 'redirect' => '/registrar']);
@@ -57,26 +63,25 @@ class RegistrarController extends Controller
         }
 
         // Cria Endereço
-        $idEnd = $this->endereco->verificarCepExistente($cep);
+        $idEnd = $this->endereco->checkExistingCep($cep);
         if (!$idEnd) {
 
-            $idEnd = $this->endereco->inserirEndereco($cep, $address);
+            $idEnd = $this->endereco->insertAdreess($cep, $address);
         }
 
 
         //Cria Usuario
         try {
-            if ($this->user->registrar($name, $username, $password, $email, $cpf, $birthdate, $complemento, $numero, $idEnd)) {
+            if ($this->user->insertUser($name, $username, $password, $email, $cpf, $birthdate, $complement, $number, $idEnd)) {
                 Session::flash('message', "Registro feito com sucesso!");
                 BdConnection::getInstance()->closeConnection();
                 echo json_encode(['success' => true, 'redirect' => '/login']);
-                exit;
             } else {
                 Session::flash('message', "Erro ao realizar registro.");
                 BdConnection::getInstance()->closeConnection();
                 echo json_encode(['success' => false, 'redirect' => '/registrar']);
-                exit;
             }
+            exit;
         }catch (\PDOException $e){
             $message = '';
             if ($e->getCode() == 23000 && str_contains($e->getMessage(), '1062 Duplicate entry' && str_contains($e->getMessage(), 'usuario.cpf_'))){
@@ -85,7 +90,7 @@ class RegistrarController extends Controller
             else if ($e->getCode() == 23000 && str_contains($e->getMessage(), '1062 Duplicate entry' && str_contains($e->getMessage(), 'usuario.email'))){
                 $message .= "Este email já está cadastrado no sistema. ";
             }
-            Session::flash('error',$message);
+            Session::flash('error', $message);
 
             BdConnection::getInstance()->closeConnection();
             echo json_encode(['success' => false, 'redirect' => '/registrar']);

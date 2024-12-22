@@ -12,7 +12,11 @@ class Endereco
         $this->conn = BdConnection::getInstance()->getConnection();
     }
 
-    public function getEndereco(string $cep): array
+    /** Return the address data from the database
+     * @param string $cep CEP to be searched
+     * @return array Address data
+     */
+    public function getAdreess(string $cep): array
     {
         $sql = "SELECT * FROM endereco WHERE cepEnd = :cep";
         $stmt = $this->conn->prepare($sql);
@@ -21,7 +25,11 @@ class Endereco
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function verificarCepExistente(string $cep): ?int
+    /** Check if the CEP already exists in the database
+     * @param string $cep CEP to be checked
+     * @return int|null ID of the address if it exists
+     */
+    public function checkExistingCep(string $cep): ?int
     {
         $sql = "SELECT idEnd FROM endereco WHERE cepEnd = :cep";
         $stmt = $this->conn->prepare($sql);
@@ -32,7 +40,12 @@ class Endereco
         return $result['idEnd'] ?? null;
     }
 
-    public function inserirEndereco(string $cep, string $adreess): int
+    /** Insert a new address in the database
+     * @param string $cep CEP to be inserted
+     * @param string $adreess Address to be inserted
+     * @return int ID of the inserted address
+     */
+    public function insertAdreess(string $cep, string $adreess): int
     {
         $sql = "INSERT INTO endereco (cepEnd, ruaEnd) VALUES (:cep, :adreess)";
         $stmt = $this->conn->prepare($sql);

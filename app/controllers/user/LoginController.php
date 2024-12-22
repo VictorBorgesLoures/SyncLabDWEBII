@@ -14,19 +14,23 @@ class LoginController extends Controller {
         $this->user = new User();
     }
 
+    /** View the login page
+     * @return void
+     */
     public function viewLogin(): void
     {
         $this->view("user/login");
     }
 
-    public function ProcessaLogin(): void{
+    /** Process the login of a user
+     * @return void echo json
+     */
+    public function ProcessLogin(): void{
         header('Content-Type: application/json');
         $data = json_decode(file_get_contents('php://input'), true);
 
         $username = trim(htmlspecialchars($data['username'], ENT_QUOTES, 'UTF-8'), " ");
         $password = trim(htmlspecialchars($data['password'], ENT_QUOTES, 'UTF-8'), " ");
-
-
 
         if(empty($username) || empty($password)){
             Session::flash('error', 'Preencha todos os campos');
@@ -49,9 +53,6 @@ class LoginController extends Controller {
                 echo json_encode(['success' => false, 'redirect' => '/login']);
             }
         }
-
-
-
     }
 
 
