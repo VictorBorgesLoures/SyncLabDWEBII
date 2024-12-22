@@ -10,13 +10,16 @@ https://www.figma.com/file/wwvQGpBu37nUcRAPB96Ib6/Synclab?type=design&node-id=0%
 - [ ] Organização da aplicação
 - [ ] Tela de Registro
 - [ ] Tela de Matrícula
+    - [ ] Tela de requisição e seleção de Matrícula
 - [ ] Implementação de Sessão
 
 #### 2º Sprint - 27/01/2025 - 30/01/2025
 - Admin
+  - [ ] Sidebar
   - [ ] Aceitar solicitação de criação de matrícula
   - [ ] Aceitar solicitação de projeto
 - Docente
+  - [ ] Sidebar
   - [ ] Criar solicitação de um novo projeto
   - [ ] Adicionar atividade ao projeto
   - [ ] Gerenciar projeto e atividades
@@ -24,11 +27,12 @@ https://www.figma.com/file/wwvQGpBu37nUcRAPB96Ib6/Synclab?type=design&node-id=0%
 
 #### 3º Sprint - 10/02/2025 - 13/02/2025
 - Discente
+  - [ ] Sidebar
   - [ ] Visualizar projeto e atividades
   - [ ] Solicitar criação de atividade
-  
-- [ ] Dashboard com dados da aplicação
-- [ ] Dashboard com gráfico: projetos ativos, atividades
+- Admin
+  - [ ] Dashboard com dados da aplicação
+  - [ ] Dashboard com gráfico: projetos ativos, atividades
 
 
 ## Tecnologias Utilizadas
