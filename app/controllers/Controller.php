@@ -26,5 +26,4 @@ abstract class Controller
         return $templates->render($view, $data);
     }
 
-
 }

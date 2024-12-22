@@ -8,6 +8,8 @@ return [
         getenv("DOM_URI") . 'sobre' => fn() => self::load('HomeController', 'viewSobre'),
         getenv("DOM_URI") . 'saiba-mais' => fn() => self::load('HomeController', 'viewSaibaMais'),
         getenv("DOM_URI") . 'login' => fn() => self::load('LoginController', 'viewLogin'),
+        getenv("DOM_URI") . 'matricula' => fn() => self::load('MatriculaController', 'viewMatricula'),
+        getenv("DOM_URI") . 'matricula/requisitar' => fn() => self::load('RequisitarController', 'viewRequisitarMatricula'),
         getenv("DOM_URI") . 'dashboard' => fn() => self::load('DashboardController', 'viewDashboard'),
         getenv("DOM_URI") . 'registrar' => fn() => self::load('RegistrarController', 'viewRegistrar'),
 
@@ -35,6 +37,8 @@ return [
     'post' => [
         getenv("DOM_URI") . 'login' => fn() => self::load('LoginController', 'ProcessaLogin'),
         getenv("DOM_URI") . 'registrar' => fn() => self::load('RegistrarController', 'processarRegistro'),
+        getenv("DOM_URI") . 'matricula' => fn() => self::load('MatriculaController', 'SelecionarMatricula'),
+        getenv("DOM_URI") . 'matricula/requisitar' => fn() => self::load('RequisitarController', 'RequisitarMatricula'),
 
 
     ],

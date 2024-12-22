@@ -2,7 +2,6 @@
 \cefet\SyncLab\classes\Session::set('active', 'login');
 ?>
 
-
 <section class="form-section container">
     <form class="form" id="login-form">
         <div class="text-center mb-4">

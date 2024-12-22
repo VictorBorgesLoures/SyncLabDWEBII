@@ -30,6 +30,7 @@ class BdConnection
             // Definindo o modo de erro do PDO como exceções
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
+            die($e);
             die("Conexão falhou: " . $e->getMessage());
         }
     }

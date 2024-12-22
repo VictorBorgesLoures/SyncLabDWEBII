@@ -8,7 +8,6 @@ export default class ValidatorEnum extends Validator {
     }
 
     validate(fieldValue) {
-        console.log(fieldValue);
         let found = false;
         if(this.enum.length > 0) {
             for(let i in this.enum) {

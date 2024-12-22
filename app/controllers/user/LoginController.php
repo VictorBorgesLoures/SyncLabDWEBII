@@ -42,7 +42,7 @@ class LoginController extends Controller {
                 Session::set('user_name', $data['username']);
 
                 BdConnection::getInstance()->closeConnection();
-                echo json_encode(['success' => true, 'redirect' => '/dashboard']);
+                echo json_encode(['success' => true, 'redirect' => '/matricula']);
             } else {
                 Session::flash('error', "Email ou senha inválidos.");
                 BdConnection::getInstance()->closeConnection();

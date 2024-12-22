@@ -73,5 +73,60 @@ class User
         return $this->conn->lastInsertId();
     }
 
+    public function requisitarMatricula(int $idUsuario, int $tipo, int $matricula): false|string
+    {
+        $sql = "INSERT INTO matricula (tipoMat, matriculaMat, fk_Usuario_idUsuario) 
+                    VALUES (:tipoMat, :matriculaMat, :fk_Usuario_idUsuario)";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':tipoMat', $tipo);
+        $stmt->bindParam(':matriculaMat', $matricula);
+        $stmt->bindParam(':fk_Usuario_idUsuario', $idUsuario);
 
+        $stmt->execute();
+        return $this->conn->lastInsertId();
+    }
+
+    public function carregarMatriculasAtivas(int $idUsuario): array
+    {
+        $sql = "SELECT m.idMat, m.matriculaMat, m.tipoMat, m.statusMat FROM matricula as m, usuario as u
+                    WHERE m.fk_Usuario_idUsuario=:idUsuario
+                        and m.statusMat='Ativo'
+                        and u.idUsuario=:idUsuario";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':idUsuario', $idUsuario);
+        $stmt->execute();
+        $matriculas = $stmt->fetchAll();
+        if (!$matriculas)
+            $matriculas = [];
+        return $matriculas;
+    }
+
+    public function carregarMatriculasEmAnalise(int $idUsuario): array
+    {
+        $sql = "SELECT m.matriculaMat, m.tipoMat FROM matricula as m, usuario as u
+        WHERE m.fk_Usuario_idUsuario=:idUsuario
+            and m.statusMat='Em análise'
+            and u.idUsuario=:idUsuario";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':idUsuario', $idUsuario);
+        $stmt->execute();
+        $matriculas = $stmt->fetchAll();
+        if (!$matriculas)
+            $matriculas = [];
+        return $matriculas;
+    }
+
+    public function ehMatriculaValida(int $idUsuario, int $idMatricula): bool
+    {
+        $sql = "SELECT m.idMat FROM matricula as m, usuario as u
+                    WHERE m.fk_Usuario_idUsuario=:idUsuario
+                        and u.idUsuario=:idUsuario
+                        and m.idMat =:idMatricula";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':idUsuario', $idUsuario);
+        $stmt->bindParam(':idMatricula', $idMatricula);
+        $stmt->execute();
+
+        return $stmt->columnCount() > 0;
+    }
 }

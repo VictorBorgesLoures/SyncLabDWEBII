@@ -28,7 +28,7 @@ class Router
         if (!$controllerClass) {
             throw new Exception("O Controller {$controller} não existe");
         }
-
+        
         $controllerInstance = new $controllerClass;
 
         if (!method_exists($controllerInstance, $method)) {
