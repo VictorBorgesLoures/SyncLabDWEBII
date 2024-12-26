@@ -40,10 +40,7 @@ class LoginController extends Controller {
             $dados = $this->user->login($username, $password);
 
             if ($dados) {
-                Session::set('loggedin', true);
-                Session::set('user_id', $dados['idUsuario']);
-                Session::set('type', $dados['tipo_usuario']);
-                Session::set('user_name', $data['username']);
+                self::setLogin($dados);
 
                 BdConnection::getInstance()->closeConnection();
                 echo json_encode(['success' => true, 'redirect' => '/matricula']);
@@ -53,6 +50,13 @@ class LoginController extends Controller {
                 echo json_encode(['success' => false, 'redirect' => '/login']);
             }
         }
+    }
+
+    private function setLogin($dados): void
+    {
+        Session::set('loggedin', true);
+        Session::set('user_id', $dados['idUsuario']);
+        Session::set('user_name', $dados['username']);
     }
 
 

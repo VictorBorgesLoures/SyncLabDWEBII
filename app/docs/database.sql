@@ -15,7 +15,7 @@ CREATE TABLE Usuario (
                          username VARCHAR(100) NOT NULL UNIQUE,
                          senha VARCHAR(255) NOT NULL,
                          dataNasc DATE NOT NULL,
-                         email VARCHAR(255) NOT NULL,
+                         email VARCHAR(255) NOT NULL UNIQUE ,
                          cpf_ VARCHAR(11) NOT NULL UNIQUE,
                          complemento_ VARCHAR(255) NOT NULL,
                          numero_ INT NOT NULL,
@@ -31,7 +31,7 @@ CREATE TABLE Laboratorio (
 
 CREATE TABLE Matricula (
                            idMat INT AUTO_INCREMENT PRIMARY KEY,
-                           matriculaMat BIGINT,
+                           matriculaMat BIGINT UNIQUE NOT NULL,
                            tipoMat TINYINT NOT NULL,
                            statusMat ENUM('Ativo','Em análise','Rejeitado', 'Desativado') DEFAULT 'Em análise',
                            fk_Usuario_idUsuario INT,

@@ -2,6 +2,7 @@
 
 namespace cefet\SyncLab\classes;
 
+use cefet\SyncLab\classes\exceptions\PrivilegiesException;
 use Exception;
 
 class Session
@@ -150,4 +151,26 @@ class Session
             throw new Exception("Erro ao realizar o logout: " . $e->getMessage());
         }
     }
+
+    /**
+     * @throws PrivilegiesException
+     */
+    public static function verifyPrivilegies($type): void
+    {
+        if(Session::get('type') !== $type){
+            Session::flash('error', 'Você não tem permissão para acessar essa página');
+            throw new PrivilegiesException();
+        }
+    }
+
+    public static function verifyLogin(): void
+    {
+        if(!Session::has('loggedin')){
+            Session::flash('error', 'Você precisa estar logado para acessar essa página');
+            redirect('login');
+        }
+    }
+
+
+
 }
