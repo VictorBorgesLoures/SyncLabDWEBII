@@ -20,8 +20,9 @@
 
 <?= $this->insert('includes/headerApp') ?>
 
-<?= $this->insert('includes/aside') ?>
+
 <main class="flex-grow-1">
+    <?= $this->insert('includes/aside') ?>
     <?= $this->section('content') ?>
 </main>
 

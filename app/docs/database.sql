@@ -20,8 +20,6 @@ CREATE TABLE Usuario (
                          complemento_ VARCHAR(255) NOT NULL,
                          numero_ INT NOT NULL,
                          fk_Endereco_idEnd INT,
-                         tipo_usuario VARCHAR(5) CHECK(tipo_usuario IN ('admin', 'comum')),
-                         status BOOLEAN DEFAULT 1,
                          FOREIGN KEY (fk_Endereco_idEnd) REFERENCES Endereco(idEnd) ON DELETE CASCADE
 );
 
@@ -33,7 +31,7 @@ CREATE TABLE Laboratorio (
 
 CREATE TABLE Matricula (
                            idMat INT AUTO_INCREMENT PRIMARY KEY,
-                           matriculaMat INT,
+                           matriculaMat BIGINT,
                            tipoMat TINYINT NOT NULL,
                            statusMat ENUM('Ativo','Em análise','Rejeitado', 'Desativado') DEFAULT 'Em análise',
                            fk_Usuario_idUsuario INT,
