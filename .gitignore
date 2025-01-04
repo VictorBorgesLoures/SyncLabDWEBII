@@ -1,4 +1,4 @@
 vendor
 .env
-app/logs
+app/logs*
 .idea
