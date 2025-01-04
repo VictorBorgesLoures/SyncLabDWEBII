@@ -7,11 +7,11 @@ https://www.figma.com/file/wwvQGpBu37nUcRAPB96Ib6/Synclab?type=design&node-id=0%
 
 ## Cronograma do Projeto / Checklist
 #### 1º Sprint - 06/01/2025 - 09/01/2025
-- [ ] Organização da aplicação
-- [ ] Tela de Registro
-- [ ] Tela de Matrícula
-    - [ ] Tela de requisição e seleção de Matrícula
-- [ ] Implementação de Sessão
+- [x] Organização da aplicação
+- [x] Tela de Registro
+- [x] Tela de Matrícula
+    - [x] Tela de requisição e seleção de Matrícula
+- [x] Implementação de Sessão
 
 #### 2º Sprint - 27/01/2025 - 30/01/2025
 - Admin
