@@ -34,11 +34,28 @@ class MatriculaController extends Controller
         if ($this->user->ehMatriculaValida(Session::get("user_id"), $idMat)) {
             BdConnection::getInstance()->closeConnection();
             Session::set('idMat', $idMat);
+            Session::set('type', $this->getType($idMat));
             echo json_encode(['success' => true, 'redirect' => '/dashboard']);
         } else {
             Session::flash('error', "Seleção de matrícula inválida.");
             BdConnection::getInstance()->closeConnection();
             echo json_encode(['success' => false, 'redirect' => '/matricula']);
+        }
+    }
+
+    private function getType($idMat): ?string
+    {
+        if($this->user->getTypeMatricula($idMat) == 1){
+            return "admin";
+        }
+        else if($this->user->getTypeMatricula($idMat) == 2){
+            return "discente";
+        }
+        else if($this->user->getTypeMatricula($idMat) == 3){
+            return "docente";
+        }
+        else{
+            return null;
         }
     }
 }

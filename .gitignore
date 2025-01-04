@@ -1,2 +1,8 @@
 vendor
+<<<<<<< HEAD
 .env
+=======
+.env
+app/logs
+.idea
+>>>>>>> fa8ed2a268ec3b531016c5deeea891de06abfcd9

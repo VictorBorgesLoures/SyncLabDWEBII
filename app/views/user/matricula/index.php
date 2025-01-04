@@ -1,7 +1,9 @@
 <?php $this->layout('master', ['title' => 'SyncLab - Matrícula']);
 \cefet\SyncLab\classes\Session::set('active', 'login');
 
-#$listaMatriculas -> as matrículas pertencentes ao usuário
+/**
+ * @var array $listaMatriculas as matrículas pertencentes ao usuário
+ */
 
 ?>
 
@@ -20,9 +22,9 @@
                         $first++;
                         $tipo = 'Admin';
                         if ($matricula["tipoMat"] == 2)
-                            $tipo = 'Docente';
-                        else if ($matricula["tipoMat"] == 3)
                             $tipo = 'Discente';
+                        else if ($matricula["tipoMat"] == 3)
+                            $tipo = 'Docente';
                         $className = "matricula-btn";
                         if($first == 1)
                             $className = $className." active";

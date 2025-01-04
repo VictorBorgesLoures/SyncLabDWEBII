@@ -15,13 +15,11 @@ CREATE TABLE Usuario (
                          username VARCHAR(100) NOT NULL UNIQUE,
                          senha VARCHAR(255) NOT NULL,
                          dataNasc DATE NOT NULL,
-                         email VARCHAR(255) NOT NULL,
+                         email VARCHAR(255) NOT NULL UNIQUE ,
                          cpf_ VARCHAR(11) NOT NULL UNIQUE,
                          complemento_ VARCHAR(255) NOT NULL,
                          numero_ INT NOT NULL,
                          fk_Endereco_idEnd INT,
-                         tipo_usuario VARCHAR(5) CHECK(tipo_usuario IN ('admin', 'comum')),
-                         status BOOLEAN DEFAULT 1,
                          FOREIGN KEY (fk_Endereco_idEnd) REFERENCES Endereco(idEnd) ON DELETE CASCADE
 );
 
@@ -33,7 +31,7 @@ CREATE TABLE Laboratorio (
 
 CREATE TABLE Matricula (
                            idMat INT AUTO_INCREMENT PRIMARY KEY,
-                           matriculaMat INT,
+                           matriculaMat BIGINT UNIQUE NOT NULL,
                            tipoMat TINYINT NOT NULL,
                            statusMat ENUM('Ativo','Em análise','Rejeitado', 'Desativado') DEFAULT 'Em análise',
                            fk_Usuario_idUsuario INT,

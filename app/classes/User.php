@@ -31,6 +31,15 @@ class User
 
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
+            $stmt = $this->conn->prepare("SELECT tipoMat FROM matricula WHERE fk_Usuario_idUsuario = :idUser AND statusMat = 'Ativo'");
+            $stmt->bindParam(':idUser', $user['idUsuario']);
+            $stmt->execute();
+
+            $user['tipoMat'] = [];
+            foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $matricula) {
+                $user['tipoMat'][] = $matricula['tipoMat'];
+            }
+
             if ($user) {
                 if (password_verify($senha, $user['senha'])) {
                     return $user;
@@ -125,6 +134,7 @@ class User
         $matriculas = $stmt->fetchAll();
         if (!$matriculas)
             $matriculas = [];
+
         return $matriculas;
     }
 
@@ -155,5 +165,21 @@ class User
         $stmt->execute();
 
         return $stmt->columnCount() > 0;
+    }
+
+    public function getMatricula($idMat)
+    {
+        $stmt = $this->conn->prepare("SELECT * FROM matricula WHERE idMat = :idMat");
+        $stmt->bindParam(':idMat', $idMat);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getTypeMatricula($idMat)
+    {
+        $stmt = $this->conn->prepare("SELECT tipoMat FROM Matricula WHERE idMat = :idMat");
+        $stmt->bindParam(':idMat', $idMat);
+        $stmt->execute();
+        return $stmt->fetchColumn();
     }
 }

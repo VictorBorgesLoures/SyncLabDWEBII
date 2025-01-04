@@ -16,6 +16,8 @@ return [
         //errors
         getenv("DOM_URI") . 'error' => fn() => self::load('ErrorSystemController', 'index'),
         getenv("DOM_URI") . 'error404' => fn() => self::load('ErrorRouteController', 'index'),
+        getenv("DOM_URI") . 'error-privilegio' => fn() => self::load('ErrorPrivilegioController', 'index'),
+
 
         //Projetos
         getenv("DOM_URI") . 'projetos' => fn() => self::load('ProjetosController', 'viewProjetos'),
