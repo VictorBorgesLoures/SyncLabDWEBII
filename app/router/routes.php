@@ -22,8 +22,10 @@ return [
         //Projetos
         getenv("DOM_URI") . 'projetos' => fn() => self::load('ProjetosController', 'viewProjetos'),
 
-        //Requisições
+        //Requisições deve-se remover as requisicoes
         getenv("DOM_URI") . 'requisicoes' => fn() => self::load('RequisicoesController', 'viewRequisicoes'),
+        getenv("DOM_URI") . 'requisicoes/projeto' => fn() => self::load('RequisicoesProjetosController', 'viewReqProjetos'),
+        getenv("DOM_URI") . 'requisicoes/matricula' => fn() => self::load('RequisicoesMatriculasController', 'viewReqMatriculas'),
 
         //Ações
         getenv("DOM_URI") . 'acoes' => fn() => self::load('AcoesController', 'viewAcoes'),
@@ -41,7 +43,8 @@ return [
         getenv("DOM_URI") . 'matricula' => fn() => self::load('MatriculaController', 'SelecionarMatricula'),
         getenv("DOM_URI") . 'matricula/requisitar' => fn() => self::load('RequisitarController', 'RequisitarMatricula'),
         getenv("DOM_URI") . 'registrar' => fn() => self::load('RegistrarController', 'processRegistration'),
-
+        getenv("DOM_URI") . 'requisicoes/matricula' => fn() => self::load('RequisicoesMatriculasController', 'setNovoStatusRequisicao'),
+        getenv("DOM_URI") . 'requisicoes/projeto' => fn() => self::load('RequisicoesProjetosController', 'setNovoStatusRequisicao'),
 
     ],
 

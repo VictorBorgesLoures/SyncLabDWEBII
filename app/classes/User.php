@@ -177,9 +177,46 @@ class User
 
     public function getTypeMatricula($idMat)
     {
-        $stmt = $this->conn->prepare("SELECT tipoMat FROM Matricula WHERE idMat = :idMat");
+        $stmt = $this->conn->prepare("SELECT tipoMat FROM matricula WHERE idMat = :idMat");
         $stmt->bindParam(':idMat', $idMat);
         $stmt->execute();
         return $stmt->fetchColumn();
     }
+
+    public function getReqMatriculas() {
+        $stmt = $this->conn->prepare("SELECT m.idMat, m.matriculaMat, m.tipoMat, m.statusMat, u.username, m.dataCriacaoMat FROM matricula as m, usuario as u WHERE statusMat = 'Em análise' and u.idUsuario=m.fk_Usuario_idUsuario");
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+        if (!$result)
+            $result = [];
+        return $result;
+    }
+
+    public function getReqProjetos() {
+        $stmt = $this->conn->prepare("SELECT p.idProj, p.nomeProj, p.descricaoProj, p.statusProj, u.username, p.dataCriacaoProj FROM projeto as p, matricula as m, usuario as u WHERE statusProj = 'Em análise' and p.fk_Matricula_idMat_=m.idMat and u.idUsuario=m.fk_Usuario_idUsuario");
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+        if (!$result)
+            $result = [];
+        return $result;
+    }
+
+    public function setNovoStatusRequisicao(string $tabela, int $id, string $novoStatus) {
+        if(($tabela != "matricula" && $tabela != "projeto") || $novoStatus == "Em análise")
+            return false;
+        $campoStatus = "statusMat";
+        $campoId = "idMat";
+        if($tabela == "projeto") {
+            $campoStatus = "statusProj";
+            $campoId = "idProj";
+        }
+        $sql = "UPDATE ".$tabela." SET ".$campoStatus."=:novoStatus WHERE ".$campoId."=:id;";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':novoStatus', $novoStatus);
+        $stmt->execute();
+
+        return $stmt->rowCount() > 0;
+    }
+
 }

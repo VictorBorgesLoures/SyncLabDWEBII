@@ -15,9 +15,9 @@ https://www.figma.com/file/wwvQGpBu37nUcRAPB96Ib6/Synclab?type=design&node-id=0%
 
 #### 2º Sprint - 27/01/2025 - 30/01/2025
 - Admin
-  - [ ] Sidebar
-  - [ ] Aceitar solicitação de criação de matrícula
-  - [ ] Aceitar solicitação de projeto
+  - [x] Sidebar
+  - [x] Aceitar solicitação de criação de matrícula
+  - [x] Aceitar solicitação de projeto
 - Docente
   - [ ] Sidebar
   - [ ] Criar solicitação de um novo projeto
