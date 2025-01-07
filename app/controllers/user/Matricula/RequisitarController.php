@@ -36,7 +36,7 @@ class RequisitarController extends Controller
             $idUsuario = Session::get('user_id');
             if ($this->user->requisitarMatricula($idUsuario, $tipoMat, $matricula)) {
                 BdConnection::getInstance()->closeConnection();
-                Session::flash('message', "Inserida com sucesso!");
+                Session::flash('success', "Inserida com sucesso!");
                 echo json_encode(['success' => true, 'redirect' => '/matricula/requisitar']);
             } else {
                 Session::flash('error', "Falha ao adicionar requisição de matrícula");

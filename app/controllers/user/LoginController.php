@@ -35,8 +35,7 @@ class LoginController extends Controller {
         if(empty($username) || empty($password)){
             Session::flash('error', 'Preencha todos os campos');
             echo json_encode(['success' => false, 'redirect' => '/login']);
-        }
-        else{
+        }else{
             $dados = $this->user->login($username, $password);
 
             if ($dados) {

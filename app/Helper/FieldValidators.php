@@ -73,6 +73,14 @@ class FieldValidators
         "matriculaType" => [
             "regex" => '/[1-3]/',
             "message" => "Tipo de matrícula inválido"
+        ],
+        "nomeProj" => [
+            "regex" => '/^[A-Za-zÀ-ÿ]+(?:[A-Za-zÀ-ÿ]+\s?){5,254}$/',
+            "message" => "Nome para o projeto está em formato inválido!"
+        ],
+        "descricaoProj" => [
+            "regex" => '/^[\da-zA-Zá-úÁ-Úà-ùÀ-ÙãõâêîôûçÇ\s.,!?;:()\'"-]{40,1000}$/',
+            "message" => "Descrição para o projeto está em formato inválido!"
         ]
     ];
 

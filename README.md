@@ -19,8 +19,8 @@ https://www.figma.com/file/wwvQGpBu37nUcRAPB96Ib6/Synclab?type=design&node-id=0%
   - [x] Aceitar solicitação de criação de matrícula
   - [x] Aceitar solicitação de projeto
 - Docente
-  - [ ] Sidebar
-  - [ ] Criar solicitação de um novo projeto
+  - [x] Sidebar
+  - [x] Criar solicitação de um novo projeto
   - [ ] Adicionar atividade ao projeto
   - [ ] Gerenciar projeto e atividades
   - [ ] Aceitar solicitação de atividade

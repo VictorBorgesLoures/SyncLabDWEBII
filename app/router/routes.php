@@ -21,6 +21,7 @@ return [
 
         //Projetos
         getenv("DOM_URI") . 'projetos' => fn() => self::load('ProjetosController', 'viewProjetos'),
+        getenv("DOM_URI") . 'projetos/{id}' => fn($id) => self::load('ProjetosController', 'viewProjeto', $id),
 
         //Requisições deve-se remover as requisicoes
         getenv("DOM_URI") . 'requisicoes' => fn() => self::load('RequisicoesController', 'viewRequisicoes'),
@@ -45,6 +46,7 @@ return [
         getenv("DOM_URI") . 'registrar' => fn() => self::load('RegistrarController', 'processRegistration'),
         getenv("DOM_URI") . 'requisicoes/matricula' => fn() => self::load('RequisicoesMatriculasController', 'setNovoStatusRequisicao'),
         getenv("DOM_URI") . 'requisicoes/projeto' => fn() => self::load('RequisicoesProjetosController', 'setNovoStatusRequisicao'),
+        getenv("DOM_URI") . 'projetos' => fn() => self::load('ProjetosController', 'requisitarProjeto'),
 
     ],
 

@@ -219,4 +219,50 @@ class User
         return $stmt->rowCount() > 0;
     }
 
+    public function getProjetos(int $idMat) {
+        $sql = "SELECT p.idProj, p.nomeProj, p.descricaoProj, p.statusProj, u.username as tutor, u2.username as criador, p.dataCriacaoProj FROM projeto as p, matricula as m, matricula as m2, usuario as u, usuario as u2
+                    WHERE m.idMat=:idMat
+                        and m.fk_Usuario_idUsuario=u.idUsuario
+                        and p.fk_Matricula_idMat=m.idMat
+                        and m2.fk_Usuario_idUsuario=u2.idUsuario
+                        and p.fk_Matricula_idMat_=m2.idMat 
+                        and p.statusProj='Ativo' 
+                UNION DISTINCT
+                SELECT p.idProj, p.nomeProj, p.descricaoProj, p.statusProj, u.username as tutor, u2.username as criador, p.dataCriacaoProj FROM projeto as p, integra as i, matricula as m, matricula as m2, matricula as m3, usuario as u, usuario as u2
+                    WHERE i.fk_Matricula_idMat=:idMat
+                        and i.fk_Projeto_idProj=p.idProj
+                        and m.fk_Usuario_idUsuario=u.idUsuario
+                        and p.fk_Matricula_idMat=m.idMat
+                        and m2.fk_Usuario_idUsuario=u2.idUsuario
+                        and p.fk_Matricula_idMat_=m2.idMat 
+                        and p.statusProj='Ativo' 
+                ;";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindValue(':idMat', $idMat);        
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+        if (!$result)
+            $result = [];
+        return $result;
+    }
+
+    public function requisitarProjeto($idMat, $nomeProj, $descricaoProj) {
+        $sql = "INSERT INTO projeto (nomeProj, descricaoProj, fk_Matricula_idMat, fk_Matricula_idMat_) 
+        VALUES (:nomeProj, :descricaoProj, :idMat, :idMat)";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':nomeProj', $nomeProj);
+        $stmt->bindParam(':descricaoProj', $descricaoProj);
+        $stmt->bindParam(':idMat', $idMat);
+
+        $stmt->execute();
+        return $this->conn->lastInsertId();
+    }
+
+    public function getProjeto($idProj) {
+        $stmt = $this->conn->prepare("SELECT * FROM projeto WHERE idProj = :idProj");
+        $stmt->bindParam(':idProj', $idProj);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
 }
