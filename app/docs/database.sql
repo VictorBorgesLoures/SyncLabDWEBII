@@ -5,19 +5,19 @@ CREATE DATABASE SyncLab
 
 CREATE TABLE Endereco (
                           idEnd INT AUTO_INCREMENT PRIMARY KEY,
-                          ruaEnd VARCHAR(255) NOT NULL,
-                          cepEnd VARCHAR(255) NOT NULL UNIQUE
+                          ruaEnd VARCHAR(100) NOT NULL,
+                          cep VARCHAR(8) NOT NULL UNIQUE
 );
 
 CREATE TABLE Usuario (
                          idUsuario INT AUTO_INCREMENT PRIMARY KEY,
-                         nome VARCHAR(255) NOT NULL,
-                         username VARCHAR(100) NOT NULL UNIQUE,
+                         nome VARCHAR(150) NOT NULL,
+                         username VARCHAR(50) NOT NULL UNIQUE,
                          senha VARCHAR(255) NOT NULL,
                          dataNasc DATE NOT NULL,
                          email VARCHAR(255) NOT NULL UNIQUE ,
                          cpf_ VARCHAR(11) NOT NULL UNIQUE,
-                         complemento_ VARCHAR(255) NOT NULL,
+                         complemento_ VARCHAR(100) NOT NULL,
                          numero_ INT NOT NULL,
                          fk_Endereco_idEnd INT,
                          FOREIGN KEY (fk_Endereco_idEnd) REFERENCES Endereco(idEnd) ON DELETE CASCADE
@@ -42,7 +42,7 @@ CREATE TABLE Matricula (
 CREATE TABLE Projeto (
                          idProj INT AUTO_INCREMENT PRIMARY KEY,
                          nomeProj VARCHAR(255) NOT NULL,
-                         descricaoProj VARCHAR(1000) NOT NULL,
+                         descricaoProj TEXT NOT NULL,
                          statusProj ENUM('Ativo','Em análise','Rejeitado', 'Desativado') DEFAULT 'Em análise',
                          fk_Matricula_idMat INT,
                          fk_Matricula_idMat_ INT,

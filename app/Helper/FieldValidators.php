@@ -26,8 +26,8 @@ class FieldValidators
         ],
 
         "cep" => [
-            "regex" => '/^\d{5}-?\d{3}$/',
-            "message" => "Formato inválido"
+            "regex" => '/^\d{8}$/',
+            "message" => "Formato de CEP inválido. Deve possuir 8 dígitos, sem pontos ou traços"
         ],
 
         "complement" => [
@@ -37,16 +37,17 @@ class FieldValidators
 
         "data" => [
             "regex" => '/^(19|20)\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/',
-            "message" => "Deve possuir o formato DD-MM-AA"
+            "message" => "Deve possuir o formato AAAA-MM-DD"
         ],
 
         "username" => [
-            "regex" => '/^[A-Za-z]{1,100}(? =>_[A-Za-z]{1,100}){0,99}$/',
-            "message" => "Formato inválido, deve possuir apenas letras minúsculas, sem acento e sem espaço entre elas"
+            "regex" => '/^[a-z][a-z0-9_]{1,50}$/',
+            "message" => "Formato inválido. Deve começar com uma letra minúscula, pode conter números e '_' e ter até 80 caracteres."
         ],
 
+
         "password" => [
-            "regex" => '/[\d\w]{8,40}/',
+            "regex" => '/^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[@$!%*?&#+()\-=\\{}~\[\]´`])[A-Za-z0-9@$!%*?&#+()\-=\\{}~\[\]´`]{8,80}$/',
             "message" => "Deve possuir entre 8 e 40 caracteres, apenas números e letras"
         ],
 
@@ -56,7 +57,7 @@ class FieldValidators
         ],
 
         "nome" => [
-            "regex" => '/^[A-Za-zÀ-ÿ]+(?:[A-Za-zÀ-ÿ]+){0,254}$/',
+            "regex" => '/^[A-Za-zÀ-ÿ]+(?: [A-Za-zÀ-ÿ]+){0,150}$/',
             "message" => "Formato inválido"
         ],
 
@@ -67,33 +68,65 @@ class FieldValidators
 
         "cpf" => [
             "regex" => '/^\d{11}$/',
-            "message" => "Deve possuir examatente 11 dígitos (apenas números)"
+            "message" => "Deve possuir examatente 11 dígitos (apenas números)",
+            "validateFunction" => 'validateCpf'
         ],
 
         "matriculaType" => [
             "regex" => '/[1-3]/',
             "message" => "Tipo de matrícula inválido"
         ],
+
         "nomeProj" => [
-            "regex" => '/^[A-Za-zÀ-ÿ]+(?:[A-Za-zÀ-ÿ]+\s?){5,254}$/',
+            "regex" => '/^[A-Za-zÀ-ÿ0-9\-.,]{1,50}(?:\s[A-Za-zÀ-ÿ0-9\-.,]{1,50}){1,49}$/',
             "message" => "Nome para o projeto está em formato inválido!"
         ],
+
         "descricaoProj" => [
-            "regex" => '/^[\da-zA-Zá-úÁ-Úà-ùÀ-ÙãõâêîôûçÇ\s.,!?;:()\'"-]{40,1000}$/',
+            "regex" => '/^[\da-zA-Zá-úÁ-Úà-ùÀ-ÙãõâêîôûçÇ\s.,!?;:()\'"-]{40,5000}$/',
             "message" => "Descrição para o projeto está em formato inválido!"
         ]
     ];
 
     public static function validate($field, $data)
     {
-        if (array_key_exists($field, self::$inputRegex)) {
-            if (!preg_match(self::$inputRegex[$field]["regex"], $data)) {
-                return self::$inputRegex[$field]["message"];
-            }
-        } else {
+        if (!array_key_exists($field, self::$inputRegex)) {
             return "Deve ser passado um campo válido";
+        }
+
+        if (!preg_match(self::$inputRegex[$field]["regex"], $data)) {
+            return self::$inputRegex[$field]["message"];
+        }
+
+        if (array_key_exists("validateFunction", self::$inputRegex[$field])) {
+            if (!self::validateCpf($data)) {
+                return "Campo inválido";
+            }
         }
 
         return true;
     }
+
+
+    private static function validateCpf($cpf): bool
+    {
+        if (preg_match('/^(\d)\1{10}$/', $cpf)) {
+            return false;
+        }
+
+        for ($t = 9; $t < 11; $t++) {
+            $d = 0;
+            for ($c = 0; $c < $t; $c++) {
+                $d += intval($cpf[$c]) * (($t + 1) - $c);
+            }
+            $d = ((10 * $d) % 11) % 10;
+
+            if (intval($cpf[$t]) !== $d) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
 }

@@ -34,6 +34,10 @@ $this->layout('master', ['title' => 'SyncLab - Registrar']);
                         <label for="name" class="label-box">Nome</label>
                         <input type="text" class="input-box" id="name" name="name" placeholder="Digite seu nome completo">
                     </div>
+                     <div class="form-group">
+                        <label for="data" class="label-box">Data de nasc.</label>
+                        <input type="date" class="input-box" id="data" name="data">
+                    </div>
                     <div class="form-group">
                         <label for="email" class="label-box">Endereço de Email</label>
                         <input type="email" class="input-box" id="email" name="email" placeholder="Digite seu email">
@@ -42,10 +46,7 @@ $this->layout('master', ['title' => 'SyncLab - Registrar']);
                         <label for="username" class="label-box">Username</label>
                         <input type="text" class="input-box" id="username" name="username" placeholder="Digite seu username">
                     </div>
-                    <div class="form-group">
-                        <label for="data" class="label-box">Data de nasc.</label>
-                        <input type="date" class="input-box" id="data" name="data">
-                    </div>
+
                     <div class="form-group">
                         <label for="password" class="label-box">Senha</label>
                         <input type="password" class="input-box" id="password" name="password" placeholder="Digite sua senha">

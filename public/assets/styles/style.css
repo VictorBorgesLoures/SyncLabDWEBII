@@ -18,6 +18,9 @@ body{
     font-weight: 400;
     font-style: normal;
     /*min-height: 100vh;*/
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
 }
 .navbar{
     display: flex;
@@ -33,7 +36,6 @@ body{
     display: flex;
     justify-content: space-around;
     flex-direction: row;
-    width: 30%;
     align-items: center;
 }
 .navlink{
@@ -59,6 +61,7 @@ body{
 .navlink a{
     color: var(--cor-principal);
     text-decoration: none;
+    margin-right: 2vh;
 }
 
 .navlink:hover{
@@ -465,6 +468,10 @@ input[type=number]::-webkit-inner-spin-button {
 
 form {
     width: 90%;
+}
+
+#registrar-form{
+    margin-left: 3vh;
 }
 
 select {

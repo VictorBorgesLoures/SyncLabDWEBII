@@ -23,22 +23,13 @@ class User
     public function login(string $username, string $senha): ?array
     {
         try {
-            $stmt = $this->conn->prepare("SELECT idUsuario, username, email, senha, tipo_usuario FROM Usuario WHERE email = :email OR username = :username");
+            $stmt = $this->conn->prepare("SELECT idUsuario, username, email, senha FROM Usuario WHERE email = :email OR username = :username");
 
             $stmt->bindParam(':email', $username);
             $stmt->bindParam(':username', $username);
             $stmt->execute();
 
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            $stmt = $this->conn->prepare("SELECT tipoMat FROM matricula WHERE fk_Usuario_idUsuario = :idUser AND statusMat = 'Ativo'");
-            $stmt->bindParam(':idUser', $user['idUsuario']);
-            $stmt->execute();
-
-            $user['tipoMat'] = [];
-            foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $matricula) {
-                $user['tipoMat'][] = $matricula['tipoMat'];
-            }
 
             if ($user) {
                 if (password_verify($senha, $user['senha'])) {
@@ -69,11 +60,12 @@ class User
      * @param string $email
      * @return bool
      */
-    public function verifyEmailExists(string $email): bool
+    public function verifyUserExists(string $email): bool
     {
-        $sql = "SELECT * FROM usuario WHERE email = :email";
+        $sql = "SELECT * FROM usuario WHERE email = :email || username = :username";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':username', $email);
         $stmt->execute();
         return $stmt->rowCount() > 0;
     }

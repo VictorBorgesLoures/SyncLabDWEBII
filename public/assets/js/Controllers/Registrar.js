@@ -3,6 +3,7 @@ import ValidatorRegex from '../Validators/ValidatorRegex.js'
 import ValidatorStrMinLen from '../Validators/ValidatorStrMinLen.js';
 import ValidatorRequired from '../Validators/ValidatorRequired.js';
 import ValidatorMatch from '../Validators/ValidatorMatch.js';
+import ValidatorCpf from "../Validators/ValidatorCpf.js";
 
 window.onload = () => {
     let formData = {
@@ -34,7 +35,7 @@ window.onload = () => {
             {
                 id: 'cep',
                 validators: [
-                    new ValidatorRegex(/^\d{5}-?\d{3}$/, "Formato de CEP inválido"),
+                    new ValidatorRegex(/^\d{8}$/, "Formato de CEP inválido. Deve possuir 8 dígitos, sem pontos ou traços"),
                     new ValidatorRequired('Este campo é obrigatório')
                 ]
             },
@@ -48,21 +49,25 @@ window.onload = () => {
             {
                 id: 'data',
                 validators: [
-                    new ValidatorRegex(/^(19|20)\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/, "Deve possuir o formato AAAA-MM-DD"),
+                    new ValidatorRegex(/^(19|20)\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/, "Forneça uma data válida"),
                     new ValidatorRequired('Este campo é obrigatório')
                 ]
             },
             {
                 id: 'username',
                 validators: [
-                    new ValidatorRegex(/^[a-zA-Z_]{1,100}$/, "Formato inválido, deve possuir apenas letras e sublinhados"),
+                    new ValidatorRegex(/^[a-z][a-z0-9_]{1,50}$/, "Formato inválido. Deve começar com uma letra minúscula, pode conter números e '_' e ter até 80 caracteres."),
                     new ValidatorRequired('Este campo é obrigatório')
                 ]
             },
             {
                 id: 'password',
                 validators: [
-                    new ValidatorRegex(/[\d\w]{8,40}/, "Deve possuir entre 8 e 40 caracteres, apenas números e letras"),
+                    new ValidatorRegex(/^.{8,80}$/, "A senha deve ter entre 8 e 80 caracteres."),
+                    new ValidatorRegex(/.*[0-9].*/, "A senha deve incluir pelo menos um dígito."),
+                    new ValidatorRegex(/.*[A-Z].*/, "A senha deve incluir pelo menos uma letra maiúscula."),
+                    new ValidatorRegex(/.*[a-z].*/, "A senha deve incluir pelo menos uma letra minúscula."),
+                    new ValidatorRegex(/.*[@$!%*?&#+()\-=\\{}~\[\]´`].*/, "A senha deve incluir pelo menos um caractere especial como @, $, !, etc."),
                     new ValidatorRequired('Este campo é obrigatório')
                 ]
             },
@@ -84,6 +89,7 @@ window.onload = () => {
                 id: 'cpf',
                 validators: [
                     new ValidatorRegex(/^\d{11}$/, "Deve possuir exatamente 11 dígitos (apenas números)"),
+                    new ValidatorCpf('CPF inválido'),
                     new ValidatorRequired('Este campo é obrigatório')
                 ]
             },
