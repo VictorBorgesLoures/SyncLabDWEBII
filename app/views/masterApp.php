@@ -18,6 +18,8 @@
     <link rel="stylesheet" href="/public/assets/styles/style.css" type="text/css">
     <link rel="stylesheet" href="/public/assets/styles/styles.css" type="text/css">
     <link rel="stylesheet" href="/public/assets/styles/form.css" type="text/css"/>
+    <script src="/public/assets/js/scripts/sideBar.js"></script>
+
 </head>
 
 <body class="d-flex flex-column min-vh-100">
@@ -30,6 +32,5 @@
     <?= $this->section('content') ?>
 </main>
 
-<script src="/public/assets/js/scripts/sideBar.js"></script>
 </body>
 </html>

@@ -18,7 +18,7 @@ class Endereco
      */
     public function getAdreess(string $cep): array
     {
-        $sql = "SELECT * FROM endereco WHERE cepEnd = :cep";
+        $sql = "SELECT * FROM endereco WHERE cep = :cep";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindParam(':cep', $cep);
         $stmt->execute();
@@ -31,7 +31,7 @@ class Endereco
      */
     public function checkExistingCep(string $cep): ?int
     {
-        $sql = "SELECT idEnd FROM endereco WHERE cepEnd = :cep";
+        $sql = "SELECT idEnd FROM endereco WHERE cep = :cep";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindParam(':cep', $cep);
         $stmt->execute();
@@ -47,7 +47,7 @@ class Endereco
      */
     public function insertAdreess(string $cep, string $adreess): int
     {
-        $sql = "INSERT INTO endereco (cepEnd, ruaEnd) VALUES (:cep, :adreess)";
+        $sql = "INSERT INTO endereco (cep, ruaEnd) VALUES (:cep, :adreess)";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindParam(':cep', $cep);
         $stmt->bindParam(':adreess', $adreess);

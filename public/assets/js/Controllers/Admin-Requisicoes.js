@@ -1,4 +1,4 @@
-window.onload = () => {
+window.addEventListener("load", () => {
 
     let btnSalvar = document.getElementsByClassName("salvar-btn");
     let tipo = document.getElementById('tipoReq').attributes['data-id'].value;
@@ -36,4 +36,4 @@ window.onload = () => {
 
     });
 
-}
+});
