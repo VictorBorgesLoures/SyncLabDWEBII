@@ -486,7 +486,7 @@ select {
 
 /* REQUISIÇÕES de Projetos e Matrículas*/
 table {
-    width: 80%;
+    /*width: 80%;*/
     border-collapse: separate;
     border-spacing: 0;
     margin: 20px auto;

@@ -176,7 +176,7 @@ class User
     }
 
     public function getReqMatriculas() {
-        $stmt = $this->conn->prepare("SELECT m.idMat, m.matriculaMat, m.tipoMat, m.statusMat, u.username, m.dataCriacaoMat FROM matricula as m, usuario as u WHERE statusMat = 'Em análise' and u.idUsuario=m.fk_Usuario_idUsuario");
+        $stmt = $this->conn->prepare("SELECT m.idMat, m.matriculaMat, m.tipoMat, m.statusMat, u.username, u.cpf_, m.dataCriacaoMat FROM matricula as m, usuario as u WHERE u.idUsuario=m.fk_Usuario_idUsuario");
         $stmt->execute();
         $result = $stmt->fetchAll();
         if (!$result)

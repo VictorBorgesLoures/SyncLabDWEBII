@@ -94,6 +94,25 @@ window.onload = () => {
                 ]
             },
         ],
+
+        onLoad: () => {
+            formData.fields.forEach(field => {
+                const fieldElement = document.getElementById(field.id);
+                if (!fieldElement) return;
+
+                // Se tiver valor salvo no localStorage, recupera
+                const savedValue = localStorage.getItem(field.id);
+                if (savedValue !== null) {
+                    fieldElement.value = savedValue;
+                }
+
+                // Para cada mudança de valor no campo, salvar no localStorage
+                fieldElement.addEventListener('input', (e) => {
+                    localStorage.setItem(field.id, e.target.value);
+                });
+            });
+        },
+
         onSubmit: async e => {
             e.preventDefault();
 
@@ -119,9 +138,11 @@ window.onload = () => {
             const data = await response.json();
 
             if (data.success) {
+                formData.fields.forEach(field => {
+                    localStorage.removeItem(field.id);
+                });
                window.location.href = data.redirect;
             } else {
-
                window.location.href = data.redirect;
             }
         }
@@ -130,4 +151,5 @@ window.onload = () => {
 
     let form = new Form(formData);
 
+    formData.onLoad();
 }
