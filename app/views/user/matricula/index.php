@@ -22,9 +22,9 @@
                         $first++;
                         $tipo = 'Admin';
                         if ($matricula["tipoMat"] == 2)
-                            $tipo = 'Discente';
-                        else if ($matricula["tipoMat"] == 3)
                             $tipo = 'Docente';
+                        else if ($matricula["tipoMat"] == 3)
+                            $tipo = 'Discente';
                         $className = "matricula-btn";
                         if($first == 1)
                             $className = $className." active";

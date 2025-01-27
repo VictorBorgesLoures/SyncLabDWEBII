@@ -38,7 +38,7 @@ class LoginController extends Controller {
         }else{
             if(!$this->user->verifyUserExists($username)){
                 Session::flash('error', "E-mail não registrado.");
-                echo json_encode(['success' => true, 'redirect' => '/registrar']);
+                echo json_encode(['success' => true, 'redirect' => '/login']);
                 exit;
             }
 

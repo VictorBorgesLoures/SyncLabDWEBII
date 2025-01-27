@@ -27,7 +27,7 @@
 <?= $this->insert('includes/headerApp') ?>
 
 
-<main class="flex-grow-1">
+<main class="flex-grow-1" id="main-content">
     <?= $this->insert('includes/aside') ?>
     <?= $this->section('content') ?>
 </main>

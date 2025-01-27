@@ -21,8 +21,8 @@
                 <p class="label" for="tipo">Tipo de Vínculo:</p>
                 <select id="tipo" name="tipo">
                     <option value="1">Admin</option>
-                    <option value="2">Discente</option>
-                    <option value="3">Docente</option>
+                    <option value="2">Docente</option>
+                    <option value="3">Discente</option>
                 </select>
             </div>
             <button class="submit-requisitar-btn">Solicitar</button>
