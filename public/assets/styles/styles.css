@@ -111,7 +111,6 @@
 
 .tablecontent {
     text-align: left;
-    margin: auto;
     /*padding-top: 1em;*/
 }
 
@@ -224,7 +223,7 @@
     .navbuttons {
         justify-content: space-between;
         flex-direction: row;
-        width: 90%;
+        width: 60%;
     }
 
     .cards-container {
