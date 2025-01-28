@@ -19,7 +19,8 @@
         </thead>
         <tbody>
             <?php foreach ($requisicoes as $requisicao) : ?>
-                <tr class="table-row">
+                <tr class="table-row" data-id="<?=$requisicao['fk_Matricula_idMat']?>/<?=$requisicao['fk_Projeto_idProj']?>">
+                    <td class="table-data"></td>
                     <td class="table-data"><?= $requisicao['nomeProjeto'] ?></td>
                     <td class="table-data"><?= $requisicao['laboratorio'] ?></td>
                     <td class="table-data"><?= $requisicao['assunto'] ?></td>
@@ -30,3 +31,4 @@
         </tbody>
     </table>
 </div>
+<script text="javascript" type="module" src="/public/assets/js/Controllers/gerenciarProjetos.js"></script>

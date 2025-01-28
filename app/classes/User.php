@@ -185,7 +185,7 @@ class User
     }
 
     public function getReqProjetos() {
-        $stmt = $this->conn->prepare("SELECT p.idProj, p.nomeProj, p.descricaoProj, p.statusProj, u.username, p.dataCriacaoProj FROM projeto as p, matricula as m, usuario as u WHERE statusProj = 'Em análise' and p.fk_Matricula_idMat_=m.idMat and u.idUsuario=m.fk_Usuario_idUsuario");
+        $stmt = $this->conn->prepare("SELECT p.idProj, p.nomeProj, p.descricaoProj, p.statusProj, u.username, m.matriculaMat as matricula, p.dataCriacaoProj FROM projeto as p, matricula as m, usuario as u WHERE statusProj = 'Em análise' and p.fk_Matricula_idMat_=m.idMat and u.idUsuario=m.fk_Usuario_idUsuario");
         $stmt->execute();
         $result = $stmt->fetchAll();
         if (!$result)
@@ -250,11 +250,77 @@ class User
         return $this->conn->lastInsertId();
     }
 
-    public function getProjeto($idProj) {
-        $stmt = $this->conn->prepare("SELECT * FROM projeto WHERE idProj = :idProj");
-        $stmt->bindParam(':idProj', $idProj);
+    public function getProjeto($idProj)
+    {
+        $sql = "SELECT 
+                    p.idProj, 
+                    p.nomeProj, 
+                    p.descricaoProj, 
+                    p.statusProj, 
+                    p.dataCriacaoProj,
+                    p.dataAtualizacao,
+                    u.username AS tutor, 
+                    u2.username AS criador
+                FROM Projeto AS p
+                INNER JOIN Matricula AS m ON p.fk_Matricula_idMat = m.idMat
+                INNER JOIN Usuario AS u ON m.fk_Usuario_idUsuario = u.idUsuario
+                INNER JOIN Matricula AS m2 ON p.fk_Matricula_idMat_ = m2.idMat
+                INNER JOIN Usuario AS u2 ON m2.fk_Usuario_idUsuario = u2.idUsuario
+                WHERE p.idProj = :idProj";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':idProj', $idProj, PDO::PARAM_INT);
         $stmt->execute();
-        return $stmt->fetchAll();
+
+        $projeto = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$projeto) {
+            return null;
+        }
+
+        $sqlDiscentes = "SELECT 
+                            u3.nome AS discente_nome,
+                            m3.matriculaMat AS discente_matricula,
+                            m3.tipoMat, 
+                            i.dataInicio,
+                            i.dataFim
+                         FROM Integra AS i
+                         INNER JOIN Matricula AS m3 ON i.fk_Matricula_idMat = m3.idMat
+                         INNER JOIN Usuario AS u3 ON m3.fk_Usuario_idUsuario = u3.idUsuario
+                         WHERE i.fk_Projeto_idProj = :idProj";
+
+        $stmt2 = $this->conn->prepare($sqlDiscentes);
+        $stmt2->bindParam(':idProj', $idProj, PDO::PARAM_INT);
+        $stmt2->execute();
+
+        $discentes = $stmt2->fetchAll(PDO::FETCH_ASSOC);
+
+        $projeto['discentes'] = $discentes;
+
+        return $projeto;
     }
+
+    public function getRequisicoesParticipacao(int $id)
+    {
+        $sql = "SELECT 
+                    u.nome AS discente_nome,
+                    m.matriculaMat AS discente_matricula,
+                    i.fk_Matricula_idMat,
+                    i.fk_Projeto_idProj,
+                    i.status
+                FROM Integra AS i
+                INNER JOIN Matricula AS m ON i.fk_Matricula_idMat = m.idMat
+                INNER JOIN Usuario AS u ON m.fk_Usuario_idUsuario = u.idUsuario
+                WHERE i.fk_Projeto_idProj = :id
+                  AND i.status = 'Em análise'";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
 
 }

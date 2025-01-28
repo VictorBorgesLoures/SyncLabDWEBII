@@ -72,7 +72,8 @@ class ProjetosController extends Controller
         $id = filter_var($params[0], FILTER_SANITIZE_NUMBER_INT);
         $this->setProjeto($id);
         $this->view("dashboard/projeto", [
-            "projeto" => $this->getProjeto()
+            "projeto" => $this->getProjeto(),
+            "reqParticipacao" => $this->user->getRequisicoesParticipacao($id)
         ]);
     }
 

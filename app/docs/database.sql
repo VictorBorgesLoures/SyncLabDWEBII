@@ -47,6 +47,7 @@ CREATE TABLE Projeto (
                          fk_Matricula_idMat INT,
                          fk_Matricula_idMat_ INT,
                          dataCriacaoProj TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+                         dataAtualizacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
                          FOREIGN KEY (fk_Matricula_idMat) REFERENCES Matricula(idMat) ON DELETE CASCADE,
                          FOREIGN KEY (fk_Matricula_idMat_) REFERENCES Matricula(idMat) ON DELETE CASCADE
 );
@@ -80,6 +81,9 @@ CREATE TABLE Atividade (
 CREATE TABLE Integra (
                          fk_Matricula_idMat INT NULL,
                          fk_Projeto_idProj INT NULL,
+                         dataInicio TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+                         dataFim TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                         status ENUM('Em análise', 'Ativa', 'Recusado', 'Finalizado') DEFAULT 'Em análise',
                          FOREIGN KEY (fk_Matricula_idMat) REFERENCES Matricula(idMat) ON DELETE SET NULL,
                          FOREIGN KEY (fk_Projeto_idProj) REFERENCES Projeto(idProj) ON DELETE SET NULL
 );

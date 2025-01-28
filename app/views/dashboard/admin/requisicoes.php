@@ -25,6 +25,7 @@ function buildHeader()
         echo '
             <tr class="table-row">
                 <th class="table-head">Usuário</th>
+                <th class="table-head">Matrícula Solicitante</th>
                 <th class="table-head">Nome do Projeto</th>
                 <th class="table-head">Descrição do Projeto</th>
                 <th class="table-head">Status do Projeto</th>
@@ -61,6 +62,7 @@ function buildBody(array $requisicoes)
         foreach ($requisicoes as $requisicao) : ?>
             <tr class="table-row" data-id="<?= $requisicao['idProj'] ?>">
                 <td class="table-data"><?= $requisicao['username'] ?></td>
+                <td class="table-data"><?= $requisicao['matricula'] ?></td>
                 <td class="table-data"><?= $requisicao['nomeProj'] ?></td>
                 <td class="table-data"><?= $requisicao['descricaoProj'] ?></td>
                 <td class="table-data">
