@@ -20,7 +20,7 @@ CREATE TABLE Usuario (
                          complemento_ VARCHAR(100) NOT NULL,
                          numero_ INT NOT NULL,
                          fk_Endereco_idEnd INT,
-                         FOREIGN KEY (fk_Endereco_idEnd) REFERENCES Endereco(idEnd) ON DELETE CASCADE
+                         FOREIGN KEY (fk_Endereco_idEnd) REFERENCES endereco(idEnd) ON DELETE CASCADE
 );
 
 CREATE TABLE Laboratorio (
@@ -36,7 +36,7 @@ CREATE TABLE Matricula (
                            statusMat ENUM('Ativo','Em análise','Rejeitado', 'Desativado') DEFAULT 'Em análise',
                            fk_Usuario_idUsuario INT,
                            dataCriacaoMat TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-                           FOREIGN KEY (fk_Usuario_idUsuario) REFERENCES Usuario(idUsuario) ON DELETE CASCADE
+                           FOREIGN KEY (fk_Usuario_idUsuario) REFERENCES usuario(idUsuario) ON DELETE CASCADE
 );
 
 CREATE TABLE Projeto (
@@ -47,9 +47,9 @@ CREATE TABLE Projeto (
                          fk_Matricula_idMat INT,
                          fk_Matricula_idMat_ INT,
                          dataCriacaoProj TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-                         dataAtualizacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
-                         FOREIGN KEY (fk_Matricula_idMat) REFERENCES Matricula(idMat) ON DELETE CASCADE,
-                         FOREIGN KEY (fk_Matricula_idMat_) REFERENCES Matricula(idMat) ON DELETE CASCADE
+                         dataAtualizacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP UPDATE CURRENT_TIMESTAMP NOT NULL,
+                         FOREIGN KEY (fk_Matricula_idMat) REFERENCES matricula(idMat) ON DELETE CASCADE,
+                         FOREIGN KEY (fk_Matricula_idMat_) REFERENCES matricula(idMat) ON DELETE CASCADE
 );
 
 CREATE TABLE Requisicao (
@@ -61,9 +61,9 @@ CREATE TABLE Requisicao (
                             fk_Projeto_idProj INT NULL,
                             fk_Matricula_idMat INT,
                             dataCriacaoReq TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-                            FOREIGN KEY (fk_Laboratorio_idLab) REFERENCES Laboratorio(idLab) ON DELETE SET NULL,
-                            FOREIGN KEY (fk_Projeto_idProj) REFERENCES Projeto(idProj) ON DELETE SET NULL,
-                            FOREIGN KEY (fk_Matricula_idMat) REFERENCES Matricula(idMat) ON DELETE CASCADE
+                            FOREIGN KEY (fk_Laboratorio_idLab) REFERENCES laboratorio(idLab) ON DELETE SET NULL,
+                            FOREIGN KEY (fk_Projeto_idProj) REFERENCES projeto(idProj) ON DELETE SET NULL,
+                            FOREIGN KEY (fk_Matricula_idMat) REFERENCES matricula(idMat) ON DELETE CASCADE
 );
 
 CREATE TABLE Atividade (
@@ -74,7 +74,7 @@ CREATE TABLE Atividade (
                            tituloAtv VARCHAR(255) NOT NULL,
                            descricaoAtv VARCHAR(1000) NOT NULL,
                            fk_Projeto_idProj INT,
-                           FOREIGN KEY (fk_Projeto_idProj) REFERENCES Projeto(idProj) ON DELETE CASCADE
+                           FOREIGN KEY (fk_Projeto_idProj) REFERENCES projeto(idProj) ON DELETE CASCADE
 );
 
 
@@ -82,17 +82,17 @@ CREATE TABLE Integra (
                          fk_Matricula_idMat INT NULL,
                          fk_Projeto_idProj INT NULL,
                          dataInicio TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-                         dataFim TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                         dataFim TIMESTAMP,
                          status ENUM('Em análise', 'Ativo', 'Recusado', 'Finalizado') DEFAULT 'Em análise',
-                         FOREIGN KEY (fk_Matricula_idMat) REFERENCES Matricula(idMat) ON DELETE SET NULL,
-                         FOREIGN KEY (fk_Projeto_idProj) REFERENCES Projeto(idProj) ON DELETE SET NULL
+                         FOREIGN KEY (fk_Matricula_idMat) REFERENCES matricula(idMat) ON DELETE SET NULL,
+                         FOREIGN KEY (fk_Projeto_idProj) REFERENCES projeto(idProj) ON DELETE SET NULL
 );
 
 CREATE TABLE Participa (
                            fk_Matricula_idMat INT NULL,
                            fk_Atividade_idAtv INT NULL,
-                           FOREIGN KEY (fk_Matricula_idMat) REFERENCES Matricula(idMat) ON DELETE SET NULL,
-                           FOREIGN KEY (fk_Atividade_idAtv) REFERENCES Atividade(idAtv) ON DELETE SET NULL
+                           FOREIGN KEY (fk_Matricula_idMat) REFERENCES matricula(idMat) ON DELETE SET NULL,
+                           FOREIGN KEY (fk_Atividade_idAtv) REFERENCES atividade(idAtv) ON DELETE SET NULL
 );
 
 CREATE TABLE Reserva (
@@ -100,6 +100,8 @@ CREATE TABLE Reserva (
                          fk_Laboratorio_idLab INT NULL,
                          fk_Matricula_idMat INT NULL,
                          dataReservaLab TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-                         FOREIGN KEY (fk_Laboratorio_idLab) REFERENCES Laboratorio(idLab) ON DELETE SET NULL,
-                         FOREIGN KEY (fk_Matricula_idMat) REFERENCES Matricula(idMat) ON DELETE SET NULL
+                         FOREIGN KEY (fk_Laboratorio_idLab) REFERENCES laboratorio(idLab) ON DELETE SET NULL,
+                         FOREIGN KEY (fk_Matricula_idMat) REFERENCES matricula(idMat) ON DELETE SET NULL
 );
+
+

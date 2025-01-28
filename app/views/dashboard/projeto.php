@@ -4,7 +4,7 @@
  * @var $projeto Projeto que o usuário está visualizando.
  * @var $reqParticipacao Requisições de participação no projeto.
  */
-var_dump($reqParticipacao);
+var_dump($projeto);
 ?>
 
 

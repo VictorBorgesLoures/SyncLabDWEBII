@@ -24,7 +24,7 @@ class User
     public function login(string $username, string $senha): ?array
     {
         try {
-            $stmt = $this->conn->prepare("SELECT idUsuario, username, email, senha FROM Usuario WHERE email = :email OR username = :username");
+            $stmt = $this->conn->prepare("SELECT idUsuario, username, email, senha FROM usuario WHERE email = :email OR username = :username");
 
             $stmt->bindParam(':email', $username);
             $stmt->bindParam(':username', $username);
@@ -262,11 +262,11 @@ class User
                     p.dataAtualizacao,
                     u.username AS tutor, 
                     u2.username AS criador
-                FROM Projeto AS p
-                INNER JOIN Matricula AS m ON p.fk_Matricula_idMat = m.idMat
-                INNER JOIN Usuario AS u ON m.fk_Usuario_idUsuario = u.idUsuario
-                INNER JOIN Matricula AS m2 ON p.fk_Matricula_idMat_ = m2.idMat
-                INNER JOIN Usuario AS u2 ON m2.fk_Usuario_idUsuario = u2.idUsuario
+                FROM projeto AS p
+                INNER JOIN matricula AS m ON p.fk_Matricula_idMat = m.idMat
+                INNER JOIN usuario AS u ON m.fk_Usuario_idUsuario = u.idUsuario
+                INNER JOIN matricula AS m2 ON p.fk_Matricula_idMat_ = m2.idMat
+                INNER JOIN usuario AS u2 ON m2.fk_Usuario_idUsuario = u2.idUsuario
                 WHERE p.idProj = :idProj";
 
         $stmt = $this->conn->prepare($sql);
@@ -285,10 +285,10 @@ class User
                             m3.tipoMat, 
                             i.dataInicio,
                             i.dataFim
-                         FROM Integra AS i
-                         INNER JOIN Matricula AS m3 ON i.fk_Matricula_idMat = m3.idMat
-                         INNER JOIN Usuario AS u3 ON m3.fk_Usuario_idUsuario = u3.idUsuario
-                         WHERE i.fk_Projeto_idProj = :idProj AND (i.status = 'Ativo' || i.status = 'Finalizado')";
+                         FROM integra AS i
+                         INNER JOIN matricula AS m3 ON i.fk_Matricula_idMat = m3.idMat
+                         INNER JOIN usuario AS u3 ON m3.fk_Usuario_idUsuario = u3.idUsuario
+                         WHERE i.fk_Projeto_idProj = :idProj AND (i.status = 'Ativo' OR i.status = 'Finalizado')";
 
         $stmt2 = $this->conn->prepare($sqlDiscentes);
         $stmt2->bindParam(':idProj', $idProj, PDO::PARAM_INT);
@@ -309,9 +309,9 @@ class User
                     i.fk_Matricula_idMat,
                     i.fk_Projeto_idProj,
                     i.status
-                FROM Integra AS i
-                INNER JOIN Matricula AS m ON i.fk_Matricula_idMat = m.idMat
-                INNER JOIN Usuario AS u ON m.fk_Usuario_idUsuario = u.idUsuario
+                FROM integra AS i
+                INNER JOIN matricula AS m ON i.fk_Matricula_idMat = m.idMat
+                INNER JOIN usuario AS u ON m.fk_Usuario_idUsuario = u.idUsuario
                 WHERE i.fk_Projeto_idProj = :id
                   AND i.status = 'Em análise'";
 
@@ -324,7 +324,7 @@ class User
 
     public function atualizaParticipacao($idProj, $idDiscente, $status)
     {
-        $sql = "UPDATE Integra SET status = :status WHERE fk_Projeto_idProj = :idProj AND fk_Matricula_idMat = :idDiscente";
+        $sql = "UPDATE integra SET status = :status WHERE fk_Projeto_idProj = :idProj AND fk_Matricula_idMat = :idDiscente";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindParam(':idProj', $idProj, PDO::PARAM_INT);
         $stmt->bindParam(':idDiscente', $idDiscente, PDO::PARAM_INT);
