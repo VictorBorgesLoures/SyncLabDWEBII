@@ -4,11 +4,9 @@
  * @var $projeto Projeto que o usuário está visualizando.
  * @var $reqParticipacao Requisições de participação no projeto.
  */
-
+var_dump($reqParticipacao);
 ?>
 
-
-<?=var_dump($projeto)?>
 
 <div id="main-content" class="main-content active">
     <h2 class="fw-bold">Projeto: <?= $projeto['nomeProj']?> (#<?=$projeto['idProj']?>)</h2>
@@ -52,34 +50,74 @@
     </table>
 
     <h6 class="fw-bold">Requisições Pendentes:</h6>
-    <table class="tablecontent">
-        <thead>
-            <tr class="table-row">
-                <th class="table-head">Nome</th>
-                <th class="table-head">Matrícula</th>
-                <th class="table-head">Status</th>
-                <th class="table-head">Enviar</th>
+    <div class="text-end">
+        <button type="button" class="login-btn mb-5" data-bs-toggle="modal" data-bs-target="#adicionarDiscente">
+          Adicionar Discente
+        </button>
+    </div>
 
-            <tr>
-        </thead>
-        <tbody>
-            <?php foreach ($reqParticipacao as $requisicao) : ?>
-            <tr class="table-row">
-                <td class="table-data"><?= $requisicao['discente_nome'] ?></td>
-                <td class="table-data"><?= $requisicao['discente_matricula'] ?></td>
-                <td class="table-data">
-                    <select>
-                        <option value="Ativo">Aceitar</option>
-                        <option value="Recusado">Recusar</option>
-                    </select>
-                </td>
-                <td class="table-data">
-                    <button type="button" class="btn-success" onclick="">
-                        <img class="table-svg-icon" src="/public/assets/images/pencil-file-svgrepo-com.svg" alt="edit">
-                    </button>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
+    <table class="tablecontent">
+    <thead>
+        <tr class="table-row">
+            <th class="table-head">Nome</th>
+            <th class="table-head">Matrícula</th>
+            <th class="table-head">Status</th>
+            <th class="table-head">Enviar</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($reqParticipacao as $requisicao) : ?>
+        <tr class="table-row" data-req="<?= $requisicao['fk_Matricula_idMat'] ?>/<?= $requisicao['fk_Projeto_idProj'] ?>">
+            <td class="table-data"><?= $requisicao['discente_nome'] ?></td>
+            <td class="table-data"><?= $requisicao['discente_matricula'] ?></td>
+            <td class="table-data">
+                <select>
+                    <option value="Ativo">Aceitar</option>
+                    <option value="Recusado">Recusar</option>
+                </select>
+            </td>
+            <td class="table-data">
+                <button type="button" class="req-btn">
+                    <img class="table-svg-icon" src="/public/assets/images/pencil-file-svgrepo-com.svg" alt="edit">
+                </button>
+            </td>
+        </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+
 </div>
+
+<div class="modal fade" id="adicionarDiscente" tabindex="-1" aria-labelledby="adicionarDiscente" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="pesquisaUsuarioModalLabel">Inserir  Discente ao Projeto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formPesquisaUsuario" class="mb-5">
+                    <div class="mb-3">
+                        <label for="nomeUsuario" class="form-label">Nome do Usuário ou Matrícula</label>
+                        <input type="text" class="form-control" id="nomeUsuario" placeholder="Digite o nome do usuário ou matrícula">
+                    </div>
+                </form>
+                <table class="tablecontent">
+                  <thead>
+                    <tr class="table-row">
+                      <th class="table-head">Nome</th>
+                      <th class="table-head">Matrícula</th>
+                      <th class="table-head">Adicionar</th>
+                    </tr>
+                  </thead>
+                  <tbody id="resultados"></tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script text="javascript" type="module" src="/public/assets/js/Controllers/gerenciarProjetos.js"></script>

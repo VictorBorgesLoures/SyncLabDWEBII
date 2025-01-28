@@ -87,4 +87,31 @@ class ProjetosController extends Controller
         $this->projeto = $this->user->getProjeto($id);
     }
 
+    /**
+     * Atualiza a participação de um discente em um projeto.
+     * @return void
+     */
+    public function atualizaParticipacao()
+    {
+        header('Content-Type: application/json');
+        $data = json_decode(file_get_contents('php://input'), true);
+
+        $idProj = filter_var($data['projetoId'], FILTER_SANITIZE_NUMBER_INT);
+        $idDiscente = filter_var($data['matriculaId'], FILTER_SANITIZE_NUMBER_INT);
+        $status = htmlspecialchars($data['status'], ENT_QUOTES, 'UTF-8');
+
+
+        if($this->user->atualizaParticipacao($idProj, $idDiscente, $status)) {
+            echo json_encode(['success' => true, 'redirect' => '/projetos/' . $idProj]);
+        } else {
+            echo json_encode(['error' => true]);
+        }
+
+    }
+
+    public function pesquisaDiscentes()
+    {
+
+    }
+
 }

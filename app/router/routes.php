@@ -37,6 +37,7 @@ return [
 
         //user
         getenv("DOM_URI") . 'logout' => fn() => self::load('UserController', 'logout'),
+
     ],
 
     'post' => [
@@ -47,6 +48,7 @@ return [
         getenv("DOM_URI") . 'requisicoes/matricula' => fn() => self::load('RequisicoesMatriculasController', 'setNovoStatusRequisicao'),
         getenv("DOM_URI") . 'requisicoes/projeto' => fn() => self::load('RequisicoesProjetosController', 'setNovoStatusRequisicao'),
         getenv("DOM_URI") . 'projetos' => fn() => self::load('ProjetosController', 'requisitarProjeto'),
+        getenv("DOM_URI") . 'projetos/atualizar-participacao' => fn() => self::load('ProjetosController', 'atualizaParticipacao'),
 
     ],
 

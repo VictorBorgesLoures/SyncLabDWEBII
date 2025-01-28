@@ -39,9 +39,9 @@
         foreach ($listaRequisicaoMatriculas as $matricula) {            
             $tipo = 'Admin';
             if ($matricula["tipoMat"] == 2)
-                $tipo = 'Docente';
-            else if ($matricula["tipoMat"] == 3)
                 $tipo = 'Discente';
+            else if ($matricula["tipoMat"] == 3)
+                $tipo = 'Docente';
             echo '<button type="button" class="matricula-btn disabled" disabled>
                 ' . $tipo. ' - ' . strval($matricula["matriculaMat"]). '
             </button>';

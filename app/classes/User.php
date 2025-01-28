@@ -2,6 +2,7 @@
 
 namespace cefet\SyncLab\classes;
 
+use cefet\SyncLab\Helper\Helpers;
 use PDO;
 use PDOException;
 
@@ -287,7 +288,7 @@ class User
                          FROM Integra AS i
                          INNER JOIN Matricula AS m3 ON i.fk_Matricula_idMat = m3.idMat
                          INNER JOIN Usuario AS u3 ON m3.fk_Usuario_idUsuario = u3.idUsuario
-                         WHERE i.fk_Projeto_idProj = :idProj";
+                         WHERE i.fk_Projeto_idProj = :idProj AND (i.status = 'Ativo' || i.status = 'Finalizado')";
 
         $stmt2 = $this->conn->prepare($sqlDiscentes);
         $stmt2->bindParam(':idProj', $idProj, PDO::PARAM_INT);
@@ -321,6 +322,29 @@ class User
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function atualizaParticipacao($idProj, $idDiscente, $status)
+    {
+        $sql = "UPDATE Integra SET status = :status WHERE fk_Projeto_idProj = :idProj AND fk_Matricula_idMat = :idDiscente";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':idProj', $idProj, PDO::PARAM_INT);
+        $stmt->bindParam(':idDiscente', $idDiscente, PDO::PARAM_INT);
+        $stmt->bindParam(':status', $status);
+        $stmt->execute();
+
+        return $stmt->rowCount() > 0;
+    }
+
+    public function getDiscentes()
+    {
+        $sql = "SELECT u.idUsuario, u.nome, m.matriculaMat, m.tipoMat FROM usuario as u, matricula as m 
+                          WHERE u.idUsuario = m.fk_Usuario_idUsuario && m.tipoMat = 2";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+        if (!$result)
+            $result = [];
+        return $result;
+    }
 
 
 }

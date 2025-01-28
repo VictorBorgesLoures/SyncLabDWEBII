@@ -83,7 +83,7 @@ CREATE TABLE Integra (
                          fk_Projeto_idProj INT NULL,
                          dataInicio TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
                          dataFim TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                         status ENUM('Em análise', 'Ativa', 'Recusado', 'Finalizado') DEFAULT 'Em análise',
+                         status ENUM('Em análise', 'Ativo', 'Recusado', 'Finalizado') DEFAULT 'Em análise',
                          FOREIGN KEY (fk_Matricula_idMat) REFERENCES Matricula(idMat) ON DELETE SET NULL,
                          FOREIGN KEY (fk_Projeto_idProj) REFERENCES Projeto(idProj) ON DELETE SET NULL
 );
