@@ -37,6 +37,7 @@ body{
     justify-content: space-around;
     flex-direction: row;
     align-items: center;
+    margin-right: 10px;
 }
 .navlink{
     font-size: 1rem;
@@ -486,17 +487,16 @@ select {
 
 /* REQUISIÇÕES de Projetos e Matrículas*/
 table {
-    /*width: 80%;*/
+    width: 90%;
     border-collapse: separate;
     border-spacing: 0;
-    margin: 20px auto;
     border: 1px solid #ddd;
     border-radius: 10px;
     overflow: hidden;
 }
 th, td {
     padding: 10px;
-    text-align: center;
+    text-align: left;
 }
 th {
     background-color: var(--purple);
@@ -521,9 +521,6 @@ td a {
 }
 
 @media (max-width: 1000px) {
-    .navbuttons{
-        width: 50%;
-    }
 }
 
 @media (max-width: 800px) {
