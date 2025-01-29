@@ -476,4 +476,47 @@ class User
         return $this->conn->lastInsertId();
     }
 
+    public function getAtivadades(int $idProj) {
+        $sql = "SELECT *, :idProj as idProj from atividade where fk_Projeto_idProj=:idProj";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':idProj', $idProj);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
+    public function getUsuairoAtivadades(int $idMat) {
+        $sql = "SELECT * from atividade as a, projeto as p, participa as par
+        where par.fk_Matricula_idMat=:idMat
+        AND par.fk_Atividade_idAtv=a.idAtv
+        AND a.fk_Projeto_idProj=p.idProj";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':idMat', $idMat);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
+    public function adicionarAtividade(int $idProj, bool $isDocente, string $tituloAtv, string $descricaoAtv, string $dataFimAtv) {
+        $sql = "INSERT INTO atividade (fk_Projeto_idProj, tituloAtv, descricaoAtv, dataFimAtv";
+        if($isDocente)
+            $sql = $sql.", statusAtv";
+        
+        $sql= $sql.") VALUES (:idProj, :tituloAtv, :descricaoAtv, :dataFimAtv";
+        if($isDocente)
+            $sql = $sql.", 'Em andamento'";
+
+        $sql = $sql . ");";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':idProj', $idProj);
+        $stmt->bindParam(':tituloAtv', $tituloAtv);
+        $stmt->bindParam(':descricaoAtv', $descricaoAtv);
+        $stmt->bindParam(':dataFimAtv', $dataFimAtv);
+
+        $stmt->execute();
+
+        return $this->conn->lastInsertId();
+    }
+
 }

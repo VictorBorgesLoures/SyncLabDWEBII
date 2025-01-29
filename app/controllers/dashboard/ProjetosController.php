@@ -210,4 +210,21 @@ class ProjetosController extends Controller
         }
     }
 
+    public function adicionarAtividade()
+    {
+        header('Content-Type: application/json');
+        $data = json_decode(file_get_contents('php://input'), true);
+
+        $idProj = filter_var($data['idProj'], FILTER_SANITIZE_NUMBER_INT);
+        $tituloAtv = filter_var($data['tituloAtv'], FILTER_SANITIZE_NUMBER_INT);
+        $descricaoAtv = filter_var($data['descricaoAtv'], FILTER_SANITIZE_NUMBER_INT);
+        $dataFimAtv = filter_var($data['dataFimAtv'], FILTER_SANITIZE_NUMBER_INT);
+
+        if($this->user->adicionarAtividade($idProj, Session::get("type") == "docente" ? true : false , $tituloAtv, $descricaoAtv, $dataFimAtv)) {
+            echo json_encode(['error' => false, 'message' => Session::get("type") == "docente" ? "Inserção" : "Solicitação" . 'de atividade enviada com sucesso!']);
+        } else {
+            echo json_encode(['error' => true, 'message' => 'Não foi possível enviar a '.Session::get("type") == "docente" ? "inserção" : "solicitação" .' de atividade!']);
+        }
+    }
+
 }

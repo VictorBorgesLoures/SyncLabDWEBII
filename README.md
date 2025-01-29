@@ -21,7 +21,7 @@ https://www.figma.com/file/wwvQGpBu37nUcRAPB96Ib6/Synclab?type=design&node-id=0%
 - Docente
   - [x] Sidebar
   - [x] Criar solicitação de um novo projeto
-  - [ ] Adicionar atividade ao projeto
+  - [x] Adicionar atividade ao projeto
   - [x] Gerenciar projeto e atividades
   - [ ] Aceitar solicitação de atividade
 

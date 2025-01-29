@@ -26,14 +26,14 @@ function loadSideBar(string $type)
         <li class="side-navbar-li <?= Session::get('active') == 'dashboard' ? 'active' : '' ?>"><a href="/dashboard" class="side-navbar-link">Dashboard</a>
         </li>
         <li class="side-navbar-li <?= Session::get('active') == 'projetos' ? 'active' : '' ?>"><a href="/projetos" class="side-navbar-link">Projetos</a></li>
-        <li class="side-navbar-li  <?= Session::get('active') == 'acoes' ? 'active' : '' ?>"><a href="/acoes" class="side-navbar-link">Ações</a></li>
+        <li class="side-navbar-li  <?= Session::get('active') == 'atividades' ? 'active' : '' ?>"><a href="/atividades" class="side-navbar-link">Atividades</a></li>
     <?php
     } else if ($type == "docente") {
     ?>
         <li class="side-navbar-li <?= Session::get('active') == 'dashboard' ? 'active' : '' ?>"><a href="/dashboard" class="side-navbar-link">Dashboard</a>
         </li>
         <li class="side-navbar-li <?= Session::get('active') == 'projetos' ? 'active' : '' ?>"><a href="/projetos" class="side-navbar-link">Projetos</a></li>
-        <li class="side-navbar-li  <?= Session::get('active') == 'acoes' ? 'active' : '' ?>"><a href="/acoes" class="side-navbar-link">Ações</a></li>
+        <li class="side-navbar-li  <?= Session::get('active') == 'atividades' ? 'active' : '' ?>"><a href="/atividades" class="side-navbar-link">Atividades</a></li>
 <?php
     } else {
         echo "<script type='text/javascript'> window.location.replace('/login') </script>";

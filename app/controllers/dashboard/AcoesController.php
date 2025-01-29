@@ -2,19 +2,39 @@
 
 namespace cefet\SyncLab\controllers\dashboard;
 use cefet\SyncLab\controllers\Controller;
+use cefet\SyncLab\classes\User;
+use cefet\SyncLab\classes\Session;
 
 class AcoesController extends Controller {
 
     private array $acoes;
+    private User $user;
     public function __construct()
     {
         $this->setAcoes();
+        $this->user = new User();
     }
 
-    public function viewAcoes(): void
+    public function viewAtividades(): void
     {
-        $this->view("dashboard/acoes", [
-            "acoes" => $this->getAcoes()
+        $this->view("dashboard/atividades", [
+            "atividades" => $this->user->getUsuairoAtivadades(Session::get('idMat'))
+        ]);
+    }
+
+    public function viewAtividadesProj($params): void
+    {
+        $id = $params[0];
+        $this->view("dashboard/atividades-proj", [
+            "atividades" => $this->user->getAtivadades($id)
+        ]);
+    }
+
+    public function viewAtividade($params): void
+    {
+        $id = $params[0];
+        $this->view("dashboard/atividade", [
+            "atividades" => $this->user->getAtivadades($id)
         ]);
     }
 

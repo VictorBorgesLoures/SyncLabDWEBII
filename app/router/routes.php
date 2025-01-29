@@ -22,6 +22,7 @@ return [
         //Projetos
         getenv("DOM_URI") . 'projetos' => fn() => self::load('ProjetosController', 'viewProjetos'),
         getenv("DOM_URI") . 'projetos/{id}' => fn($id) => self::load('ProjetosController', 'viewProjeto', $id),
+        getenv("DOM_URI") . 'projetos/{id}/atividades' => fn($id) => self::load('AcoesController', 'viewAtividadesProj', $id),
 
         //Requisições deve-se remover as requisicoes
         getenv("DOM_URI") . 'requisicoes' => fn() => self::load('RequisicoesController', 'viewRequisicoes'),
@@ -29,7 +30,8 @@ return [
         getenv("DOM_URI") . 'requisicoes/matricula' => fn() => self::load('RequisicoesMatriculasController', 'viewReqMatriculas'),
 
         //Ações
-        getenv("DOM_URI") . 'acoes' => fn() => self::load('AcoesController', 'viewAcoes'),
+        getenv("DOM_URI") . 'atividades' => fn() => self::load('AcoesController', 'viewAtividades'),
+        getenv("DOM_URI") . 'atividades/{id}' => fn($id) => self::load('AcoesController', 'viewAtividade', $id),
 
         //Laboratórios
         getenv("DOM_URI") . 'laboratorios' => fn() => self::load('LaboratoriosController', 'viewLaboratorios'),
@@ -49,6 +51,7 @@ return [
         getenv("DOM_URI") . 'requisicoes/projeto' => fn() => self::load('RequisicoesProjetosController', 'setNovoStatusRequisicao'),
         getenv("DOM_URI") . 'projetos' => fn() => self::load('ProjetosController', 'requisitarProjeto'),
         getenv("DOM_URI") . 'projetos/atualizar-participacao' => fn() => self::load('ProjetosController', 'atualizaParticipacao'),
+        getenv("DOM_URI") . 'projetos/adicionar-atividade' => fn() => self::load('ProjetosController', 'adicionarAtividade'),
         getenv("DOM_URI") . 'projetos/listar-possiveis-integrantes/{id}' => fn($params) => self::load('ProjetosController', 'listarPossiveisIntegrantes', $params),
         getenv("DOM_URI") . 'projetos/adicionar-integrante/{id}' => fn($params) => self::load('ProjetosController', 'adicionarIntegrante', $params),
         getenv("DOM_URI") . 'projetos/alterar-tutor' => fn() => self::load('ProjetosController', 'alterarTutor'),

@@ -45,6 +45,8 @@ Session::set('active', 'projetos');
     <?php endif; ?>
     <p><strong>Atualizado em:</strong> <?= $projeto['dataAtualizacao']?></p>
 
+    <a class="btn btn-primary login-btn mb-2" href=<?=$projeto['idProj']."/atividades"?> >Atividades</a>
+
     <h4 class="fw-bold">Participantes</h4>
     <table class="tablecontent">
         <thead>
