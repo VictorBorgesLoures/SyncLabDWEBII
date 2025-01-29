@@ -1,4 +1,6 @@
+import Toast from "../Model/Toast.js";
 window.addEventListener("load", async () => {
+
     let btnSalvar = document.getElementsByClassName("req-btn");
 
     Array.from(btnSalvar).forEach(botao => {
@@ -39,11 +41,16 @@ window.addEventListener("load", async () => {
                     return;
                 }
 
+                const toast = new Toast();
+
                 const data = await response.json();
                 if (data.redirect) {
                     window.location.href = data.redirect;
                 } else {
-                    alert('Status atualizado com sucesso!');
+                    toast.notify("Participação atualizada com sucesso!");
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 3000);
                 }
 
             } catch (error) {
@@ -73,24 +80,31 @@ window.addEventListener("load", async () => {
 
     async function adicionarUsuario(idMat) {
         try {
-            const response = await fetch(`/projetos/${window.location.pathname.split("/").at(-1)}/adicionar-integrante`, {
+            const url = `adicionar-integrante/${window.location.pathname.split("/").at(-1)}`;
+
+            const response = await fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({idMat})
+                body: JSON.stringify({ idMat })
             });
 
             if (!response.ok) {
-                console.error('Erro ao idicionar novo integrante:', response.statusText);
+                const errorData = await response.json();
+                console.error('Erro ao adicionar novo integrante:', errorData.message || response.statusText);
                 return;
             }
 
+            const toast = new Toast();
             const data = await response.json();
             if (data.redirect) {
                 window.location.href = data.redirect;
             } else {
-                alert('Status atualizado com sucesso!');
+                toast.notify('Integrante Adicionado');
+                setTimeout(() => {
+                    window.location.reload();
+                }, 3000);
             }
 
         } catch (error) {
@@ -112,6 +126,8 @@ window.addEventListener("load", async () => {
         }
 
         resultados.forEach(usuario => {
+            console.log(usuario)
+            console.log(usuario.idMat)
             const row = document.createElement('tr');
             row.className = 'table-row';
             row.innerHTML = `
@@ -126,14 +142,15 @@ window.addEventListener("load", async () => {
             resultadosTbody.appendChild(row);
         });
 
-        let btnAdicionar = document.getElementsByClassName("adicionar-usuario");
-        Array.from(btnAdicionar).forEach(botao => {
-            botao.onclick = async e => {
+        let btnAdicionar = document.querySelectorAll(".adicionar-usuario");
+        btnAdicionar.forEach(botao => {
+            botao.addEventListener('click', async e => {
                 e.preventDefault();
                 let current = e.target;
-                adicionarUsuario(current.getAttribute("data-matId"));
-            }
-        });
+                let idMat = current.getAttribute('data-idMat');
+                await adicionarUsuario(idMat);
+            })
+        })
     }
 
     inputPesquisa.addEventListener('input', function () {
@@ -148,19 +165,19 @@ window.addEventListener("load", async () => {
     });
 
     try {
-        const response = await fetch(`/projetos/${window.location.pathname.split("/").at(-1)}/listar-possiveis-integrantes`, {
+        const response = await fetch(`listar-possiveis-integrantes/${window.location.pathname.split("/").at(-1)}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             }
         });
-
         if (!response.ok) {
             console.error('Erro na atualização:', response.statusText);
             return;
         }
 
         const data = await response.json();
+        console.log(data);
         if (!data.error) {
             usuarios = data.data;
         }

@@ -239,7 +239,8 @@ class User
         return $result;
     }
 
-    public function requisitarProjeto($idMat, $nomeProj, $descricaoProj) {
+    public function requisitarProjeto($idMat, $nomeProj, $descricaoProj): false|string
+    {
         $sql = "INSERT INTO projeto (nomeProj, descricaoProj, fk_Matricula_idMat, fk_Matricula_idMat_) 
         VALUES (:nomeProj, :descricaoProj, :idMat, :idMat)";
         $stmt = $this->conn->prepare($sql);
@@ -346,9 +347,18 @@ class User
         return $result;
     }
 
-    public function listarPossiveisIntegrantes($idProj) {
-        $sql = "SELECT u.idUsuario, u.nome, m.matriculaMat, m.tipoMat FROM usuario as u, matricula as m
-            WHERE u.idUsuario = m.fk_Usuario_idUsuario AND m.tipoMat!=1 AND m.idMat not in (SELECT fk_Matricula_idMat from integra where fk_Projeto_idProj=:idProj);";
+    public function listarPossiveisIntegrantes($idProj): false|array
+    {
+        $sql = "SELECT u.idUsuario, u.nome, m.matriculaMat, m.tipoMat, m.idMat 
+                    FROM usuario AS u
+                    JOIN matricula AS m ON u.idUsuario = m.fk_Usuario_idUsuario
+                    WHERE m.tipoMat != 1 AND NOT EXISTS (
+                        SELECT 1 FROM integra 
+                        WHERE fk_Matricula_idMat = m.idMat 
+                        AND fk_Projeto_idProj = :idProj 
+                        AND status = 'Ativo'
+                )";
+
         $stmt = $this->conn->prepare($sql);
         $stmt->bindParam(':idProj', $idProj);
         $stmt->execute();
@@ -360,9 +370,9 @@ class User
 
     public function ehTutorOuCotutor($idProj, $idMat) {
         $sql = "SELECT m.idMat FROM integra as i, matricula as m
-            WHERE m.idMat=:idMat AND i.fk_Matricula_idMat=m.idMat AND m.tipoMat == 2 AND i.fk_Projeto_idProj=idProj
+            WHERE m.idMat=:idMat AND i.fk_Matricula_idMat=m.idMat AND m.tipoMat = 2 AND i.fk_Projeto_idProj = :idProj
             UNION 
-            SELECT fk_Matricula_idMat FROM projeto WHERE idProj=:idProj AND fk_Matricula_idMat=:idMat;";
+            SELECT fk_Matricula_idMat FROM projeto WHERE idProj = :idProj AND fk_Matricula_idMat= :idMat;";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindParam(':idProj', $idProj);
         $stmt->bindParam(':idMat', $idMat);
@@ -373,12 +383,20 @@ class User
         return $result;
     }
 
-    public function adicionarIntegrante($idProj, $idMat) {
-        $sql = "INSERT INTO integra (fk_Projeto_idProj, fk_Matricula_idMat) values (:idProj, :idMat)";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bindParam(':idProj', $idProj);
-        $stmt->bindParam(':idMat', $idMat);
-        $stmt->execute();
-        return $this->conn->lastInsertId();
+    public function adicionarIntegrante($idProj, $idMat, $status) {
+        try {
+            $sql = "INSERT INTO integra (fk_Projeto_idProj, fk_Matricula_idMat, status, dataInicio) VALUES (:idProj, :idMat, :status, CURRENT_TIMESTAMP)";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':idProj', $idProj);
+            $stmt->bindParam(':idMat', $idMat);
+            $stmt->bindParam(':status', $status);
+
+            $stmt->execute();
+            return $this->conn->lastInsertId();
+        } catch (\PDOException $e) {
+            error_log("Erro no PDO: " . $e->getMessage());
+            echo json_encode(['error' => true, 'message' => $e->getMessage()]);
+            exit;
+        }
     }
 }

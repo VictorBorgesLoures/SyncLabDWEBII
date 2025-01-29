@@ -2,6 +2,7 @@
 
 namespace cefet\SyncLab\controllers\dashboard;
 
+use cefet\SyncLab\classes\exceptions\PrivilegiesException;
 use cefet\SyncLab\controllers\Controller;
 use cefet\SyncLab\classes\Session;
 use cefet\SyncLab\classes\BdConnection;
@@ -53,7 +54,9 @@ class ProjetosController extends Controller
                 return;
             }
 
-            if ($this->user->requisitarProjeto(Session::get('idMat'), $nomeProj, $descricaoProj)) {
+            $idProj = $this->user->requisitarProjeto(Session::get('idMat'), $nomeProj, $descricaoProj);
+            if ($idProj) {
+                $this->user->adicionarIntegrante($idProj, Session::get('idMat'), 'Ativo');
                 Session::flash('success', "Projeto requisitado com sucesso!");
                 echo json_encode(['success' => true, 'redirect' => '/projetos']);
             } else {
@@ -109,19 +112,31 @@ class ProjetosController extends Controller
 
     }
 
-    public function listarPossiveisIntegrantes($id) {
-        die($id);
-        $novointegrantes = $this->user->listarPossiveisIntegrantes($id);
+    public function listarPossiveisIntegrantes($params) {
+        header('Content-Type: application/json');
+        $novointegrantes = $this->user->listarPossiveisIntegrantes($params[0]);
         echo json_encode(['error' => false, 'data' => $novointegrantes]);
     }
 
-    public function adicionarIntegrante($id) {
-        if(Session::get("type") == "docente" && count($this->user->ehTutorOuCotutor($id, Session::get("idMat"))) > 0) {
-            header('Content-Type: application/json');
+    /**
+     * @throws PrivilegiesException
+     */
+    public function adicionarIntegrante($params) {
+        header('Content-Type: application/json');
+        if (Session::get("type") == "docente" && count($this->user->ehTutorOuCotutor($params[0], Session::get("idMat"))) > 0) {
+
             $data = json_decode(file_get_contents('php://input'), true);
-    
             $idMat = trim(htmlspecialchars($data['idMat'], ENT_QUOTES, 'UTF-8'), " ");
-            echo json_encode(['error' => false, 'data' => $this->user->adicionarIntegrante($id, $idMat)]);
+
+            if ($this->user->adicionarIntegrante($params[0], $idMat, 'Ativo')) {
+                echo json_encode(['error' => false, 'message' => "Integrante adicionado com sucesso!"]);
+            } else {
+                echo json_encode(['error' => true, 'message' => "Não foi possível adicionar o integrante!"]);
+            }
+            exit;
+        } else {
+            error_log("Usuário não tem permissão para adicionar integrante");
+            throw new PrivilegiesException("Você não tem permissão para realizar essa ação!");
         }
     }
 

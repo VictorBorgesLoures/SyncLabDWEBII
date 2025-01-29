@@ -49,8 +49,8 @@ return [
         getenv("DOM_URI") . 'requisicoes/projeto' => fn() => self::load('RequisicoesProjetosController', 'setNovoStatusRequisicao'),
         getenv("DOM_URI") . 'projetos' => fn() => self::load('ProjetosController', 'requisitarProjeto'),
         getenv("DOM_URI") . 'projetos/atualizar-participacao' => fn() => self::load('ProjetosController', 'atualizaParticipacao'),
-        getenv("DOM_URI") . 'projetos/{id}/listar-possiveis-integrantes' => fn($id) => self::load('ProjetosController', 'listarPossiveisIntegrantes', $id),
-        getenv("DOM_URI") . 'projetos/{id}/adicionar-integrante' => fn($id) => self::load('ProjetosController', 'adicionarIntegrante', $id)
+        getenv("DOM_URI") . 'projetos/listar-possiveis-integrantes/{id}' => fn($params) => self::load('ProjetosController', 'listarPossiveisIntegrantes', $params),
+        getenv("DOM_URI") . 'projetos/adicionar-integrante/{id}' => fn($params) => self::load('ProjetosController', 'adicionarIntegrante', $params)
     ],
 
     'put' => [

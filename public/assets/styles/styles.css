@@ -197,6 +197,18 @@
     }
 }
 
+.modal{
+    z-index: 1000;
+}
+
+.modal-backdrop{
+    z-index: 999;
+}
+
+.notification-toast{
+    z-index: 1001;
+}
+
 @media (max-width: 600px) {
     .dash-nav-option {
         margin-right: 0px;

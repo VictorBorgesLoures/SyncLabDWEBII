@@ -8,6 +8,7 @@
 
 
 <div id="main-content" class="main-content active">
+
     <h2 class="fw-bold">Projeto: <?= $projeto['nomeProj']?> (#<?=$projeto['idProj']?>)</h2>
     <p><strong>Descrição:</strong> <?= $projeto['descricaoProj']?></p>
     <p><strong>Status:</strong> <?= $projeto['statusProj']?></p>
@@ -47,8 +48,7 @@
             <?php endforeach; ?>
         </tbody>
     </table>
-<?php if(\cefet\SyncLab\classes\Session::get("type") == "docente" ):
-    ?>
+<?php if(\cefet\SyncLab\classes\Session::get("type") == "docente" ):?>
     <div class="text-end mt-4">
         <button type="button" class="login-btn mb-5" data-bs-toggle="modal" data-bs-target="#adicionarDiscente">
             Adicionar Discente
@@ -85,7 +85,7 @@
             <?php endforeach; ?>
         </tbody>
     </table>
-<?php endif ?>
+
 </div>
 
 <div class="modal fade" id="adicionarDiscente" tabindex="-1" aria-labelledby="adicionarDiscente" aria-hidden="true">
@@ -96,10 +96,14 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+
                 <form id="formPesquisaUsuario" class="mb-5">
                     <div class="mb-3">
                         <label for="nomeUsuario" class="form-label">Nome do Usuário ou Matrícula</label>
                         <input type="text" class="form-control" id="nomeUsuario" placeholder="Digite o nome do usuário ou matrícula">
+                    </div>
+                    <div class="w-100">
+                        <?= $this->insert('includes/toasts') ?>
                     </div>
                 </form>
                 <table class="tablecontent">
@@ -119,5 +123,5 @@
         </div>
     </div>
 </div>
-
+<?php endif ?>
 <script text="javascript" type="module" src="/public/assets/js/Controllers/gerenciarProjetos.js"></script>
