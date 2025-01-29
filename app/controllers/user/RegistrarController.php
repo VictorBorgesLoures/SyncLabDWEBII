@@ -56,7 +56,7 @@ class RegistrarController extends Controller
         }
 
 
-        if ($this->user->verifyUserExists($email)) {
+        if (!$this->user->verifyUserExists($email)) {
             Session::flash('error', "Usuário já registrado.");
             BdConnection::getInstance()->closeConnection();
             echo json_encode(['success' => false, 'redirect' => '/registrar']);

@@ -1,19 +1,48 @@
-<?php $this->layout('masterApp', ['title' => 'Projetos']);
-\cefet\SyncLab\classes\Session::set('active', 'projetos');
+<?php use cefet\SyncLab\classes\Session;
+
+$this->layout('masterApp', ['title' => 'Projetos']);
+Session::set('active', 'projetos');
 /**
  * @var $projeto Projeto que o usuário está visualizando.
  * @var $reqParticipacao Requisições de participação no projeto.
- */
+ * @var $isTutor Se o usuário é tutor do projeto.
+ * @var $possiveisTutores Possíveis tutores para o projeto.
+*/
 ?>
 
 
 <div id="main-content" class="main-content active">
-
+    <div class="w-100">
+        <?= $this->insert('includes/toasts') ?>
+        <?= Session::messageFlash() ?>
+    </div>
     <h2 class="fw-bold">Projeto: <?= $projeto['nomeProj']?> (#<?=$projeto['idProj']?>)</h2>
     <p><strong>Descrição:</strong> <?= $projeto['descricaoProj']?></p>
     <p><strong>Status:</strong> <?= $projeto['statusProj']?></p>
     <p><strong>Criado em:</strong> <?= $projeto['dataCriacaoProj']?></p>
     <p><strong>Tutor:</strong> <?= $projeto['tutor'] ?></p>
+    <?php if (Session::get("type") == "docente"): ?>
+        <form method="post" action="/projetos/alterar-tutor" class="row g-3 mb-4 align-items-center">
+            <input type="hidden" name="idProj" value="<?= $projeto['idProj'] ?>">
+
+            <div class="col-auto">
+                <label for="tutor" class="form-label">Alterar Tutor</label>
+            </div>
+            <div class="col-auto">
+                <select name="tutor" id="tutor" class="form-select">
+                    <?php foreach ($possiveisTutores as $tutor): ?>
+                        <option value="<?= $tutor['idMat'] ?>"><?= $tutor['nome'] ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary">
+                    <img class="table-svg-icon" src="/public/assets/images/pencil-file-svgrepo-com.svg" alt="edit">
+                    Alterar
+                </button>
+            </div>
+        </form>
+    <?php endif; ?>
     <p><strong>Atualizado em:</strong> <?= $projeto['dataAtualizacao']?></p>
 
     <h4 class="fw-bold">Participantes</h4>
@@ -26,29 +55,43 @@
                 <th class="table-head">Início</th>
                 <th class="table-head">Fim</th>
                 <th class="table-head">Atividade</th>
+                <th class="table-head">Finalizar</th>
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($projeto['discentes'] as $discente) : ?>
+            <?php foreach ($projeto['participantes'] as $participante) : ?>
                 <tr class="table-row">
-                    <td class="table-data"><?= $discente['discente_nome'] ?></td>
-                    <td class="table-data"><?= $discente['discente_matricula'] ?></td>
-                    <td class="table-data"><?= \cefet\SyncLab\Helper\Helpers::matriculaType($discente['tipoMat']) ?></td>
-                    <td class="table-data"><?= $discente['dataInicio'] ?></td>
-                    <td class="table-data"><?= $discente['dataFim'] ?? '-' ?></td>
-                    <td class="table-data">
-                        <a href="">
-                            <button type="button" class="btn-success">
-                                <img class="table-svg-icon" src="/public/assets/images/pencil-file-svgrepo-com.svg" alt="edit">
-                            </button>
-                        </a>
-                    </td>
+                    <td class="table-data"><?= $participante['discente_nome'] ?></td>
+                    <td class="table-data"><?= $participante['discente_matricula'] ?></td>
+                    <td class="table-data"><?= \cefet\SyncLab\Helper\Helpers::matriculaType($participante['tipoMat']) ?></td>
+                    <td class="table-data"><?= $participante['dataInicio'] ?></td>
+                    <td class="table-data"><?= $participante['dataFim'] ?? '-' ?></td>
+                    <?php if (!isset($participante['dataFim'])): ?>
+                        <td class="table-data">
+                            <a href="">
+                                <button type="button" class="btn-success">
+                                    <img class="table-svg-icon" src="/public/assets/images/pencil-file-svgrepo-com.svg" alt="edit">
+                                </button>
+                            </a>
+                        </td>
+                    <?php else: ?>
+                        <td class="table-data"> -- </td>
+                    <?php endif;?>
 
+                    <?php if (Session::get("type") == "docente" && !isset($participante['dataFim'])): ?>
+                    <td class="table-data">
+                        <button type="button" class="btn-success" onclick="abrirModalConfirmacao(<?= $participante['matricula_id'] ?>)">
+                            <i class="bi bi-x-circle"></i>
+                        </button>
+                    </td>
+                    <?php else: ?>
+                    <td class="table-data"> -- </td>
+                    <?php endif; ?>
                 </tr>
             <?php endforeach; ?>
         </tbody>
     </table>
-<?php if(\cefet\SyncLab\classes\Session::get("type") == "docente" ):?>
+<?php if(Session::get("type") == "docente" ):?>
     <div class="text-end mt-4">
         <button type="button" class="login-btn mb-5" data-bs-toggle="modal" data-bs-target="#adicionarDiscente">
             Adicionar Discente
@@ -88,40 +131,8 @@
 
 </div>
 
-<div class="modal fade" id="adicionarDiscente" tabindex="-1" aria-labelledby="adicionarDiscente" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="pesquisaUsuarioModalLabel">Inserir  Discente ao Projeto</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-
-                <form id="formPesquisaUsuario" class="mb-5">
-                    <div class="mb-3">
-                        <label for="nomeUsuario" class="form-label">Nome do Usuário ou Matrícula</label>
-                        <input type="text" class="form-control" id="nomeUsuario" placeholder="Digite o nome do usuário ou matrícula">
-                    </div>
-                    <div class="w-100">
-                        <?= $this->insert('includes/toasts') ?>
-                    </div>
-                </form>
-                <table class="tablecontent">
-                  <thead>
-                    <tr class="table-row">
-                      <th class="table-head">Nome</th>
-                      <th class="table-head">Matrícula</th>
-                      <th class="table-head">Adicionar</th>
-                    </tr>
-                  </thead>
-                  <tbody id="resultados"></tbody>
-                </table>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-            </div>
-        </div>
-    </div>
-</div>
+<?= $this->insert('includes/modalAdicionarDiscente') ?>
+<?= $this->insert('includes/modalFimParticipacao') ?>
 <?php endif ?>
-<script text="javascript" type="module" src="/public/assets/js/Controllers/gerenciarProjetos.js"></script>
+<script type="module" src="/public/assets/js/Controllers/gerenciarProjetos.js"></script>
+<script src="/public/assets/js/Controllers/modalConfirmacao.js"></script>

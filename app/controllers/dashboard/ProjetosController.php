@@ -8,6 +8,7 @@ use cefet\SyncLab\classes\Session;
 use cefet\SyncLab\classes\BdConnection;
 use cefet\SyncLab\classes\User;
 use cefet\SyncLab\Helper\FieldValidators;
+use cefet\SyncLab\Helper\Helpers;
 
 class ProjetosController extends Controller
 {
@@ -76,7 +77,9 @@ class ProjetosController extends Controller
         $this->setProjeto($id);
         $this->view("dashboard/projeto", [
             "projeto" => $this->getProjeto(),
-            "reqParticipacao" => $this->user->getRequisicoesParticipacao($id)
+            "reqParticipacao" => $this->user->getRequisicoesParticipacao($id),
+            "isTutor" => count($this->user->ehTutorOuCotutor($id, Session::get('idMat'))) > 0,
+            "possiveisTutores" => $this->user->getPossiveisTutores($id)
         ]);
     }
 
@@ -137,6 +140,73 @@ class ProjetosController extends Controller
         } else {
             error_log("Usuário não tem permissão para adicionar integrante");
             throw new PrivilegiesException("Você não tem permissão para realizar essa ação!");
+        }
+    }
+
+    public function finalizarParticipacao($params)
+    {
+        header('Content-Type: application/json');
+        $data = json_decode(file_get_contents('php://input'), true);
+        $idProj = filter_var($params[0], FILTER_SANITIZE_NUMBER_INT);
+        $idMat = filter_var($data['matriculaId'], FILTER_SANITIZE_NUMBER_INT);
+
+        if(Session::get('type') == 'docente' && count($this->user->ehTutorOuCotutor($idProj, Session::get('idMat'))) > 0) {
+            if($this->user->finalizarParticipacao($idProj, $idMat)) {
+                echo json_encode(['error' => false, 'message' => 'Participação finalizada com sucesso!']);
+            } else {
+                echo json_encode(['error' => true, 'message' => 'Não foi possível finalizar a participação!']);
+            }
+        } else {
+            echo json_encode(['error' => true, 'message' => 'Você não tem permissão para realizar essa ação!']);
+        }
+    }
+
+    public function alterarTutor()
+    {
+        $idProj = filter_input(INPUT_POST, 'idProj', FILTER_SANITIZE_NUMBER_INT);
+        $idMat = filter_input(INPUT_POST, 'tutor', FILTER_SANITIZE_NUMBER_INT);
+
+        if(Session::get('type') == 'docente') {
+            if($this->user->alterarTutor($idProj, $idMat)) {
+                $this->user->atualizaParticipacao($idProj, $idMat, 'Ativo'); //Caso o docente requeriu participação no projeto
+                Session::flash('message', 'Tutor alterado com sucesso!');
+                Helpers::redirect('/projetos/' . $idProj);
+            } else {
+                Session::flash('error', 'Não foi possível alterar o tutor!');
+                Helpers::redirect('projetos/' . $idProj);
+            }
+        } else {
+            Session::flash('error', 'Você não tem permissão para realizar essa ação!');
+            Helpers::redirect('projetos/' . $idProj);
+        }
+    }
+
+    public function listarPossiveisProjetos()
+    {
+        header('Content-Type: application/json');
+        $nomeProjeto = $_POST['nomeProjeto'] ?? '';
+        $projetos = $this->user->listarPossiveisProjetos($nomeProjeto);
+
+        if (!empty($projetos)) {
+            echo json_encode(['error' => false, 'data' => $projetos]);
+        } else {
+            echo json_encode(['error' => true, 'message' => 'Nenhum projeto encontrado.']);
+        }
+
+    }
+
+    public function solicitarParticipacao($params)
+    {
+        header('Content-Type: application/json');
+        $data = json_decode(file_get_contents('php://input'), true);
+
+        $idProj = filter_var($data['idProj'], FILTER_SANITIZE_NUMBER_INT);
+        $idMat = filter_var($data['idMat'], FILTER_SANITIZE_NUMBER_INT);
+
+        if($this->user->solicitarParticipacao($idProj, $idMat)) {
+            echo json_encode(['error' => false, 'message' => 'Solicitação de participação enviada com sucesso!']);
+        } else {
+            echo json_encode(['error' => true, 'message' => 'Não foi possível enviar a solicitação de participação!']);
         }
     }
 

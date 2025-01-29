@@ -185,6 +185,70 @@ window.addEventListener("load", async () => {
     } catch (error) {
         console.error('Erro de requisição:', error);
     }
+
+    let participanteId = null;
+
+    window.abrirModalConfirmacao = function(matriculaId) {
+        participanteId = matriculaId;
+        let modalElement = document.getElementById('confirmarFinalizacaoModal');
+
+        if (modalElement) {
+            let modal = new bootstrap.Modal(modalElement, { backdrop: 'static' });
+            modal.show();
+        } else {
+            console.error("Modal não encontrado no DOM!");
+        }
+    };
+
+
+
+    let confirmarBtn = document.getElementById('confirmarFinalizacaoBtn');
+
+    if (confirmarBtn) {
+        confirmarBtn.addEventListener('click', async function () {
+            if (participanteId) {
+                try {
+                    let url = `/finalizar-participacao/${window.location.pathname.split("/").at(-1)}`;
+
+                    let response = await fetch(url, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ matriculaId: participanteId }),
+                    });
+
+                    let responseData = await response.json(); // Converter resposta para JSON
+                    console.log(responseData);
+                    if (response.ok && !responseData.error) {
+                        let modalElement = document.getElementById('confirmarFinalizacaoModal');
+                        let modal = bootstrap.Modal.getInstance(modalElement);
+                        modal.hide();
+
+                        const toast = new Toast();
+                        if (responseData.message) {
+                            toast.notify(responseData.message);
+                            setTimeout(() => {
+                                window.location.reload();
+                            }, 3000);
+                        }
+
+                    } else {
+                        console.error("Erro:", responseData.message || "Erro desconhecido");
+                        alert(responseData.message || "Erro ao finalizar a participação. Tente novamente.");
+                        window.location.reload();
+                    }
+                } catch (error) {
+                    console.error("Erro na requisição:", error);
+                    alert("Erro ao conectar ao servidor. Tente novamente.");
+                }
+            }
+        });
+    }
+
+
+
 });
+
 
 

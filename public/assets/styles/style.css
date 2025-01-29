@@ -334,7 +334,7 @@ h1 {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    /*align-items: center;*/
     width:450px;
     vertical-align: middle;
     height: 100%;
@@ -464,10 +464,6 @@ input[type=number]::-webkit-inner-spin-button {
 
 .submit-requisitar-btn:hover {
     background-color: var(--lightpurple);
-}
-
-form {
-    width: 90%;
 }
 
 #registrar-form{

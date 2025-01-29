@@ -4,8 +4,8 @@
 /**
  * @var array $projetos Projetos que o usuário está vinculado.
  */
-?>
 
+?>
 
 
 <div id="main-content" class="main-content active">
@@ -32,6 +32,29 @@
     <?php
     }
     ?>
+    <?php if(\cefet\SyncLab\classes\Session::get('type') == 'discente'): ?>
+
+            <div class="text-center mb-4">
+                <h2 class="fw-bold">Requisitar Participação</h2>
+            </div>
+            <div class="container mt-5">
+                <input type="text" id="searchInput" class="form-control" placeholder="Digite o nome do projeto...">
+                <input type="hidden" id="idMat" value="<?= \cefet\SyncLab\classes\Session::get('idMat') ?>">
+                <table class="tablecontent mt-4">
+                    <thead>
+                        <tr class="table-row">
+                            <th>Nome</th>
+                            <th>Tutor</th>
+                            <th>Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody id="results"></tbody>
+                </table>
+            </div>
+
+
+    <?php endif; ?>
+
     <div class="text-center mb-4">
         <h2 class="fw-bold">Projetos</h2>
     </div>
@@ -71,4 +94,5 @@
     </table>
 </div>
 
-<script text="javascript" type="module"  src="/public/assets/js/Controllers/Projetos.js"></script>
+<script text="javascript" type="module" src="/public/assets/js/Controllers/Projetos.js"></script>
+<script text="javascript" type="module" src="/public/assets/js/scripts/searchProject.js"></script>

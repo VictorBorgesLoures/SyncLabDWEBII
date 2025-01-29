@@ -213,23 +213,25 @@ class User
     }
 
     public function getProjetos(int $idMat) {
-        $sql = "SELECT p.idProj, p.nomeProj, p.descricaoProj, p.statusProj, u.username as tutor, u2.username as criador, p.dataCriacaoProj FROM projeto as p, matricula as m, matricula as m2, usuario as u, usuario as u2
-                    WHERE m.idMat=:idMat
-                        and m.fk_Usuario_idUsuario=u.idUsuario
-                        and p.fk_Matricula_idMat=m.idMat
-                        and m2.fk_Usuario_idUsuario=u2.idUsuario
-                        and p.fk_Matricula_idMat_=m2.idMat 
-                        and p.statusProj='Ativo' 
-                UNION DISTINCT
-                SELECT p.idProj, p.nomeProj, p.descricaoProj, p.statusProj, u.username as tutor, u2.username as criador, p.dataCriacaoProj FROM projeto as p, integra as i, matricula as m, matricula as m2, matricula as m3, usuario as u, usuario as u2
-                    WHERE i.fk_Matricula_idMat=:idMat
-                        and i.fk_Projeto_idProj=p.idProj
-                        and m.fk_Usuario_idUsuario=u.idUsuario
-                        and p.fk_Matricula_idMat=m.idMat
-                        and m2.fk_Usuario_idUsuario=u2.idUsuario
-                        and p.fk_Matricula_idMat_=m2.idMat 
-                        and p.statusProj='Ativo' 
-                ;";
+        $sql = "SELECT p.idProj, p.nomeProj, p.descricaoProj, p.statusProj, u.username as tutor, u2.username as criador, p.dataCriacaoProj
+                    FROM projeto as p
+                    JOIN matricula as m ON p.fk_Matricula_idMat = m.idMat
+                    JOIN usuario as u ON m.fk_Usuario_idUsuario = u.idUsuario
+                    JOIN matricula as m2 ON p.fk_Matricula_idMat = m2.idMat
+                    JOIN usuario as u2 ON m2.fk_Usuario_idUsuario = u2.idUsuario
+                    WHERE m.idMat = :idMat AND p.statusProj = 'Ativo'
+    
+                    UNION DISTINCT
+                    
+                    SELECT p.idProj, p.nomeProj, p.descricaoProj, p.statusProj, u.username as tutor, u2.username as criador, p.dataCriacaoProj
+                    FROM  projeto as p
+                    JOIN integra as i ON i.fk_Projeto_idProj = p.idProj
+                    JOIN matricula as m ON p.fk_Matricula_idMat = m.idMat
+                    JOIN usuario as u ON m.fk_Usuario_idUsuario = u.idUsuario
+                    JOIN matricula as m2 ON p.fk_Matricula_idMat_ = m2.idMat
+                    JOIN usuario as u2 ON m2.fk_Usuario_idUsuario = u2.idUsuario
+                    WHERE i.fk_Matricula_idMat = :idMat AND p.statusProj = 'Ativo' AND i.status = 'Ativo';
+                ";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(':idMat', $idMat);        
         $stmt->execute();
@@ -261,7 +263,7 @@ class User
                     p.statusProj, 
                     p.dataCriacaoProj,
                     p.dataAtualizacao,
-                    u.username AS tutor, 
+                    u.nome AS tutor, 
                     u2.username AS criador
                 FROM projeto AS p
                 INNER JOIN matricula AS m ON p.fk_Matricula_idMat = m.idMat
@@ -282,6 +284,7 @@ class User
 
         $sqlDiscentes = "SELECT 
                             u3.nome AS discente_nome,
+                            m3.idMat as matricula_id,
                             m3.matriculaMat AS discente_matricula,
                             m3.tipoMat, 
                             i.dataInicio,
@@ -295,9 +298,9 @@ class User
         $stmt2->bindParam(':idProj', $idProj, PDO::PARAM_INT);
         $stmt2->execute();
 
-        $discentes = $stmt2->fetchAll(PDO::FETCH_ASSOC);
+        $participantes = $stmt2->fetchAll(PDO::FETCH_ASSOC);
 
-        $projeto['discentes'] = $discentes;
+        $projeto['participantes'] = $participantes;
 
         return $projeto;
     }
@@ -325,7 +328,7 @@ class User
 
     public function atualizaParticipacao($idProj, $idDiscente, $status)
     {
-        $sql = "UPDATE integra SET status = :status WHERE fk_Projeto_idProj = :idProj AND fk_Matricula_idMat = :idDiscente";
+        $sql = "UPDATE integra SET status = :status, dataInicio = CURRENT_TIMESTAMP WHERE fk_Projeto_idProj = :idProj AND fk_Matricula_idMat = :idDiscente";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindParam(':idProj', $idProj, PDO::PARAM_INT);
         $stmt->bindParam(':idDiscente', $idDiscente, PDO::PARAM_INT);
@@ -399,4 +402,78 @@ class User
             exit;
         }
     }
+
+    public function finalizarParticipacao(int $idProj, int $idMat)
+    {
+        $sql = "UPDATE integra SET status = 'Finalizado', dataFim = CURRENT_TIMESTAMP WHERE fk_Projeto_idProj = :idProj AND fk_Matricula_idMat = :idMat";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':idProj', $idProj, PDO::PARAM_INT);
+        $stmt->bindParam(':idMat', $idMat, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->rowCount() > 0;
+    }
+
+    public function getPossiveisTutores($id)
+    {
+
+        $sql = "SELECT u.idUsuario, u.nome, m.matriculaMat, m.tipoMat, m.idMat
+                    FROM usuario AS u
+                    JOIN matricula AS m ON u.idUsuario = m.fk_Usuario_idUsuario
+                    WHERE m.tipoMat = 3 AND EXISTS(
+                        SELECT 1 FROM integra
+                        WHERE fk_Matricula_idMat = m.idMat
+                        AND fk_Projeto_idProj = :id)
+                ";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+        if (!$result)
+            $result = [];
+        return $result;
+    }
+
+    public function alterarTutor(int $idProj, int $idMat): bool
+    {
+        $sql = "UPDATE projeto SET fk_Matricula_idMat = :idMat WHERE idProj = :idProj";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':idProj', $idProj);
+        $stmt->bindParam(':idMat', $idMat);
+        $stmt->execute();
+
+        return $stmt->rowCount() > 0;
+    }
+
+    public function listarPossiveisProjetos($nomeProjeto = '') {
+        $sql = "SELECT p.idProj, p.nomeProj, u.nome AS tutor
+                FROM projeto AS p
+                JOIN matricula AS m ON p.fk_Matricula_idMat = m.idMat
+                JOIN usuario AS u ON m.fk_Usuario_idUsuario = u.idUsuario
+                WHERE p.statusProj = 'Ativo'
+                AND LOWER(p.nomeProj) LIKE LOWER(:nomeProjeto)";
+
+        try {
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindValue(':nomeProjeto', '%' . $nomeProjeto . '%');
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Erro ao buscar projetos: " . $e->getMessage());
+            return [];
+        }
+    }
+
+    public function solicitarParticipacao(int $idProj, int $idMat)
+    {
+        $sql = "INSERT INTO integra (fk_Projeto_idProj, fk_Matricula_idMat, status) VALUES (:idProj, :idMat, 'Em análise')";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':idProj', $idProj);
+        $stmt->bindParam(':idMat', $idMat);
+        $stmt->execute();
+
+        return $this->conn->lastInsertId();
+    }
+
 }

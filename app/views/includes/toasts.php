@@ -1,4 +1,4 @@
-<div class="d-flex justify-content-end m-2">
+<div class="d-flex justify-content-end m-2 tst">
 <div id="notification-toast" class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true">
     <div class="d-flex">
         <div class="toast-body">

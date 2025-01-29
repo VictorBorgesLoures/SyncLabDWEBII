@@ -50,10 +50,15 @@ return [
         getenv("DOM_URI") . 'projetos' => fn() => self::load('ProjetosController', 'requisitarProjeto'),
         getenv("DOM_URI") . 'projetos/atualizar-participacao' => fn() => self::load('ProjetosController', 'atualizaParticipacao'),
         getenv("DOM_URI") . 'projetos/listar-possiveis-integrantes/{id}' => fn($params) => self::load('ProjetosController', 'listarPossiveisIntegrantes', $params),
-        getenv("DOM_URI") . 'projetos/adicionar-integrante/{id}' => fn($params) => self::load('ProjetosController', 'adicionarIntegrante', $params)
+        getenv("DOM_URI") . 'projetos/adicionar-integrante/{id}' => fn($params) => self::load('ProjetosController', 'adicionarIntegrante', $params),
+        getenv("DOM_URI") . 'projetos/alterar-tutor' => fn() => self::load('ProjetosController', 'alterarTutor'),
+        getenv("DOM_URI") . 'projetos/listar-possiveis-projetos' => fn($params) => self::load('ProjetosController', 'listarPossiveisProjetos', $params),
+        getenv("DOM_URI") . 'projetos/solicitar-participacao-projeto' => fn($params) => self::load('ProjetosController', 'solicitarParticipacao', $params),
+
     ],
 
     'put' => [
+        getenv("DOM_URI") . 'finalizar-participacao/{id}' => fn($params) => self::load('ProjetosController', 'finalizarParticipacao', $params)
 
 
     ],

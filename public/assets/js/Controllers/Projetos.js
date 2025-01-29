@@ -1,6 +1,5 @@
 import Form from '../Model/Form.js';
 import ValidatorRegex from '../Validators/ValidatorRegex.js'
-import ValidatorStrMinLen from '../Validators/ValidatorStrMinLen.js';
 import ValidatorRequired from '../Validators/ValidatorRequired.js';
 
 window.onload = () => {
@@ -57,5 +56,7 @@ window.onload = () => {
     }
 
     let formRegister = new Form(formData);
+
+
 
 }
