@@ -1,11 +1,18 @@
 <?php
 
 namespace cefet\SyncLab\controllers\dashboard;
-use cefet\SyncLab\classes\Enviromment;
+use cefet\SyncLab\classes\User;
 use cefet\SyncLab\classes\Session;
 use cefet\SyncLab\controllers\Controller;
 
 class DashboardController extends Controller {
+    
+    private $user;
+
+    public function __construct()
+    {
+        $this->user = new User();
+    }
 
     public function viewDashboard(): void
     {
@@ -33,11 +40,6 @@ class DashboardController extends Controller {
                 "totalAtividades" => $totalAtividades
             ]);
         }
-
-
     }
-
-
-
 
 }

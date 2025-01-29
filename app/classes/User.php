@@ -337,7 +337,7 @@ class User
     public function getDiscentes()
     {
         $sql = "SELECT u.idUsuario, u.nome, m.matriculaMat, m.tipoMat FROM usuario as u, matricula as m 
-                          WHERE u.idUsuario = m.fk_Usuario_idUsuario && m.tipoMat = 2";
+                          WHERE u.idUsuario = m.fk_Usuario_idUsuario && m.tipoMat = 3";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
         $result = $stmt->fetchAll();
@@ -346,5 +346,39 @@ class User
         return $result;
     }
 
+    public function listarPossiveisIntegrantes($idProj) {
+        $sql = "SELECT u.idUsuario, u.nome, m.matriculaMat, m.tipoMat FROM usuario as u, matricula as m
+            WHERE u.idUsuario = m.fk_Usuario_idUsuario AND m.tipoMat!=1 AND m.idMat not in (SELECT fk_Matricula_idMat from integra where fk_Projeto_idProj=:idProj);";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':idProj', $idProj);
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+        if (!$result)
+            $result = [];
+        return $result;
+    }
 
+    public function ehTutorOuCotutor($idProj, $idMat) {
+        $sql = "SELECT m.idMat FROM integra as i, matricula as m
+            WHERE m.idMat=:idMat AND i.fk_Matricula_idMat=m.idMat AND m.tipoMat == 2 AND i.fk_Projeto_idProj=idProj
+            UNION 
+            SELECT fk_Matricula_idMat FROM projeto WHERE idProj=:idProj AND fk_Matricula_idMat=:idMat;";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':idProj', $idProj);
+        $stmt->bindParam(':idMat', $idMat);
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+        if (!$result)
+            $result = [];
+        return $result;
+    }
+
+    public function adicionarIntegrante($idProj, $idMat) {
+        $sql = "INSERT INTO integra (fk_Projeto_idProj, fk_Matricula_idMat) values (:idProj, :idMat)";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':idProj', $idProj);
+        $stmt->bindParam(':idMat', $idMat);
+        $stmt->execute();
+        return $this->conn->lastInsertId();
+    }
 }

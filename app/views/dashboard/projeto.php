@@ -47,44 +47,45 @@
             <?php endforeach; ?>
         </tbody>
     </table>
-
-    <h6 class="fw-bold">Requisições Pendentes:</h6>
-    <div class="text-end">
+<?php if(\cefet\SyncLab\classes\Session::get("type") == "docente" ):
+    ?>
+    <div class="text-end mt-4">
         <button type="button" class="login-btn mb-5" data-bs-toggle="modal" data-bs-target="#adicionarDiscente">
-          Adicionar Discente
+            Adicionar Discente
         </button>
     </div>
-
+    
+    <h6 class="fw-bold">Requisições Pendentes:</h6>
     <table class="tablecontent">
-    <thead>
-        <tr class="table-row">
-            <th class="table-head">Nome</th>
-            <th class="table-head">Matrícula</th>
-            <th class="table-head">Status</th>
-            <th class="table-head">Enviar</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php foreach ($reqParticipacao as $requisicao) : ?>
-        <tr class="table-row" data-req="<?= $requisicao['fk_Matricula_idMat'] ?>/<?= $requisicao['fk_Projeto_idProj'] ?>">
-            <td class="table-data"><?= $requisicao['discente_nome'] ?></td>
-            <td class="table-data"><?= $requisicao['discente_matricula'] ?></td>
-            <td class="table-data">
-                <select>
-                    <option value="Ativo">Aceitar</option>
-                    <option value="Recusado">Recusar</option>
-                </select>
-            </td>
-            <td class="table-data">
-                <button type="button" class="req-btn">
-                    <img class="table-svg-icon" src="/public/assets/images/pencil-file-svgrepo-com.svg" alt="edit">
-                </button>
-            </td>
-        </tr>
-        <?php endforeach; ?>
-    </tbody>
-</table>
-
+        <thead>
+            <tr class="table-row">
+                <th class="table-head">Nome</th>
+                <th class="table-head">Matrícula</th>
+                <th class="table-head">Status</th>
+                <th class="table-head">Enviar</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($reqParticipacao as $requisicao) : ?>
+            <tr class="table-row" data-req="<?= $requisicao['fk_Matricula_idMat'] ?>/<?= $requisicao['fk_Projeto_idProj'] ?>">
+                <td class="table-data"><?= $requisicao['discente_nome'] ?></td>
+                <td class="table-data"><?= $requisicao['discente_matricula'] ?></td>
+                <td class="table-data">
+                    <select>
+                        <option value="Ativo">Aceitar</option>
+                        <option value="Recusado">Recusar</option>
+                    </select>
+                </td>
+                <td class="table-data">
+                    <button type="button" class="req-btn">
+                        <img class="table-svg-icon" src="/public/assets/images/pencil-file-svgrepo-com.svg" alt="edit">
+                    </button>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+<?php endif ?>
 </div>
 
 <div class="modal fade" id="adicionarDiscente" tabindex="-1" aria-labelledby="adicionarDiscente" aria-hidden="true">

@@ -109,9 +109,20 @@ class ProjetosController extends Controller
 
     }
 
-    public function pesquisaDiscentes()
-    {
+    public function listarPossiveisIntegrantes($id) {
+        die($id);
+        $novointegrantes = $this->user->listarPossiveisIntegrantes($id);
+        echo json_encode(['error' => false, 'data' => $novointegrantes]);
+    }
 
+    public function adicionarIntegrante($id) {
+        if(Session::get("type") == "docente" && count($this->user->ehTutorOuCotutor($id, Session::get("idMat"))) > 0) {
+            header('Content-Type: application/json');
+            $data = json_decode(file_get_contents('php://input'), true);
+    
+            $idMat = trim(htmlspecialchars($data['idMat'], ENT_QUOTES, 'UTF-8'), " ");
+            echo json_encode(['error' => false, 'data' => $this->user->adicionarIntegrante($id, $idMat)]);
+        }
     }
 
 }
