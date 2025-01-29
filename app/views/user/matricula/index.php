@@ -20,16 +20,11 @@
                     $first = 0;
                     foreach($listaMatriculas as $matricula) { 
                         $first++;
-                        $tipo = 'Admin';
-                        if ($matricula["tipoMat"] == 2)
-                            $tipo = 'Discente';
-                        else if ($matricula["tipoMat"] == 3)
-                            $tipo = 'Docente';
                         $className = "matricula-btn";
                         if($first == 1)
                             $className = $className." active";
                         echo '<button type="button" class="'.$className.'" data-id="'.$matricula["idMat"].'">
-                            '.$matricula["matriculaMat"].' - '.$tipo.'
+                            '.$matricula["matriculaMat"].' - '. \cefet\SyncLab\Helper\Helpers::matriculaType($matricula['tipoMat']).'
                         </button>';
                     }
                 }

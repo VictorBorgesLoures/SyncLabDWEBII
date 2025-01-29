@@ -48,9 +48,9 @@ class Helpers
         if ($idMat == 1) {
             return "admin";
         } else if ($idMat == 2) {
-            return "discente";
-        } else if ($idMat == 3) {
             return "docente";
+        } else if ($idMat == 3) {
+            return "discente";
         } else {
             return 'none';
         }

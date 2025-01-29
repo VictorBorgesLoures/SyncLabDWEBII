@@ -420,7 +420,7 @@ class User
         $sql = "SELECT u.idUsuario, u.nome, m.matriculaMat, m.tipoMat, m.idMat
                     FROM usuario AS u
                     JOIN matricula AS m ON u.idUsuario = m.fk_Usuario_idUsuario
-                    WHERE m.tipoMat = 3 AND EXISTS(
+                    WHERE m.tipoMat = 2 AND EXISTS(
                         SELECT 1 FROM integra
                         WHERE fk_Matricula_idMat = m.idMat
                         AND fk_Projeto_idProj = :id)

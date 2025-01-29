@@ -1,6 +1,8 @@
 import Toast from "../Model/Toast.js";
 window.addEventListener("load", async () => {
 
+    const toast = new Toast();
+
     let btnSalvar = document.getElementsByClassName("req-btn");
 
     Array.from(btnSalvar).forEach(botao => {
@@ -19,7 +21,6 @@ window.addEventListener("load", async () => {
 
             let select = tr.children[2].querySelector('select');
             let status = select.value;
-            console.log(id)
             let formValues = {
                 matriculaId: id.split('/')[0],
                 projetoId: id.split('/')[1],
@@ -40,8 +41,6 @@ window.addEventListener("load", async () => {
                     console.error('Erro na atualização:', response.statusText);
                     return;
                 }
-
-                const toast = new Toast();
 
                 const data = await response.json();
                 if (data.redirect) {
@@ -126,8 +125,6 @@ window.addEventListener("load", async () => {
         }
 
         resultados.forEach(usuario => {
-            console.log(usuario)
-            console.log(usuario.idMat)
             const row = document.createElement('tr');
             row.className = 'table-row';
             row.innerHTML = `
@@ -177,7 +174,6 @@ window.addEventListener("load", async () => {
         }
 
         const data = await response.json();
-        console.log(data);
         if (!data.error) {
             usuarios = data.data;
         }
@@ -219,7 +215,6 @@ window.addEventListener("load", async () => {
                     });
 
                     let responseData = await response.json(); // Converter resposta para JSON
-                    console.log(responseData);
                     if (response.ok && !responseData.error) {
                         let modalElement = document.getElementById('confirmarFinalizacaoModal');
                         let modal = bootstrap.Modal.getInstance(modalElement);

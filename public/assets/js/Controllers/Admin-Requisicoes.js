@@ -11,7 +11,6 @@ window.addEventListener("load", () => {
                 current = current.parentElement;
             }
             current = current.parentElement.parentElement;
-            console.log(current);
             let id = current.attributes['data-id'].value;
             let status = current.children[4].children[0].value;
             let formValues = {

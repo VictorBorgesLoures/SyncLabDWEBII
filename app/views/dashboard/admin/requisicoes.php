@@ -136,7 +136,7 @@ function filterRequisicoes(array $requisicoes): array
 
     <form method="GET" action="" class="mb-4">
         <div class="input-group">
-            <input type="text" name="search" class="form-control" placeholder="Pesquisar por usuário ou id da requisição"
+            <input type="text" name="search" class="form-control" placeholder="Pesquisar por usuário ou id da matrícula"
                    value="<?= htmlspecialchars($_GET['search'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
             <button type="submit" class="btn">
                 <i class="bi bi-search"></i> Pesquisar

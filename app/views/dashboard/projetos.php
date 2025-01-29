@@ -9,6 +9,7 @@
 
 
 <div id="main-content" class="main-content active">
+    <?= $this->insert('includes/toasts') ?>
     <?php
     echo \cefet\SyncLab\classes\Session::messageFlash();
     if (\cefet\SyncLab\classes\Session::get('type') == 'docente') {

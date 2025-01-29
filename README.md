@@ -22,7 +22,7 @@ https://www.figma.com/file/wwvQGpBu37nUcRAPB96Ib6/Synclab?type=design&node-id=0%
   - [x] Sidebar
   - [x] Criar solicitação de um novo projeto
   - [ ] Adicionar atividade ao projeto
-  - [ ] Gerenciar projeto e atividades
+  - [x] Gerenciar projeto e atividades
   - [ ] Aceitar solicitação de atividade
 
 #### 3º Sprint - 10/02/2025 - 13/02/2025

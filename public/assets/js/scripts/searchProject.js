@@ -1,3 +1,7 @@
+import Toast from "../Model/Toast.js";
+
+let toast = new Toast();
+
 function initializeSearch() {
     $('#searchInput').on('keyup', function () {
         const input = $(this).val().trim();
@@ -34,7 +38,7 @@ function displayResults(projects) {
     let html = '';
 
     projects.forEach(function (proj) {
-        html += '<tr class="table-row">' +
+        html += `<tr class="table-row" id="proj-${proj.idProj}">` +
             '<td>' + proj.nomeProj + '</td>' +
             '<td>' + proj.tutor + '</td>' +
             '<td>' +
@@ -48,7 +52,6 @@ function displayResults(projects) {
 
 window.solicitarParticipacao = function (idProj) {
     const idMat = document.getElementById('idMat').value;
-    console.log(idProj);
 
     const data = {
         idProj: idProj,
@@ -69,10 +72,11 @@ window.solicitarParticipacao = function (idProj) {
             return response.json();
         })
         .then(data => {
-            alert('Solicitação de participação enviada com sucesso!');
+            toast.notify('Solicitação de participação enviada com sucesso!');
+            document.getElementById('proj-'+idProj).remove();
         })
         .catch(error => {
-            alert('Erro ao enviar a solicitação de participação.');
+            toast.notify('Erro ao enviar a solicitação de participação.');
         });
 };
 

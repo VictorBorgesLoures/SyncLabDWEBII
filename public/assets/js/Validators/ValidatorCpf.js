@@ -7,7 +7,6 @@ export default class ValidatorCpf extends Validator {
     }
 
     validate(value) {
-        console.log(value);
         if (/^(\d)\1{10}$/.test(value)) {
             return false;
         }
