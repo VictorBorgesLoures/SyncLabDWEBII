@@ -10,8 +10,8 @@
 
 <div id="main-content" class="main-content active">
     <?= $this->insert('includes/toasts') ?>
+    <?=\cefet\SyncLab\classes\Session::messageFlash()?>
     <?php
-    echo \cefet\SyncLab\classes\Session::messageFlash();
     if (\cefet\SyncLab\classes\Session::get('type') == 'docente') {
     ?>
         <form class="form" id="projeto-form">

@@ -50,7 +50,7 @@ class ProjetosController extends Controller
             $descricaoProj = trim(htmlspecialchars($data['descricaoProj'], ENT_QUOTES, 'UTF-8'), " ");
 
             if(!FieldValidators::validate('nomeProj', $nomeProj) || !FieldValidators::validate('descricaoProj', $descricaoProj)) {
-                Session::flash('error', "Campos inválidos");
+                Session::flash('message', "Campos inválidos");
                 echo json_encode(['error' => true, 'redirect' => '/projetos']);
                 return;
             }
@@ -58,15 +58,15 @@ class ProjetosController extends Controller
             $idProj = $this->user->requisitarProjeto(Session::get('idMat'), $nomeProj, $descricaoProj);
             if ($idProj) {
                 $this->user->adicionarIntegrante($idProj, Session::get('idMat'), 'Ativo');
-                Session::flash('success', "Projeto requisitado com sucesso!");
+                Session::flash('message', "Projeto requisitado com sucesso!");
                 echo json_encode(['success' => true, 'redirect' => '/projetos']);
             } else {
-                Session::flash('error', "Não foi possível requisitar o projeto!");
+                Session::flash('message', "Não foi possível requisitar o projeto!");
                 echo json_encode(['error' => true, 'redirect' => '/projetos']);
             }
             BdConnection::getInstance()->closeConnection();
         } else {
-            Session::flash('error', "Você não é docente para realizar essa ação!");
+            Session::flash('message', "Você não é docente para realizar essa ação!");
             echo json_encode(['error' => true, 'redirect' => '/projetos']);
         }
     }
