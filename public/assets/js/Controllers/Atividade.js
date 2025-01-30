@@ -63,7 +63,7 @@ window.onload = () => {
                 toast.notify("Sucesso ao atualizar atividade");
                 setTimeout(() => {
                     window.location.reload();
-                }, 5000);
+                }, 2000);
             } else {
                 toast.notify("Algo de errado ocorreu");
             }

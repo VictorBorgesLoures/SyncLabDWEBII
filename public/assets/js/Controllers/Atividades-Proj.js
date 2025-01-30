@@ -55,10 +55,12 @@ window.onload = () => {
 
             const data = await response.json();
             if (!data.error) {
-                toast.notify("Sucesso ao adicionar atividade");
-                
+                toast.notify(data.message);
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
             } else {
-                toast.notify("Algo de errado ocorreu");
+                toast.notify(data.message);
             }
         }
 

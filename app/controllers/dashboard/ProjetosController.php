@@ -216,14 +216,14 @@ class ProjetosController extends Controller
         $data = json_decode(file_get_contents('php://input'), true);
 
         $idProj = filter_var($data['idProj'], FILTER_SANITIZE_NUMBER_INT);
-        $tituloAtv = filter_var($data['tituloAtv'], FILTER_SANITIZE_NUMBER_INT);
-        $descricaoAtv = filter_var($data['descricaoAtv'], FILTER_SANITIZE_NUMBER_INT);
-        $dataFimAtv = filter_var($data['dataFimAtv'], FILTER_SANITIZE_NUMBER_INT);
+        $tituloAtv = trim(htmlspecialchars($data['tituloAtv'], ENT_QUOTES, 'UTF-8'), " ");
+        $descricaoAtv = trim(htmlspecialchars($data['descricaoAtv'], ENT_QUOTES, 'UTF-8'), " ");
+        $dataFimAtv = trim(htmlspecialchars($data['dataFimAtv'], ENT_QUOTES, 'UTF-8'), " ");
 
-        if($this->user->adicionarAtividade($idProj, Session::get("type") == "docente" ? true : false , $tituloAtv, $descricaoAtv, $dataFimAtv)) {
-            echo json_encode(['error' => false, 'message' => Session::get("type") == "docente" ? "Inserção" : "Solicitação" . 'de atividade enviada com sucesso!']);
+        if($this->user->adicionarAtividade($idProj, (Session::get("type") == "docente" ? true : false), $tituloAtv, $descricaoAtv, $dataFimAtv)) {
+            echo json_encode(['error' => false, 'message' => (Session::get("type") == "docente" ? "Inserção" : "Solicitação") . ' de atividade enviada com sucesso!']);
         } else {
-            echo json_encode(['error' => true, 'message' => 'Não foi possível enviar a '.Session::get("type") == "docente" ? "inserção" : "solicitação" .' de atividade!']);
+            echo json_encode(['error' => true, 'message' => 'Não foi possível enviar a '.(Session::get("type") == "docente" ? "inserção" : "solicitação") .' de atividade!']);
         }
     }
 
