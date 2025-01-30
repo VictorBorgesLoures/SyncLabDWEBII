@@ -75,12 +75,16 @@ class ProjetosController extends Controller
     {
         $id = filter_var($params[0], FILTER_SANITIZE_NUMBER_INT);
         $this->setProjeto($id);
-        $this->view("dashboard/projeto", [
-            "projeto" => $this->getProjeto(),
-            "reqParticipacao" => $this->user->getRequisicoesParticipacao($id),
-            "isTutor" => count($this->user->ehTutorOuCotutor($id, Session::get('idMat'))) > 0,
-            "possiveisTutores" => $this->user->getPossiveisTutores($id)
-        ]);
+        if ($this->getProjeto() == null) {
+            $this->view("error/projeto-404");
+        } else {
+            $this->view("dashboard/projeto", [
+                "projeto" => $this->getProjeto(),
+                "reqParticipacao" => $this->user->getRequisicoesParticipacao($id),
+                "isTutor" => count($this->user->ehTutorOuCotutor($id, Session::get('idMat'))) > 0,
+                "possiveisTutores" => $this->user->getPossiveisTutores($id)
+            ]);
+        }
     }
 
     public function getProjeto()
@@ -170,7 +174,7 @@ class ProjetosController extends Controller
             if($this->user->alterarTutor($idProj, $idMat)) {
                 $this->user->atualizaParticipacao($idProj, $idMat, 'Ativo'); //Caso o docente requeriu participação no projeto
                 Session::flash('message', 'Tutor alterado com sucesso!');
-                Helpers::redirect('/projetos/' . $idProj);
+                Helpers::redirect('projetos/' . $idProj);
             } else {
                 Session::flash('error', 'Não foi possível alterar o tutor!');
                 Helpers::redirect('projetos/' . $idProj);

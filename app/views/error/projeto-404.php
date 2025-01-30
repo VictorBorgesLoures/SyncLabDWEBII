@@ -1,3 +1,7 @@
+<?php use cefet\SyncLab\classes\Session;
+Session::set('active', 'projetos');
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -9,15 +13,8 @@
 <body>
 <div class="error-container">
     <h1>Ops! Algo deu errado.</h1>
-    <p>No momento, estamos enfrentando problemas técnicos ou realizando uma manutenção programada.</p>
-    <p>Por favor, tente novamente mais tarde. Se o problema persistir, entre em contato conosco.</p>
-    <?php if (\cefet\SyncLab\classes\Session::has('__flash')) : ?>
-        <div class="error-message">
-            <p><strong>Detalhes do erro:</strong></p>
-            <p><?php echo \cefet\SyncLab\classes\Session::messageFlash(); ?></p>
-        </div>
-    <?php endif; ?>
-    <a href="/">Voltar para a página inicial</a>
+    <p>Este projeto não foi encontrado.</p>
+    <a href="/projetos">Voltar para a página de projetos</a>
     <div class="contact-info">
         <p>Para mais assistência, envie um email para: <a href="mailto:contato@synclab.com.br">contato@synclab.com.br</a></p>
     </div>
