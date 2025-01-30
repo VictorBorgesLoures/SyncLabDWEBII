@@ -11,7 +11,6 @@ use cefet\SyncLab\classes\Session;
             <li class="user-menu">
                 <span class="dash-nav-option"><?= Session::get('user_name') !== null ? Session::get('user_name') : 'UNDEFINED'?></span>
                 <ul class="submenu">
-                    <li><a href="#">Perfil</a></li>
                     <li><a href="/matricula">Matrícula</a></li>
                 </ul>
             </li>
