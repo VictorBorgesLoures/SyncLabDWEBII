@@ -56,8 +56,9 @@ Session::set('active', 'projetos');
                 <th class="table-head">Tipo</th>
                 <th class="table-head">Início</th>
                 <th class="table-head">Fim</th>
-                <th class="table-head">Atividade</th>
-                <th class="table-head">Finalizar</th>
+                <?php if(Session::get("type") == "docente" ):?>
+                    <th class="table-head">Finalizar</th>
+                <?php endif; ?>
             </tr>
         </thead>
         <tbody>
@@ -68,17 +69,6 @@ Session::set('active', 'projetos');
                     <td class="table-data"><?= \cefet\SyncLab\Helper\Helpers::matriculaType($participante['tipoMat']) ?></td>
                     <td class="table-data"><?= $participante['dataInicio'] ?></td>
                     <td class="table-data"><?= $participante['dataFim'] ?? '-' ?></td>
-                    <?php if (!isset($participante['dataFim'])): ?>
-                        <td class="table-data">
-                            <a href="">
-                                <button type="button" class="btn-success">
-                                    <img class="table-svg-icon" src="/public/assets/images/pencil-file-svgrepo-com.svg" alt="edit">
-                                </button>
-                            </a>
-                        </td>
-                    <?php else: ?>
-                        <td class="table-data"> -- </td>
-                    <?php endif;?>
 
                     <?php if (Session::get("type") == "docente" && !isset($participante['dataFim'])): ?>
                     <td class="table-data">
@@ -86,8 +76,6 @@ Session::set('active', 'projetos');
                             <i class="bi bi-x-circle"></i>
                         </button>
                     </td>
-                    <?php else: ?>
-                    <td class="table-data"> -- </td>
                     <?php endif; ?>
                 </tr>
             <?php endforeach; ?>
