@@ -2,13 +2,14 @@
 
 namespace cefet\SyncLab\classes\exceptions;
 
+use cefet\SyncLab\Helper\Helpers;
 use Exception;
 
 class RotaNaoExisteException extends Exception
 {
     public function __construct($message = "A rota não existe", $code = 0, Exception $previous = null) {
         parent::__construct($message, $code, $previous);
-        redirect('/error404');
+        Helpers::redirect('error404');
     }
 
 

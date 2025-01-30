@@ -57,6 +57,10 @@ return [
         getenv("DOM_URI") . 'projetos/alterar-tutor' => fn() => self::load('ProjetosController', 'alterarTutor'),
         getenv("DOM_URI") . 'projetos/listar-possiveis-projetos' => fn($params) => self::load('ProjetosController', 'listarPossiveisProjetos', $params),
         getenv("DOM_URI") . 'projetos/solicitar-participacao-projeto' => fn($params) => self::load('ProjetosController', 'solicitarParticipacao', $params),
+        getenv("DOM_URI") . 'atualizar-atividade' => fn() => self::load('AcoesController', 'atualizarAtividade'),
+        getenv("DOM_URI") . 'atividade/listar-possiveis-participantes/{id}' => fn($params) => self::load('AcoesController', 'listarPossiveisParticipantes', $params),
+        getenv("DOM_URI") . 'atividade/adicionar-participante/{id}' => fn($params) => self::load('AcoesController', 'adicionarParticipante', $params),
+
 
     ],
 
@@ -67,6 +71,7 @@ return [
     ],
 
     'delete' => [
+        getenv("DOM_URI") . 'atividade/remover-participacao' => fn() => self::load('AcoesController', 'removerParticipacao'),
 
     ],
 ];

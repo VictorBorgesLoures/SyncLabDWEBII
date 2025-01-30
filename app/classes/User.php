@@ -499,14 +499,18 @@ class User
 
     public function adicionarAtividade(int $idProj, bool $isDocente, string $tituloAtv, string $descricaoAtv, string $dataFimAtv) {
         $sql = "INSERT INTO atividade (fk_Projeto_idProj, tituloAtv, descricaoAtv, dataFimAtv";
-        if($isDocente)
-            $sql = $sql.", statusAtv";
-        
-        $sql= $sql.") VALUES (:idProj, :tituloAtv, :descricaoAtv, :dataFimAtv";
-        if($isDocente)
-            $sql = $sql.", 'Em andamento'";
 
-        $sql = $sql . ");";
+        if ($isDocente) {
+            $sql .= ", statusAtv";
+        }
+
+        $sql .= ") VALUES (:idProj, :tituloAtv, :descricaoAtv, :dataFimAtv";
+
+        if ($isDocente) {
+            $sql .= ", 'Em andamento'";
+        }
+
+        $sql .= ");";
 
         $stmt = $this->conn->prepare($sql);
         $stmt->bindParam(':idProj', $idProj);
@@ -518,5 +522,136 @@ class User
 
         return $this->conn->lastInsertId();
     }
+
+    public function getAtividade(int $idAtv)
+    {
+        $sql = "SELECT * FROM atividade WHERE idAtv = :idAtv";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':idAtv', $idAtv, PDO::PARAM_INT);
+        $stmt->execute();
+        $atividade = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($atividade) {
+            $sql = "
+                SELECT u.idUsuario, u.nome, u.email, m.matriculaMat as matricula, m.idMat as idMatricula
+                FROM usuario u
+                JOIN matricula m ON u.idUsuario = m.fk_Usuario_idUsuario
+                JOIN participa p ON m.idMat = p.fk_Matricula_idMat
+                WHERE p.fk_Atividade_idAtv = :idAtv
+            ";
+
+            $stmt2 = $this->conn->prepare($sql);
+            $stmt2->bindParam(':idAtv', $idAtv, PDO::PARAM_INT);
+            $stmt2->execute();
+            $participantes = $stmt2->fetchAll(PDO::FETCH_ASSOC);
+            $atividade['participantes'] = $participantes;
+
+        }
+
+        return $atividade;
+    }
+
+    public function ehDocenteAtividade(int $idAtv, $idTutor)
+    {
+        $sql = "SELECT fk_Projeto_idProj FROM atividade WHERE idAtv = :idAtv";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':idAtv', $idAtv);
+        $stmt->execute();
+        $idProj = $stmt->fetchColumn();
+
+        $sql = "SELECT i.fk_Matricula_idMat
+                FROM integra i
+                JOIN matricula m ON i.fk_Matricula_idMat = m.idMat
+                WHERE i.fk_Projeto_idProj = :idProj
+                  AND i.status = 'Ativo'
+                  AND m.idMat = :idMat
+                  AND m.tipoMat = 2";
+        $stmt2 = $this->conn->prepare($sql);
+        $stmt2->bindParam(':idProj', $idProj);
+        $stmt2->bindParam(':idMat', $idTutor);
+        $stmt2->execute();
+
+        $idDocentes = $stmt2->fetchAll(PDO::FETCH_COLUMN);
+        return in_array($idTutor, $idDocentes);
+    }
+
+    public function atualizarAtividade(int $idAtv, string $tituloatv,string $dataIniAtv, string $dataFimAtv, string $statusAtv, string $descricaoAtv): bool
+    {
+        $sql = "UPDATE atividade SET dataIniAtv = :dataIniAtv, dataFimAtv = :dataFimAtv, statusAtv = :statusAtv, tituloAtv = :tituloAtv, descricaoAtv = :descricaoAtv WHERE idAtv = :idAtv";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':idAtv', $idAtv);
+        $stmt->bindParam(':dataIniAtv', $dataIniAtv);
+        $stmt->bindParam(':dataFimAtv', $dataFimAtv);
+        $stmt->bindParam(':statusAtv', $statusAtv);
+        $stmt->bindParam(':descricaoAtv', $descricaoAtv);
+        $stmt->bindParam(':tituloAtv', $tituloatv);
+
+        $stmt->execute();
+
+        return $stmt->rowCount() > 0;
+    }
+
+    public function listarPossiveisParticipantesAtv($idProj): false|array
+    {
+        $sql = "SELECT u.idUsuario, u.nome, m.matriculaMat, m.tipoMat, m.idMat 
+                    FROM usuario AS u
+                    JOIN matricula AS m ON u.idUsuario = m.fk_Usuario_idUsuario
+                    WHERE m.tipoMat = 3 AND EXISTS (
+                        SELECT 1 FROM integra 
+                        WHERE fk_Matricula_idMat = m.idMat 
+                        AND fk_Projeto_idProj = :idProj 
+                        AND status = 'Ativo'
+                )";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':idProj', $idProj);
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+        if (!$result)
+            $result = [];
+        return $result;
+    }
+
+    public function getProjAtividade(int $idAtv)
+    {
+        $sql = "SELECT fk_Projeto_idProj FROM atividade WHERE idAtv = :idAtv";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':idAtv', $idAtv);
+        $stmt->execute();
+        return $stmt->fetchColumn();
+    }
+
+    public function adicionarParticipanteAtv(int $idAtv, string $idMat): false|string
+    {
+        $sql = "INSERT INTO participa (fk_Atividade_idAtv, fk_Matricula_idMat) VALUES (:idAtv, :idMat)";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':idAtv', $idAtv);
+        $stmt->bindParam(':idMat', $idMat);
+        $stmt->execute();
+
+        return $this->conn->lastInsertId();
+    }
+
+    public function removerDiscenteAtv(int $idAtv, int $idMat): bool
+    {
+        $sql = "DELETE FROM participa WHERE fk_Atividade_idAtv = :idAtv AND fk_Matricula_idMat = :idMat";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':idAtv', $idAtv);
+        $stmt->bindParam(':idMat', $idMat);
+        $stmt->execute();
+
+        return $stmt->rowCount() > 0;
+    }
+
+    public function ehDiscenteAtividade(int $idAtv, int $idMat): bool
+    {
+        $sql = "SELECT fk_Matricula_idMat FROM participa WHERE fk_Atividade_idAtv = :idAtv";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':idAtv', $idAtv);
+        $stmt->execute();
+        $idDiscentes = $stmt->fetchAll(PDO::FETCH_COLUMN);
+        return in_array($idMat, $idDiscentes);
+    }
+
 
 }
