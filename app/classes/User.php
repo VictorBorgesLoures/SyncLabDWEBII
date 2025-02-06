@@ -203,7 +203,7 @@ class User
             $campoStatus = "statusProj";
             $campoId = "idProj";
         }
-        $sql = "UPDATE ".$tabela." SET ".$campoStatus."=:novoStatus WHERE ".$campoId."=:id;";
+        $sql = "UPDATE ".$tabela." SET ".$campoStatus."=:novoStatus WHERE ".$campoId."=:id LIMIT 1;";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindParam(':id', $id);
         $stmt->bindParam(':novoStatus', $novoStatus);
@@ -405,7 +405,7 @@ class User
 
     public function finalizarParticipacao(int $idProj, int $idMat)
     {
-        $sql = "UPDATE integra SET status = 'Finalizado', dataFim = CURRENT_TIMESTAMP WHERE fk_Projeto_idProj = :idProj AND fk_Matricula_idMat = :idMat";
+        $sql = "UPDATE integra as i SET i.status = 'Finalizado', i.dataFim = CURRENT_TIMESTAMP WHERE i.status='Ativo' AND fk_Projeto_idProj = :idProj AND fk_Matricula_idMat = :idMat LIMIT 1;";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindParam(':idProj', $idProj, PDO::PARAM_INT);
         $stmt->bindParam(':idMat', $idMat, PDO::PARAM_INT);
@@ -446,17 +446,19 @@ class User
         return $stmt->rowCount() > 0;
     }
 
-    public function listarPossiveisProjetos($nomeProjeto = '') {
+    public function listarPossiveisProjetos($idMat, $nomeProjeto = '') {
         $sql = "SELECT p.idProj, p.nomeProj, u.nome AS tutor
                 FROM projeto AS p
                 JOIN matricula AS m ON p.fk_Matricula_idMat = m.idMat
                 JOIN usuario AS u ON m.fk_Usuario_idUsuario = u.idUsuario
                 WHERE p.statusProj = 'Ativo'
-                AND LOWER(p.nomeProj) LIKE LOWER(:nomeProjeto)";
-
+                AND LOWER(p.nomeProj) LIKE LOWER(:nomeProjeto)
+                AND :idMat not in (SELECT i.fk_Matricula_idMat from integra as i 
+                WHERE i.fk_Projeto_idProj = p.idProj and i.status in ('Ativo', 'Em análise'));";
         try {
             $stmt = $this->conn->prepare($sql);
             $stmt->bindValue(':nomeProjeto', '%' . $nomeProjeto . '%');
+            $stmt->bindValue(':idMat', $idMat);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {

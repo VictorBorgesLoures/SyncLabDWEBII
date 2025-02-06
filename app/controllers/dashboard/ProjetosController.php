@@ -189,8 +189,7 @@ class ProjetosController extends Controller
     {
         header('Content-Type: application/json');
         $nomeProjeto = $_POST['nomeProjeto'] ?? '';
-        $projetos = $this->user->listarPossiveisProjetos($nomeProjeto);
-
+        $projetos = $this->user->listarPossiveisProjetos(Session::get('idMat'), $nomeProjeto);
         if (!empty($projetos)) {
             echo json_encode(['error' => false, 'data' => $projetos]);
         } else {
