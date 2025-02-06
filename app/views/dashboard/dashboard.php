@@ -1,10 +1,18 @@
-<?php $this->layout('masterApp', ['title' => 'Dashboard']);
+<?php use cefet\SyncLab\classes\Session;
+
+$this->layout('masterApp', ['title' => 'Dashboard']);
 \cefet\SyncLab\classes\Session::set('active', 'dashboard');
 /**
- * @var int $totalProjetos Quantidade de projetos que o usuário está vinculado.
- * @var int $totalAtividades Quantidade de atividades em aberto.
+ * @var int $totalProjetos Total de projetos ativos
+ * @var int $atvEmAndamento Total de atividades em andamento
+ * @var int $atvConcluidas Total de atividades concluídas
+ * @var int $totalReqMat Total de requisições concluídas
+ * @var int $totalReqProj Total de requisições de projetos concluídas
  */
+
+
 ?>
+
 <div id="main-content" class="main-content active">
     <h2>Bem vindo ao Dashboard SyncLab</h2>
     <div class="filter-chart">
@@ -26,24 +34,64 @@
     </div>
 
     <script src="/public/assets/js/lib/charts.js"></script>
-    <div class="cards-container">
-        <div class="card-box">
-            <div class="card-title">
-                <h3>Projetos</h3>
+    <?php if (Session::get('type') == 'admin') : ?>
+        <div class="cards-container">
+            <div class="card-box">
+                <div class="card-title">
+                    <h3>Requisições Matrícula</h3>
+                </div>
+                <div class="card-content">
+                    <p>Você já concluiu <?=$totalReqMat?> requisições de matrícula!
+                    </p>
+                </div>
             </div>
-            <div class="card-content">
-                <p>Você está vinculado à <?=$totalProjetos?> projetos no momento! Veja <a href="/projetos">aqui</a>.
-                </p>
+            <div class="card-box">
+                <div class="card-title">
+                    <h3>Requisições Projetos</h3>
+                </div>
+                <div class="card-content">
+                    <p>Você já concluiu <?=$totalReqProj?> requisições de projetos!
+                    </p>
+                </div>
+            </div>
+            <div class="card-box">
+                <div class="card-title">
+                    <h3>Projetos</h3>
+                </div>
+                <div class="card-content">
+                    <p>Existem <?=$totalProjetos?> projetos ativos no momento! Veja <a href="/projetos">aqui</a>.
+                    </p>
+                </div>
+            </div>
+            <div class="card-box">
+                <div class="card-title">
+                    <h3>Ações</h3>
+                </div>
+                <div class="card-content">
+                    <p>Existem <?=$atvEmAndamento?> atividades em aberto no momento, <a href="/atividades">cheque aqui</a>.</p>
+                </div>
             </div>
         </div>
-        <div class="card-box">
-            <div class="card-title">
-                <h3>Ações</h3>
+    <?php else: ?>
+        <div class="cards-container">
+            <div class="card-box">
+                <div class="card-title">
+                    <h3>Projetos</h3>
+                </div>
+                <div class="card-content">
+                    <p>Você está vinculado à <?=$totalProjetos?> projetos no momento! Veja <a href="/projetos">aqui</a>.
+                    </p>
+                </div>
             </div>
-            <div class="card-content">
-                <p><?=$totalAtividades?> atividades estão em aberto, <a href="/acoes">cheque aqui</a>.</p>
+            <div class="card-box">
+                <div class="card-title">
+                    <h3>Ações</h3>
+                </div>
+                <div class="card-content">
+                    <p><?=$atvEmAndamento?> atividades estão em aberto, <a href="/atividades">cheque aqui</a>.</p>
+                </div>
             </div>
         </div>
     </div>
-</div>
+    <?php endif; ?>
 <script text="javascript" type="module"  src="/public/assets/js/Controllers/Dashboard.js"></script>

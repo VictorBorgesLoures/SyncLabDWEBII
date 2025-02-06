@@ -1,42 +1,5 @@
 const ctx = document.getElementById('myChart');
 
-const datasetProjeto = {
-    id: 'proj',
-    label: '# de Projetos Ativos',
-    data: [3, 9, 9, 11, 10, 8],
-    borderColor: 'rgb(75, 192, 192)',
-    borderWidth: 1
-}
-
-const datasetAtividade = {
-    id: 'atv',
-    label: '# de Atividades Realizadas',
-    data: [14, 66, 32, 54, 21, 32],
-    borderColor: 'rgb(75, 2, 3)',
-    borderWidth: 1
-}
-
-const datasetRequisicoes = {
-    id: 'req',
-    label: '# de Requisições Concluídas',
-    data: [2, 4, 13, 2, 1, 0],
-    borderColor: 'rgb(2, 4, 66)',
-    borderWidth: 1
-}
-
-const datas = {
-    proj: datasetProjeto,
-    atv: datasetAtividade,
-    req: datasetRequisicoes
-}
-
-const data = {
-    labels: ['Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro'],
-    datasets: [
-        datasetProjeto
-    ]
-}
-
 window.onload = () => {
 
     let sidebarIsOpen = true;
@@ -67,31 +30,62 @@ window.onload = () => {
         sidebarIsOpen = !sidebarIsOpen;
     });
 
-    const stackedLine = new Chart(ctx, {
-        type: 'line',
-        data: data,
-        options: {
-            scales: {
-                y: {
-                    stacked: false
-                }
-            }
-        }
-    });
+    fetch('/gerarGrafico', {
+        method: 'POST'
+    })
+    .then(response => response.json())
+    .then(jsonData => {
+        const datasetProjeto = jsonData.datasetProjeto;
+        const datasetAtividade = jsonData.datasetAtividade;
+        const datasetRequisicoes = jsonData.datasetRequisicoes;
 
-    let inputs = document.getElementsByClassName('filter-option')
-    for (let i = 0; i < inputs.length; i++) {
-        inputs[i].addEventListener('change', e => {
-            if (inputs[i].checked) {
-                stackedLine.data.datasets.push(datas[inputs[i].value])
-            } else {
-                for (let d in stackedLine.data.datasets) {
-                    if (stackedLine.data.datasets[d].id == inputs[i].value) {
-                        stackedLine.data.datasets.splice(d, 1);
+        const datas = {
+            proj: datasetProjeto,
+            atv: datasetAtividade,
+            req: datasetRequisicoes
+        }
+
+        const data = {
+            labels: [
+                'Janeiro', 'Fevereiro', 'Março', 'Abril',
+                'Maio', 'Junho', 'Julho', 'Agosto',
+                'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+            ].slice(0, new Date().getMonth() + 1),
+            datasets: [
+                datasetProjeto
+            ]
+        };
+
+        const stackedLine = new Chart(ctx, {
+            type: 'line',
+            data: data,
+            options: {
+                scales: {
+                    y: {
+                        stacked: false
                     }
                 }
             }
-            stackedLine.update();
-        })
-    }
-}
+        });
+
+        let inputs = document.getElementsByClassName('filter-option');
+        for (let i = 0; i < inputs.length; i++) {
+            inputs[i].addEventListener('change', e => {
+                if (inputs[i].checked) {
+                    stackedLine.data.datasets.push(datas[inputs[i].value]);
+                } else {
+                    for (let d in stackedLine.data.datasets) {
+                        if (stackedLine.data.datasets[d].id === inputs[i].value) {
+                            stackedLine.data.datasets.splice(d, 1);
+                            break;
+                        }
+                    }
+                }
+                stackedLine.update();
+            });
+        }
+    })
+    .catch(error => {
+        console.error("Erro ao buscar dados do gráfico: ", error);
+    });
+};

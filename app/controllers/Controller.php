@@ -1,9 +1,14 @@
 <?php
 
 namespace cefet\SyncLab\controllers;
+use cefet\SyncLab\classes\Session;
 use League\Plates\Engine;
 abstract class Controller
 {
+    public function __construct()
+    {
+        Session::verifyLogin();
+    }
 
     /**
      * Renderiza uma vista com os dados fornecidos.
