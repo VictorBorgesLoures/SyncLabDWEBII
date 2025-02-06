@@ -186,7 +186,7 @@ class User
     }
 
     public function getReqProjetos() {
-        $stmt = $this->conn->prepare("SELECT p.idProj, p.nomeProj, p.descricaoProj, p.statusProj, u.username, m.matriculaMat as matricula, p.dataCriacaoProj FROM projeto as p, matricula as m, usuario as u WHERE statusProj = 'Em análise' and p.fk_Matricula_idMat_=m.idMat and u.idUsuario=m.fk_Usuario_idUsuario");
+        $stmt = $this->conn->prepare("SELECT p.idProj, p.nomeProj, p.descricaoProj, p.statusProj, u.username, m.matriculaMat as matricula, p.dataCriacaoProj FROM projeto as p, matricula as m, usuario as u WHERE p.fk_Matricula_idMat_=m.idMat and u.idUsuario=m.fk_Usuario_idUsuario");
         $stmt->execute();
         $result = $stmt->fetchAll();
         if (!$result)
@@ -652,6 +652,56 @@ class User
         $idDiscentes = $stmt->fetchAll(PDO::FETCH_COLUMN);
         return in_array($idMat, $idDiscentes);
     }
+
+    public function getTotalRequisicoesMatConcluidas()
+    {
+        $stmt = $this->conn->prepare("SELECT COUNT(*) FROM matricula WHERE statusMat != 'Em análise'");
+        $stmt->execute();
+        return $stmt->fetchColumn();
+    }
+
+    public function getTotalRequisicoesProjConcluidas()
+    {
+        $stmt = $this->conn->prepare("SELECT COUNT(*) FROM projeto WHERE statusProj != 'Em análise'");
+        $stmt->execute();
+        return $stmt->fetchColumn();
+    }
+
+    public function getRequisicoesMes()
+    {
+        $sql = "SELECT
+                MONTH(dataCriacaoMat) AS mes,
+                YEAR(dataCriacaoMat) AS ano,
+                COUNT(*) AS total_mat
+                    FROM matricula
+                    WHERE statusMat != 'Em análise'
+                    GROUP BY ano, mes
+                    ORDER BY ano DESC, mes DESC";
+        $stmt = $this->conn->query($sql);
+
+        $reqMes = array_fill(0, 12, 0);
+
+        foreach ($stmt->fetchAll() as $req) {
+            $reqMes[$req['mes'] - 1] = $req['total_mat'];
+        }
+
+        $sql = "SELECT
+                MONTH(dataCriacaoProj) AS mes,
+                YEAR(dataCriacaoProj) AS ano,
+                COUNT(*) AS total_proj
+                    FROM projeto
+                    WHERE statusProj != 'Em análise'
+                    GROUP BY ano, mes
+                    ORDER BY ano DESC, mes DESC";
+        $stmt = $this->conn->query($sql);
+
+        foreach ($stmt->fetchAll() as $req) {
+            $reqMes[$req['mes'] - 1] += $req['total_proj'];
+        }
+
+        return $reqMes;
+    }
+
 
 
 }

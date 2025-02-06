@@ -3,6 +3,7 @@
 namespace cefet\SyncLab\classes;
 
 use cefet\SyncLab\classes\exceptions\PrivilegiesException;
+use cefet\SyncLab\Helper\Helpers;
 use Exception;
 
 class Session
@@ -167,7 +168,7 @@ class Session
     {
         if(!Session::has('loggedin')){
             Session::flash('error', 'Você precisa estar logado para acessar essa página');
-            redirect('login');
+            Helpers::redirect('login');
         }
     }
 

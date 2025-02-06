@@ -60,6 +60,7 @@ return [
         getenv("DOM_URI") . 'atualizar-atividade' => fn() => self::load('AcoesController', 'atualizarAtividade'),
         getenv("DOM_URI") . 'atividade/listar-possiveis-participantes/{id}' => fn($params) => self::load('AcoesController', 'listarPossiveisParticipantes', $params),
         getenv("DOM_URI") . 'atividade/adicionar-participante/{id}' => fn($params) => self::load('AcoesController', 'adicionarParticipante', $params),
+        getenv("DOM_URI") . 'gerarGrafico' => fn() => self::load('DashboardController', 'gerarGrafico'),
 
 
     ],
