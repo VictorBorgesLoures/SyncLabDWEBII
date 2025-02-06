@@ -27,12 +27,12 @@ https://www.figma.com/file/wwvQGpBu37nUcRAPB96Ib6/Synclab?type=design&node-id=0%
 
 #### 3º Sprint - 10/02/2025 - 13/02/2025
 - Discente
-  - [ ] Sidebar
-  - [ ] Visualizar projeto e atividades
+  - [X] Sidebar
+  - [X] Visualizar projeto e atividades
   - [ ] Solicitar criação de atividade
 - Admin
-  - [ ] Dashboard com dados da aplicação
-  - [ ] Dashboard com gráfico: projetos ativos, atividades
+  - [X] Dashboard com dados da aplicação
+  - [X] Dashboard com gráfico: projetos ativos, atividades
 
 
 ## Tecnologias Utilizadas
