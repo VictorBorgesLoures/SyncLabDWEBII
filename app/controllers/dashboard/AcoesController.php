@@ -13,6 +13,8 @@ class AcoesController extends Controller {
     private User $user;
     public function __construct()
     {
+        Session::verifyLogin();
+
         $this->setAcoes();
         $this->user = new User();
     }
@@ -50,7 +52,7 @@ class AcoesController extends Controller {
 
     }
 
-    public function removerParticipacao()
+    public function removerParticipacao(): void
     {
         header('Content-Type: application/json');
         $data = json_decode(file_get_contents('php://input'), true);
@@ -68,7 +70,7 @@ class AcoesController extends Controller {
         }
     }
 
-    public function atualizarAtividade()
+    public function atualizarAtividade(): void
     {
         $data = json_decode(file_get_contents('php://input'), true);
 
@@ -91,7 +93,7 @@ class AcoesController extends Controller {
         }
     }
 
-    public function listarPossiveisParticipantes($params)
+    public function listarPossiveisParticipantes($params): void
     {
         header('Content-Type: application/json');
         $idProj = $this->user->getProjAtividade($params[0]);
@@ -102,7 +104,7 @@ class AcoesController extends Controller {
     /**
      * @throws PrivilegiesException
      */
-    public function adicionarParticipante($params)
+    public function adicionarParticipante($params): void
     {
         header('Content-Type: application/json');
         if (Session::get("type") == "docente" && count($this->user->ehTutorOuCotutor($params[0], Session::get("idMat"))) > 0) {

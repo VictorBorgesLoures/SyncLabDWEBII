@@ -13,6 +13,7 @@ class MatriculaController extends Controller
     private $user;
     public function __construct()
     {
+        Session::verifyLogin(true);
         $this->user = new User();
     }
 

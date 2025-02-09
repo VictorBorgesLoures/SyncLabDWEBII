@@ -9,7 +9,7 @@ use cefet\SyncLab\classes\Session;
         </div>
          <ul class="navbuttons">
             <li class="user-menu">
-                <span class="dash-nav-option"><?= Session::get('user_name') !== null ? Session::get('user_name') : 'UNDEFINED'?></span>
+                <span class="dash-nav-option"><?= Session::get('user_name') !== null ? Session::get('user_name') . " (" . Session::get('type') . ") " : 'UNDEFINED'?></span>
                 <ul class="submenu">
                     <li><a href="/matricula">Matrícula</a></li>
                 </ul>

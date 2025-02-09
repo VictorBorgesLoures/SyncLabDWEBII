@@ -18,6 +18,8 @@ class ProjetosController extends Controller
 
     public function __construct()
     {
+        Session::verifyLogin();
+
         $this->user = new User();
         $this->setProjetos();
     }

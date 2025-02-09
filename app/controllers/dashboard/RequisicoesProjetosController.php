@@ -13,6 +13,9 @@ class RequisicoesProjetosController extends Controller {
 
     public function __construct()
     {
+        Session::verifyLogin();
+        Session::verifyPrivilegies('admin');
+
         $this->user = new User();
         $this->setRequisicoes();
     }

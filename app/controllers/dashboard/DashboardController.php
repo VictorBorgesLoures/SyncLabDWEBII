@@ -13,7 +13,9 @@ class DashboardController extends Controller {
 
     public function __construct()
     {
-        parent::__construct();
+        Session::verifyLogin();
+
+
         $this->user = new User();
         $this->project = new Projeto();
     }

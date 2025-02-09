@@ -4,12 +4,12 @@
 /**
  * @var array $listaMatriculas as matrículas pertencentes ao usuário
  */
-
 ?>
 
-<div class="matricula-center-items">
+<div class="matricula-center-items mb-3">
     <div class='matricula-container'>
         <h1>Matrícula</h1>
+        <?= \cefet\SyncLab\classes\Session::messageFlash() ?>
         <div class="matricula-box">
             <?php
                 if(count($listaMatriculas) == 0) {
@@ -31,9 +31,11 @@
             ?>
         </div>
         <button type="button" class='matricula-entrar-btn' id="entrarMatricula">Entrar</button>
-        <button type="button" class='matricula-entrar-btn' id="sairMatriula">Sair</button>
+        <button type="button" class='matricula-entrar-btn'>
+            <a href="/logout" class="text-white text-decoration-none">Sair</a>
+        </button>
         <button type="button" class='matricula-solicitar-btn'>
-            <a href="./matricula/requisitar" class='matricula-solicitar-btn'>Solicitar Matrícula</a>
+            <a href="./matricula/requisitar">Solicitar Matrícula</a>
         </button>
     </div>
 </div>

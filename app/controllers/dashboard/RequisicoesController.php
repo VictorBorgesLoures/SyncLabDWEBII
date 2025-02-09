@@ -1,6 +1,7 @@
 <?php
 
 namespace cefet\SyncLab\controllers\dashboard;
+use cefet\SyncLab\classes\Session;
 use cefet\SyncLab\controllers\Controller;
 
 class RequisicoesController extends Controller {
@@ -8,6 +9,9 @@ class RequisicoesController extends Controller {
 
     public function __construct()
     {
+        Session::verifyLogin();
+        Session::verifyPrivilegies('admin');
+
         $this->setRequisicoes();
     }
 
