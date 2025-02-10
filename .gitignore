@@ -2,3 +2,4 @@ vendor
 .env
 app/logs*
 .idea
+.ini

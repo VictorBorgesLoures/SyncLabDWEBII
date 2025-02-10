@@ -1,6 +1,7 @@
 <?php
 
 namespace cefet\SyncLab\controllers;
+use cefet\SyncLab\classes\Session;
 use League\Plates\Engine;
 abstract class Controller
 {

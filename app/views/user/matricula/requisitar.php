@@ -20,9 +20,9 @@
             <div class="form-group">
                 <p class="label" for="tipo">Tipo de Vínculo:</p>
                 <select id="tipo" name="tipo">
-                    <option value="1">Admin</option>
-                    <option value="2">Discente</option>
-                    <option value="3">Docente</option>
+                    <option value="1"><?=\cefet\SyncLab\Helper\Helpers::matriculaType(1)?></option>
+                    <option value="2"><?=\cefet\SyncLab\Helper\Helpers::matriculaType(2)?></option>
+                    <option value="3"><?=\cefet\SyncLab\Helper\Helpers::matriculaType(3)?></option>
                 </select>
             </div>
             <button class="submit-requisitar-btn">Solicitar</button>
@@ -37,13 +37,8 @@
                 <div class='matricula-box'>";
 
         foreach ($listaRequisicaoMatriculas as $matricula) {            
-            $tipo = 'Admin';
-            if ($matricula["tipoMat"] == 2)
-                $tipo = 'Docente';
-            else if ($matricula["tipoMat"] == 3)
-                $tipo = 'Discente';
             echo '<button type="button" class="matricula-btn disabled" disabled>
-                ' . $tipo. ' - ' . strval($matricula["matriculaMat"]). '
+                ' . \cefet\SyncLab\Helper\Helpers::matriculaType($matricula['tipoMat']). ' - ' . strval($matricula["matriculaMat"]). '
             </button>';
             
             

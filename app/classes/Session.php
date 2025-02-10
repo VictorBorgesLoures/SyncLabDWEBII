@@ -3,6 +3,7 @@
 namespace cefet\SyncLab\classes;
 
 use cefet\SyncLab\classes\exceptions\PrivilegiesException;
+use cefet\SyncLab\Helper\Helpers;
 use Exception;
 
 class Session
@@ -163,12 +164,24 @@ class Session
         }
     }
 
-    public static function verifyLogin(): void
+    public static function verifyLogin($mat = false): void
     {
-        if(!Session::has('loggedin')){
-            Session::flash('error', 'Você precisa estar logado para acessar essa página');
-            redirect('login');
+        if(!$mat) {
+            if (!Session::has('loggedin') || !Session::get('user_id')) {
+                Session::flash('error', 'Você precisa estar logado para acessar essa página');
+                Helpers::redirect('login');
+            } else if (!Session::get('idMat') || !Session::get('type')) {
+                Session::flash('error', 'Você precisa selecionar uma matrícula para acessar essa página');
+                Helpers::redirect('matricula');
+            }
         }
+        else{
+            if (!Session::has('loggedin') || !Session::get('user_id')) {
+                Session::flash('error', 'Você precisa estar logado para acessar essa página');
+                Helpers::redirect('login');
+            }
+        }
+
     }
 
 

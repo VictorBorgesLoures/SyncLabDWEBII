@@ -56,8 +56,8 @@ class RegistrarController extends Controller
         }
 
 
-        if ($this->user->verifyEmailExists($email)) {
-            Session::flash('error', "Email já registrado.");
+        if (!$this->user->verifyUserExists($email)) {
+            Session::flash('error', "Usuário já registrado.");
             BdConnection::getInstance()->closeConnection();
             echo json_encode(['success' => false, 'redirect' => '/registrar']);
             exit;
@@ -85,11 +85,17 @@ class RegistrarController extends Controller
             exit;
         }catch (\PDOException $e){
             $message = '';
-            if ($e->getCode() == 23000 && str_contains($e->getMessage(), '1062 Duplicate entry' && str_contains($e->getMessage(), 'usuario.cpf_'))){
+            if ($e->getCode() == 23000 && str_contains($e->getMessage(), '1062 Duplicate entry') && str_contains($e->getMessage(), 'usuario.cpf_')){
                 $message .= "Este CPF já está cadastrado no sistema. ";
             }
-            else if ($e->getCode() == 23000 && str_contains($e->getMessage(), '1062 Duplicate entry' && str_contains($e->getMessage(), 'usuario.email'))){
+            if ($e->getCode() == 23000 && str_contains($e->getMessage(), '1062 Duplicate entry') && str_contains($e->getMessage(), 'usuario.email')){
                 $message .= "Este email já está cadastrado no sistema. ";
+            }
+            if ($e->getCode() == 23000 && str_contains($e->getMessage(), '1062 Duplicate entry') && str_contains($e->getMessage(), 'usuario.username')){
+                $message .= "Este username já está cadastrado no sistema. ";
+            }
+            else{
+                $message .= "Erro ao realizar registro. ";
             }
             Session::flash('error', $message);
 

@@ -35,8 +35,13 @@ class LoginController extends Controller {
         if(empty($username) || empty($password)){
             Session::flash('error', 'Preencha todos os campos');
             echo json_encode(['success' => false, 'redirect' => '/login']);
-        }
-        else{
+        }else{
+            if(!$this->user->verifyUserExists($username)){
+                Session::flash('error', "E-mail não registrado.");
+                echo json_encode(['success' => true, 'redirect' => '/registrar']);
+                exit;
+            }
+
             $dados = $this->user->login($username, $password);
 
             if ($dados) {
@@ -44,10 +49,12 @@ class LoginController extends Controller {
 
                 BdConnection::getInstance()->closeConnection();
                 echo json_encode(['success' => true, 'redirect' => '/matricula']);
+                exit;
             } else {
                 Session::flash('error', "Email ou senha inválidos.");
                 BdConnection::getInstance()->closeConnection();
                 echo json_encode(['success' => false, 'redirect' => '/login']);
+                exit;
             }
         }
     }

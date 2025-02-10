@@ -19,7 +19,7 @@
     <?php endif; ?>
     <a href="/">Voltar para a página inicial</a>
     <div class="contact-info">
-        <p>Para mais assistência, envie um email para: <a href="mailto:contato@synclab.com.br">contato@adequa.com.br</a></p>
+        <p>Para mais assistência, envie um email para: <a href="mailto:contato@synclab.com.br">contato@synclab.com.br</a></p>
     </div>
 </div>
 </body>

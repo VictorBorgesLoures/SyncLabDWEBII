@@ -18,7 +18,7 @@
     <h2>A Página que você tentou acessar não existe ou está indisponível.</h2>
     <a href="/">Voltar para a página inicial</a>
     <div class="contact-info">
-        <p>Para mais assistência, envie um email para: <a href="mailto:contato@adequa.com.br">contato@adequa.com.br</a></p>
+        <p>Para mais assistência, envie um email para: <a href="mailto:contato@synclab.com.br">contato@synclab.com.br</a></p>
     </div>
 </div>
 </body>

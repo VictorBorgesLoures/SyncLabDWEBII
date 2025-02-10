@@ -13,6 +13,7 @@ class MatriculaController extends Controller
     private $user;
     public function __construct()
     {
+        Session::verifyLogin(true);
         $this->user = new User();
     }
 
@@ -49,10 +50,10 @@ class MatriculaController extends Controller
             return "admin";
         }
         else if($this->user->getTypeMatricula($idMat) == 2){
-            return "discente";
+            return "docente";
         }
         else if($this->user->getTypeMatricula($idMat) == 3){
-            return "docente";
+            return "discente";
         }
         else{
             return null;

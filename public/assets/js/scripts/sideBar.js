@@ -1,5 +1,5 @@
 sidebarIsOpen = true;
-window.onload = () => {
+window.addEventListener("load", () => {
     document.getElementById("sidebar-btn").onclick = ( event => {
         event.preventDefault();
         if(!sidebarIsOpen) {
@@ -25,4 +25,4 @@ window.onload = () => {
         }
         sidebarIsOpen=!sidebarIsOpen;
     });
-};
+});

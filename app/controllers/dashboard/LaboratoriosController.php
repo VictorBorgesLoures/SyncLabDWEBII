@@ -1,6 +1,7 @@
 <?php
 
 namespace cefet\SyncLab\controllers\dashboard;
+use cefet\SyncLab\classes\Session;
 use cefet\SyncLab\controllers\Controller;
 
 class LaboratoriosController extends Controller {
@@ -8,6 +9,8 @@ class LaboratoriosController extends Controller {
 
     public function __construct()
     {
+        Session::verifyLogin();
+
         $this->setLaboratorios();
     }
 
